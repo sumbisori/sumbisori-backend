@@ -24,4 +24,9 @@ public class SampleRestController {
         List<SampleData> sampleDataList = sampleDataRepository.findAll();
         return ResponseEntity.ok(sampleDataList);
     }
+
+    @GetMapping("/connect")
+    public ResponseEntity<?> strTest() {
+        return ResponseEntity.ok("해남해녀입니다.");
+    }
 }
