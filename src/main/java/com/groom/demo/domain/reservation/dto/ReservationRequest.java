@@ -10,4 +10,5 @@ public class ReservationRequest {
     private String selectedAvailableDate;
     private String selectedTime;
     private int peopleCount;
+    private String phone;
 }
