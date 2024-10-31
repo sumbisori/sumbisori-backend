@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class HttpCookieOAuth2AuthorizationRequestRepository implements AuthorizationRequestRepository {
+public class HttpCookieOAuth2AuthorizationRequestRepository implements AuthorizationRequestRepository<OAuth2AuthorizationRequest> {
 
     public static final String OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME = "oauth2_auth_request";
     public static final String REDIRECT_URI_PARAM_COOKIE_NAME = "redirect_uri";
@@ -20,9 +20,15 @@ public class HttpCookieOAuth2AuthorizationRequestRepository implements Authoriza
 
     @Override
     public OAuth2AuthorizationRequest loadAuthorizationRequest(HttpServletRequest request) {
-        return Optional.ofNullable(CookieUtil.getCookieByName(request, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME))
+        OAuth2AuthorizationRequest authRequest = Optional.ofNullable(CookieUtil.getCookieByName(request, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME))
                 .map(cookie -> CookieUtil.deserialize(cookie, OAuth2AuthorizationRequest.class))
                 .orElse(null);
+        if (authRequest == null) {
+            log.debug("OAuth2AuthorizationRequest not found in cookies.");
+        } else {
+            log.debug("OAuth2AuthorizationRequest loaded from cookies.");
+        }
+        return authRequest;
     }
 
     @Override
@@ -34,22 +40,24 @@ public class HttpCookieOAuth2AuthorizationRequestRepository implements Authoriza
             return;
         }
         log.debug("Saving AuthorizationRequest to cookies.");
-        CookieUtil.addCookie(response, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME,
+        CookieUtil.addCookie(request, response, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME,
                 CookieUtil.serialize(authorizationRequest), cookieExpireSeconds);
         String redirectUriAfterLogin = request.getParameter(REDIRECT_URI_PARAM_COOKIE_NAME);
         if (StringUtils.isNotBlank(redirectUriAfterLogin)) {
-            CookieUtil.addCookie(response, REDIRECT_URI_PARAM_COOKIE_NAME, redirectUriAfterLogin, cookieExpireSeconds);
+            CookieUtil.addCookie(request, response, REDIRECT_URI_PARAM_COOKIE_NAME, redirectUriAfterLogin, cookieExpireSeconds);
         }
     }
 
     @Override
     public OAuth2AuthorizationRequest removeAuthorizationRequest(HttpServletRequest request,
                                                                  HttpServletResponse response) {
-        return this.loadAuthorizationRequest(request);
+        OAuth2AuthorizationRequest authorizationRequest = this.loadAuthorizationRequest(request);
+        removeAuthorizationRequestCookies(request, response);
+        return authorizationRequest;
     }
 
-    public void removeAuthorizationRequestCookies(HttpServletResponse response) {
-        CookieUtil.expireCookie(response, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME);
-        CookieUtil.expireCookie(response, REDIRECT_URI_PARAM_COOKIE_NAME);
+    public void removeAuthorizationRequestCookies(HttpServletRequest request, HttpServletResponse response) {
+        CookieUtil.expireCookie(request, response, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME);
+        CookieUtil.expireCookie(request, response, REDIRECT_URI_PARAM_COOKIE_NAME);
     }
 }
