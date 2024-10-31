@@ -2,7 +2,7 @@ package com.groom.demo.domain.controller;
 
 import com.groom.demo.domain.seafood.SeafoodService;
 import com.groom.demo.domain.user.SignRequest;
-import com.groom.demo.domain.user.UserService;
+import com.groom.demo.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,15 +24,15 @@ public class HomeController {
         return ResponseEntity.ok(seafoodService.mySeafoodList(userId));
     }
 
-    @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody SignRequest signRequest) {
-
-        userService.signup(signRequest);
-        return ResponseEntity.ok().build();
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody SignRequest signRequest) {
-        return ResponseEntity.ok(userService.login(signRequest));
-    }
+//    @PostMapping("/signup")
+//    public ResponseEntity<?> signup(@RequestBody SignRequest signRequest) {
+//
+//        userService.signup(signRequest);
+//        return ResponseEntity.ok().build();
+//    }
+//
+//    @PostMapping("/login")
+//    public ResponseEntity<?> login(@RequestBody SignRequest signRequest) {
+//        return ResponseEntity.ok(userService.login(signRequest));
+//    }
 }
