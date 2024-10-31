@@ -2,16 +2,15 @@ package com.groom.demo.common.filter;
 
 import com.groom.demo.common.util.CookieUtil;
 import io.micrometer.common.util.StringUtils;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.Base64;
 import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.stereotype.Component;
-import org.springframework.util.SerializationUtils;
 
+@Slf4j
 @Component
 public class HttpCookieOAuth2AuthorizationRequestRepository implements AuthorizationRequestRepository {
 
@@ -30,9 +29,11 @@ public class HttpCookieOAuth2AuthorizationRequestRepository implements Authoriza
     public void saveAuthorizationRequest(OAuth2AuthorizationRequest authorizationRequest, HttpServletRequest request,
                                          HttpServletResponse response) {
         if (authorizationRequest == null) {
+            log.debug("AuthorizationRequest is null. Removing cookies.");
             removeAuthorizationRequest(request, response);
             return;
         }
+        log.debug("Saving AuthorizationRequest to cookies.");
         CookieUtil.addCookie(response, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME,
                 CookieUtil.serialize(authorizationRequest), cookieExpireSeconds);
         String redirectUriAfterLogin = request.getParameter(REDIRECT_URI_PARAM_COOKIE_NAME);
