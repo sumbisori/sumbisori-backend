@@ -32,7 +32,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException {
-        authorizationRequestRepository.removeAuthorizationRequestCookies(response);
+        authorizationRequestRepository.removeAuthorizationRequestCookies(request, response);
         User user = ((CustomUserDetails) authentication.getPrincipal()).getUser();
         String refresh = tokenService.createAccessToken(user);
         createTokenCookie(response, refresh, TokenType.ACCESS);
