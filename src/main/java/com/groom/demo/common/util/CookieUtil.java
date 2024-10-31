@@ -38,6 +38,7 @@ public class CookieUtil {
         Cookie cookie = new Cookie(name, value);
         cookie.setPath("/");
         cookie.setHttpOnly(true);
+        cookie.setSecure(true);  // HTTPS 환경에서만 전송 가능하도록 설정
         cookie.setMaxAge(maxAge);
         response.addCookie(cookie);
     }
