@@ -38,6 +38,7 @@ public class SeafoodService {
         List<MySeafoodDto> mySeafoods = Arrays.stream(Seafood.values())
                 .map(seafood -> new MySeafoodDto(
                         seafood,
+                        seafood.getName(),
                         seafood.getEnglishName(),
                         seafood.getDescription(),
                         oldestBookMap.getOrDefault(seafood, Optional.empty())
