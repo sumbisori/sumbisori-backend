@@ -3,8 +3,12 @@ package com.groom.demo.domain.seafood;
 import com.groom.demo.domain.book.Book;
 import com.groom.demo.domain.book.BookRepository;
 import com.groom.demo.domain.seafood.dto.MySeafoodDto;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,13 +22,30 @@ public class SeafoodService {
         // 사용자의 Book 목록을 가져오되, 없으면 빈 리스트를 반환합니다.
         List<Book> books = bookRepository.findByUserId(userId).orElse(Collections.emptyList());
 
-        // books 리스트를 MySeafood로 변환하는 로직을 추가합니다.
-        List<MySeafoodDto> mySeafoods = books.stream()
-                .map(book -> {
-                    return new MySeafoodDto(book.getSeafood(), book.getSeafood().getName(),
-                                     book.getSeafood().getDescription(), book.getCreatedAt());
-                })
+        // 각 Seafood 종류별 개수를 맵으로 계산합니다.
+        Map<Seafood, Long> seafoodCountMap = books.stream()
+                .collect(Collectors.groupingBy(Book::getSeafood, Collectors.counting()));
+
+        // 각 Seafood 종류별 가장 오래된 생성 날짜를 맵으로 계산합니다.
+        Map<Seafood, Optional<Book>> oldestBookMap = books.stream()
+                .collect(Collectors.groupingBy(
+                        Book::getSeafood,
+                        Collectors.minBy(Comparator.comparing(Book::getCreatedAt))
+                ));
+
+        // 모든 Seafood 항목에 대해 사용자가 가진 개수와 가장 오래된 생성 날짜로 MySeafoodDto를 생성합니다.
+        List<MySeafoodDto> mySeafoods = Arrays.stream(Seafood.values())
+                .map(seafood -> new MySeafoodDto(
+                        seafood,
+                        seafood.getEnglishName(),
+                        seafood.getDescription(),
+                        oldestBookMap.getOrDefault(seafood, Optional.empty())
+                                .map(Book::getCreatedAt)
+                                .orElse(null), // 해당 Seafood의 가장 오래된 Book의 생성 날짜를 가져옴
+                        seafoodCountMap.getOrDefault(seafood, 0L).intValue() // 존재하지 않으면 0으로 설정
+                ))
                 .collect(Collectors.toList());
+
         return mySeafoods;
     }
 }

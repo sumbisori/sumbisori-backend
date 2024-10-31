@@ -19,10 +19,10 @@ public class Book extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column
     private Long userId;
 
-    @Column(nullable = false)
+    @Column
     @Enumerated(EnumType.STRING)
     private Seafood seafood;
 }

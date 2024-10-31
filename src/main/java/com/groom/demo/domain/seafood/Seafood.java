@@ -1,33 +1,31 @@
 package com.groom.demo.domain.seafood;
 
+import lombok.Getter;
+
+@Getter
 public enum Seafood {
-    JEONBOK("전복", "전복은 진주 및 껍질과 영양 가득한 살을 지녀 고급 요리 재료로 사용됨"),
-    SEONGGYE("성게", "성게는 뾰족한 가시와 오메가-3 지방산이 풍부해 일식에서 특별히 사용됨"),
-    JOKGYE("조개", "조개는 바닷물을 아름답게 정화하고 주로 찜과 볶음 형태로 활용"),
-    BOMAL("보말", "제주도의 보말은 강인함을 상징하며, 다양한 요리에서 활용됨"),
-    SOSARA("소사라", "소라는 나선형 껍질과 달콤한 맛으로 보양식에 애용됨"),
-    BULSORA("불소라", "불소라는 뾰족한 껍질과 고급스런 맛으로 보양식에서 인기가 높음"),
-    MIEOLGYE("미역", "미역은 건강에 좋은 미네랄과 비타민이 풍부하여 다양한 요리에 사용"),
-    MYEONGTAE("명태", "명태는 살코기와 감칠맛 나는 맛으로 한국 대표 요리에 인기가 있음"),
-    GODUNGH("고등어", "고등어는 작고 고소한 살집과 감칠 맛이 풍부하여 각종 요리에 활용"),
-    GONGCHNI("꽁치", "꽁치는 '바다의 우유'로 불리며 오메가-3과 미네랄이 풍부"),
-    MUNE("문어", "문어는 다양한 요리에서 특별한 질감과 맛을 제공하는 해양 생물"),
-    HESAEBAG("해삼", "해삼은 바다의 보약으로 불리며 건강에 좋으며 고소하고 쫄깃함"),
-    OJINGEO("오징어", "오징어는 빠른 성장을 하고 임금 분출을 하며 맛도 뛰어남");
+    ABALONE("전복", "Abalone", "전복은 진주 빛 껍질과 영양 가득한 살을 지녀 고급 요리 재료로 손색이 없습니다."),
+    SEA_URCHIN("성게", "SeaUrchin", "성게는 뾰족한 가시와 오메가-3 지방산이 풍부해 일식에서 특별한 위치를 차지합니다."),
+    CLAM("조개", "Clam", "조개는 해저를 아름답게 장식하고 수질 정화에 기여하는 필터 피더입니다."),
+    SEA_CUCUMBER("보말", "Omphalius", "제주도의 보말은 강인함을 상징하며, 다양한 요리에서 풍미를 더합니다."),
+    CONCH("소라", "Conch", "소라는 나선형 껍질과 달콤한 맛으로 요리에 활용되는 인기 해산물입니다."),
+    HORNED_CONCH("뿔소라", "Murex", "뿔소라는 뾰족한 껍질과 훌륭한 맛으로 보양식에도 좋습니다."),
+    WAKAME("미역", "SeaMustard", "미역은 건강에 좋은 미네랄과 비타민이 풍부하며 다양한 한국 요리에 사용됩니다."),
+    SEA_SQUIRT("멍게", "SeaSquirt", "멍게는 쫄깃한 식감과 감칠맛 나는 맛으로 회나 초무침에 인기가 높습니다."),
+    MUSSEL("홍합", "Mussel", "홍합은 부드러운 살과 진한 향으로 수프나 파스타에 자주 사용됩니다."),
+    SMALL_MUSSEL("고둥", "Gastropods", "고둥은 작고 견고한 껍질로 칼슘을 많이 함유하고 있어 건강에 좋습니다."),
+    OYSTER("굴", "Oyster", "굴은 '바다의 우유'로 불리며 오메가-3와 미네랄이 풍부해 겨울 별미입니다."),
+    OCTOPUS("문어", "Octopus", "문어는 뛰어난 지능과 독특한 식감을 가진 해양 생물로 다양한 요리에 사용됩니다."),
+    SEA_CUCUMBER_SECOND("해삼", "SeaCucumber", "해삼은 콜라겐이 풍부해 피부 건강에 좋으며 고소하고 쫄깃습니다."),
+    SQUID("오징어", "Squid", "오징어는 빠른 성장률과 잉크 분출로 알려져 있으며 맛이 뛰어납니다.");
 
     private final String name;
+    private final String englishName;
     private final String description;
 
-    Seafood(String name, String description) {
+    Seafood(String name, String englishName, String description) {
         this.name = name;
+        this.englishName = englishName;
         this.description = description;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
     }
 }
