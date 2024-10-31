@@ -3,6 +3,7 @@ package com.groom.demo.domain.seafood;
 import com.groom.demo.domain.book.Book;
 import com.groom.demo.domain.book.BookRepository;
 import com.groom.demo.domain.seafood.dto.MySeafoodDto;
+import com.groom.demo.domain.seafood.dto.SeafoodRequest;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -52,11 +53,14 @@ public class SeafoodService {
     }
 
     @Transactional
-    public void createSeafood(Long userId, Seafood seafood) {
-        Book book = Book.builder()
-                .userId(userId)
-                .seafood(seafood)
-                .build();
-        bookRepository.save(book);
+    public void createSeafood(Long userId, SeafoodRequest request) {
+        int count = request.getCount();
+        for (int i = 0; i < count; i++) {
+            Book book = Book.builder()
+                    .userId(userId)
+                    .seafood(request.getSeafood())
+                    .build();
+            bookRepository.save(book);
+        }
     }
 }

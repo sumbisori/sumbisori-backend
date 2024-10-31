@@ -1,6 +1,7 @@
 package com.groom.demo.domain.seafood;
 
 import com.groom.demo.domain.seafood.dto.MySeafoodDto;
+import com.groom.demo.domain.seafood.dto.SeafoodRequest;
 import com.groom.demo.domain.seafood.dto.SeafoodResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.Arrays;
@@ -10,9 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -39,8 +40,8 @@ public class SeafoodController {
 
     @Operation(description = "해산물 등록 + 인증")
     @PostMapping
-    public ResponseEntity<Void> createSeafood(@RequestHeader("userId") Long userId, @RequestParam Seafood seafood) {
-        seafoodService.createSeafood(userId, seafood);
+    public ResponseEntity<Void> createSeafood(@RequestHeader("userId") Long userId, @RequestBody SeafoodRequest request) {
+        seafoodService.createSeafood(userId, request);
         return ResponseEntity.ok().build();
     }
 }
