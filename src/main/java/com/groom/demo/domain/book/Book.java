@@ -29,7 +29,7 @@ public class Book extends BaseTimeEntity {
     @Column
     private Long userId;
 
-    @Column
+    @Column(columnDefinition = "varchar(20)")
     @Enumerated(EnumType.STRING)
     private Seafood seafood;
 }
