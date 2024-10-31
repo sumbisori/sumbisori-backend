@@ -2,6 +2,7 @@ package com.groom.demo.domain.user.oauth2;
 
 import static com.groom.demo.common.util.CookieUtil.createTokenCookie;
 
+import com.groom.demo.common.filter.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.groom.demo.domain.token.entity.TokenType;
 import com.groom.demo.domain.token.service.TokenService;
 import com.groom.demo.domain.user.dto.CustomUserDetails;
@@ -26,10 +27,12 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     private String clientUrl;
 
     private final TokenService tokenService;
+    private final HttpCookieOAuth2AuthorizationRequestRepository authorizationRequestRepository;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException {
+        authorizationRequestRepository.removeAuthorizationRequestCookies(response);
         User user = ((CustomUserDetails) authentication.getPrincipal()).getUser();
         String refresh = tokenService.createAccessToken(user);
         createTokenCookie(response, refresh, TokenType.ACCESS);

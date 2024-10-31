@@ -1,5 +1,6 @@
 package com.groom.demo.common.config;
 
+import com.groom.demo.common.filter.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.groom.demo.common.filter.JWTFilter;
 import com.groom.demo.common.util.JWTUtil;
 import com.groom.demo.domain.user.oauth2.CustomFailureHandler;
@@ -30,6 +31,7 @@ public class SecurityConfig {
     private final CustomSuccessHandler customSuccessHandler;
     private final CustomFailureHandler customFailureHandler;
     private final JWTUtil jwtUtil;
+    private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
 
     @Bean
     public SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
@@ -47,6 +49,9 @@ public class SecurityConfig {
                 .oauth2Login(oauth2 -> oauth2
                         .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig
                                 .userService(customOAuth2UserService)
+                        )
+                        .authorizationEndpoint(authorization -> authorization
+                                .authorizationRequestRepository(httpCookieOAuth2AuthorizationRequestRepository)
                         )
                         .successHandler(customSuccessHandler)
                         .failureHandler(customFailureHandler)
