@@ -28,6 +28,9 @@ public class Reservation extends BaseTimeEntity {
     private Long id;
 
     @Column(nullable = false)
+    private Long userId;
+
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Place place; //예약 장소
 
