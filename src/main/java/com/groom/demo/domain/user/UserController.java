@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -15,8 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     private final UserService userService;
 
+    @Operation(description = "프로필 조회 - 인증")
     @GetMapping("/my-page/my-info")
-    public ResponseEntity<?> getMyInfo(@LoginUser Long userId) {
+    public ResponseEntity<UserProfile> getMyInfo(@RequestHeader("userId") Long userId) {
         return ResponseEntity.ok(userService.getMyInfo(userId));
     }
 

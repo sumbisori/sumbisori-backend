@@ -1,5 +1,6 @@
 package com.groom.demo.domain.user.service;
 
+import com.groom.demo.domain.book.BookRepository;
 import com.groom.demo.domain.user.SignRequest;
 import com.groom.demo.domain.user.UserProfile;
 import com.groom.demo.domain.user.entity.User;
@@ -11,11 +12,13 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final BookRepository bookRepository;
 
     public UserProfile getMyInfo(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+        int count = bookRepository.countByUserId(userId);
         return UserProfile.builder()
-                .userId(userId)
+                .count(count)
                 .nickname(user.getNickname())
                 .build();
     }
