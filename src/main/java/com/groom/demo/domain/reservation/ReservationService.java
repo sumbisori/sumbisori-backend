@@ -1,12 +1,10 @@
 package com.groom.demo.domain.reservation;
 
-import com.groom.demo.domain.place.Place;
+import com.groom.demo.domain.reservation.dto.ReservationDto;
 import com.groom.demo.domain.reservation.dto.ReservationRequest;
 import com.groom.demo.domain.user.entity.User;
 import com.groom.demo.domain.user.repository.UserRepository;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +13,6 @@ import org.springframework.stereotype.Service;
 public class ReservationService {
     private final ReservationRepository reservationRepository;
     private final UserRepository userRepository;
-
-    public List<Place> findPlace() {
-        return Arrays.stream(Place.values())
-                .collect(Collectors.toList());
-    }
 
     public void createReservation(Long userId, ReservationRequest reservationRequest) {
         // 예약 생성 로직을 추가합니다.
@@ -36,5 +29,9 @@ public class ReservationService {
                 .build();
         reservationRepository.save(reservation);
 
+    }
+
+    public List<ReservationDto> getMyReservations(Long userId) {
+        return reservationRepository.findByUserId(userId);
     }
 }

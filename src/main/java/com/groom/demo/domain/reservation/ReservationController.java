@@ -2,7 +2,9 @@ package com.groom.demo.domain.reservation;
 
 import com.groom.demo.domain.place.Place;
 import com.groom.demo.domain.place.PlaceListDto;
+import com.groom.demo.domain.reservation.dto.ReservationDto;
 import com.groom.demo.domain.reservation.dto.ReservationRequest;
+import io.swagger.v3.oas.annotations.Operation;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,6 +25,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class ReservationController {
     private final ReservationService reservationService;
 
+    @Operation(summary = "예약 목록 조회")
+    @GetMapping("/my")
+    public ResponseEntity<List<ReservationDto>> getMyReservations(@RequestHeader("userId") Long userId) {
+        return ResponseEntity.ok(reservationService.getMyReservations(userId));
+    }
+
+    @Operation(summary = "해녀체험장 목록 조회")
     @GetMapping("/haenyeo-place")
     public ResponseEntity<?> getAllPlaces() {
         List<PlaceListDto> list = Arrays.stream(Place.values())
@@ -41,6 +50,7 @@ public class ReservationController {
         return ResponseEntity.ok(list);
     }
 
+    @Operation(summary = "해녀체험장 상세 조회")
     @GetMapping("/haenyeo-place/{placeValue}")
     public ResponseEntity<?> getPlaceInfo(@PathVariable String placeValue) {
         Place place = Place.valueOf(placeValue);
@@ -58,6 +68,7 @@ public class ReservationController {
         return ResponseEntity.ok(placeListDto);
     }
 
+    @Operation(summary = "예약 생성")
     @PostMapping("/create")
     public ResponseEntity<?> createReservation(@RequestHeader("userId") Long userId,
                                                @RequestBody ReservationRequest reservationRequest) {
