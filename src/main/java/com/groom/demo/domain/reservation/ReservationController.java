@@ -8,7 +8,9 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -31,5 +33,20 @@ public class ReservationController {
                 ))
                 .collect(Collectors.toList());
         return ResponseEntity.ok(list);
+    }
+
+    @GetMapping("/haenyeo-place/{placeValue}")
+    public ResponseEntity<?> getPlaceInfo(@PathVariable String placeValue) {
+        Place place = Place.valueOf(placeValue);
+        PlaceListDto placeListDto = new PlaceListDto(
+                place.name(),
+                place.getName(),
+                place.getAddress(),
+                place.getPrice(),
+                place.getDescription(),
+                place.getImageUrl(),
+                place.getAvailableDate()
+        );
+        return ResponseEntity.ok(placeListDto);
     }
 }
