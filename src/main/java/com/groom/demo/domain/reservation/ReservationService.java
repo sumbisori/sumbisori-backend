@@ -37,6 +37,7 @@ public class ReservationService {
         List<Reservation> list = reservationRepository.findByUserIdAndStatus(userId, status);
         return list.stream()
                 .map(reservation -> ReservationDto.builder()
+                        .id(reservation.getId())
                         .reservationDate(reservation.getReservationDate())
                         .reservationTime(reservation.getReservationTime())
                         .status(reservation.getStatus())
