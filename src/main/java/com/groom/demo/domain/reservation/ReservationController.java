@@ -2,6 +2,7 @@ package com.groom.demo.domain.reservation;
 
 import com.groom.demo.domain.place.Place;
 import com.groom.demo.domain.place.PlaceListDto;
+import com.groom.demo.domain.reservation.dto.ReservationRequest;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -9,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,5 +51,11 @@ public class ReservationController {
                 place.getAvailableDate()
         );
         return ResponseEntity.ok(placeListDto);
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<?> createReservation(@RequestParam Long userId, @RequestBody ReservationRequest reservationRequest) {
+        reservationService.createReservation(userId, reservationRequest);
+        return ResponseEntity.ok().build();
     }
 }
