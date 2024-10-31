@@ -31,15 +31,19 @@ public class User extends BaseTimeEntity {
 
     @Column(columnDefinition = "varchar(20)")
     private String providerType;
-
+    @Column
     private String providerId;
 
     @Column(columnDefinition = "varchar(20)")
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
+    @Column
     private String nickname;
+    @Column
     private String profileImageUrl;
+    @Column
+    private String password;
 
     @Getter
     @AllArgsConstructor
