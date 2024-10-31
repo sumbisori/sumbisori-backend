@@ -32,7 +32,9 @@ public class ReservationController {
                         place.getPrice(),
                         place.getDescription(),
                         place.getImageUrl(),
-                        place.getAvailableDate()
+                        place.getAvailableDate(),
+                        place.getX(),
+                        place.getY()
                 ))
                 .collect(Collectors.toList());
         return ResponseEntity.ok(list);
@@ -48,13 +50,16 @@ public class ReservationController {
                 place.getPrice(),
                 place.getDescription(),
                 place.getImageUrl(),
-                place.getAvailableDate()
+                place.getAvailableDate(),
+                place.getX(),
+                place.getY()
         );
         return ResponseEntity.ok(placeListDto);
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> createReservation(@RequestParam Long userId, @RequestBody ReservationRequest reservationRequest) {
+    public ResponseEntity<?> createReservation(@RequestParam Long userId,
+                                               @RequestBody ReservationRequest reservationRequest) {
         reservationService.createReservation(userId, reservationRequest);
         return ResponseEntity.ok().build();
     }
