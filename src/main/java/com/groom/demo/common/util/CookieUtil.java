@@ -35,12 +35,14 @@ public class CookieUtil {
     }
 
     public static void addCookie(HttpServletResponse response, String name, String value, int maxAge) {
-        Cookie cookie = new Cookie(name, value);
-        cookie.setPath("/");
-        cookie.setHttpOnly(true);
-        cookie.setSecure(true);  // HTTPS 환경에서만 전송 가능하도록 설정
-        cookie.setMaxAge(maxAge);
-        response.addCookie(cookie);
+        ResponseCookie cookie = ResponseCookie.from(name, value)
+                .path("/")
+                .sameSite("None")
+                .httpOnly(true)
+                .secure(true)
+                .maxAge(maxAge)
+                .build();
+        response.addHeader("Set-Cookie", cookie.toString());
     }
 
     public static void expireCookie(HttpServletResponse response, String cookieName) {
