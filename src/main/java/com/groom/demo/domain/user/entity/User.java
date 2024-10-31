@@ -27,18 +27,20 @@ public class User extends BaseTimeEntity {
     @Column(name = "user_id")
     private Long id;
 
-    @Column(nullable = false)
     private String email;
 
     @Column(columnDefinition = "varchar(20)")
     private String providerType;
 
-    @Column(nullable = false)
     private String providerId;
 
     @Column(columnDefinition = "varchar(20)")
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
+
+    private String nickname;
+    private String profileNickname;
+    private String password;
 
     @Getter
     @AllArgsConstructor
