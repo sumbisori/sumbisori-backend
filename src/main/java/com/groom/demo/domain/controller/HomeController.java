@@ -17,22 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/home")
 public class HomeController {
     private final SeafoodService seafoodService;
-    private final UserService userService;
 
     @GetMapping("/seafoods")
     public ResponseEntity<?> getMySeafoods(@RequestParam Long userId) {
         return ResponseEntity.ok(seafoodService.mySeafoodList(userId));
     }
-
-//    @PostMapping("/signup")
-//    public ResponseEntity<?> signup(@RequestBody SignRequest signRequest) {
-//
-//        userService.signup(signRequest);
-//        return ResponseEntity.ok().build();
-//    }
-//
-//    @PostMapping("/login")
-//    public ResponseEntity<?> login(@RequestBody SignRequest signRequest) {
-//        return ResponseEntity.ok(userService.login(signRequest));
-//    }
 }
