@@ -20,7 +20,7 @@ public enum Place {
             50000,
             "https://i.ibb.co/Rv4Rr0r/image.jpg",
             List.of("2024년 11월 05일", "2024년 11월 07일", "2024년 11월 11일", "2024년 11월 16일", "2024년 11월 21일"),
-            13, 45),
+            13, 42),
 
     MODE_RACK_BADANG("모드락바당", "스노클링, 수중플로깅, 해녀 선생님과 물질체험", "제주 서귀포시 성산읍 일출로 264-4", 69000,
             "https://i.ibb.co/WGj6xxg/image.jpg",
@@ -30,7 +30,7 @@ public enum Place {
     JEJU_HAE_NAE_EXPERIENCE("제주 해녀체험", "장비대여, 샤워시설 이용, 해산물시식, 예약 필수", "제주 서귀포시 남원읍 하례망장포로 65-13", 50000,
             "https://i.ibb.co/6JSh8HD/image.jpg",
             List.of("2024년 11월 06일", "2024년 11월 10일", "2024년 11월 14일", "2024년 11월 19일", "2024년 11월 24일"),
-            55, 62);
+            55, 58);
 
     private final String name;
     private final String description;
