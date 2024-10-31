@@ -28,7 +28,7 @@ public class ReservationService {
                 .name(reservationRequest.getPersonName())
                 .place(reservationRequest.getPlace())
                 .numberOfPeople(reservationRequest.getPeopleCount())
-                .id(user.getId())
+                .userId(user.getId())
                 .build();
         reservationRepository.save(reservation);
 
