@@ -25,7 +25,7 @@ public class CustomFailureHandler extends SimpleUrlAuthenticationFailureHandler 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                         AuthenticationException exception) throws IOException {
-        authorizationRequestRepository.removeAuthorizationRequestCookies(request, response);
+//        authorizationRequestRepository.removeAuthorizationRequestCookies(response);
         log.error("Social login failure - User-Agent: {}, Error: {}", request.getHeader("User-Agent"),
                 exception.getMessage());
         response.sendRedirect(clientUrl + REDIRECT_URL_FAILURE);
