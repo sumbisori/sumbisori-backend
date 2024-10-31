@@ -1,0 +1,43 @@
+package com.groom.demo.domain.reservation;
+
+import com.groom.demo.domain.base.entity.BaseTimeEntity;
+import com.groom.demo.domain.place.Place;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import lombok.Getter;
+
+@Entity
+@Getter
+public class Reservation extends BaseTimeEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Place place; //예약 장소
+
+    @Column(nullable = false)
+    private String name; // 예약자 이름
+
+    @Column(nullable = false)
+    private int numberOfPeople; // 예약 인원 수
+
+    @Column(nullable = false)
+    private String reservationDate; // 예약 날짜
+
+    @Column(nullable = false)
+    private String reservationTime; // 예약 시간
+
+    @Column(nullable = false)
+    private boolean isCompleted; // 예약 완료 여부
+
+}
