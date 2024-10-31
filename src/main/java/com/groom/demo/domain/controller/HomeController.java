@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/home")
+@RequestMapping("/home")
 public class HomeController {
     private final SeafoodService seafoodService;
     private final UserService userService;

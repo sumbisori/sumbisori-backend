@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api")
 @CrossOrigin(origins = "*") // 모든 도메인에서 접근 허용
 public class SampleRestController {
 
