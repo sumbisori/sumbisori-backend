@@ -7,6 +7,7 @@ import com.groom.demo.domain.user.repository.UserRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -14,6 +15,7 @@ public class ReservationService {
     private final ReservationRepository reservationRepository;
     private final UserRepository userRepository;
 
+    @Transactional
     public void createReservation(Long userId, ReservationRequest reservationRequest) {
         // 예약 생성 로직을 추가합니다.
         User user = userRepository.findById(userId)
