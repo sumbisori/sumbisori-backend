@@ -31,7 +31,6 @@ public class ReservationService {
                 .userId(user.getId())
                 .build();
         reservationRepository.save(reservation);
-
     }
 
     public List<ReservationDto> getMyReservations(Long userId, Status status) {
