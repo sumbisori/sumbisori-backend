@@ -42,7 +42,9 @@ public class ReservationService {
                         .reservationTime(reservation.getReservationTime())
                         .status(reservation.getStatus())
                         .personName(reservation.getName())
-                        .place(reservation.getPlace())
+                        .imageUrl(reservation.getPlace().getImageUrl())
+                        .name(reservation.getPlace().getName())
+                        .address(reservation.getPlace().getAddress())
                         .peopleCount(reservation.getNumberOfPeople())
                         .build())
                 .toList();
