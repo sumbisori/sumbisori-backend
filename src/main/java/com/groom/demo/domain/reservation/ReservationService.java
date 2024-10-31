@@ -1,5 +1,6 @@
 package com.groom.demo.domain.reservation;
 
+import com.groom.demo.domain.reservation.dto.ReservationCount;
 import com.groom.demo.domain.reservation.dto.ReservationDto;
 import com.groom.demo.domain.reservation.dto.ReservationRequest;
 import com.groom.demo.domain.user.entity.User;
@@ -23,7 +24,7 @@ public class ReservationService {
         Reservation reservation = Reservation.builder()
                 .reservationDate(reservationRequest.getSelectedAvailableDate())
                 .reservationTime(reservationRequest.getSelectedTime())
-                .isCompleted(false)
+                .status(Status.PENDING)
                 .name(reservationRequest.getPersonName())
                 .place(reservationRequest.getPlace())
                 .numberOfPeople(reservationRequest.getPeopleCount())
@@ -33,7 +34,23 @@ public class ReservationService {
 
     }
 
-    public List<ReservationDto> getMyReservations(Long userId) {
-        return reservationRepository.findByUserId(userId);
+    public List<ReservationDto> getMyReservations(Long userId, Status status) {
+        List<Reservation> list = reservationRepository.findByUserIdAndStatus(userId, status);
+        return list.stream()
+                .map(reservation -> ReservationDto.builder()
+                        .reservationDate(reservation.getReservationDate())
+                        .reservationTime(reservation.getReservationTime())
+                        .status(reservation.getStatus())
+                        .personName(reservation.getName())
+                        .place(reservation.getPlace())
+                        .peopleCount(reservation.getNumberOfPeople())
+                        .build())
+                .toList();
+    }
+
+    public ReservationCount getMyReservationCount(Long userId) {
+        int pendingCount = reservationRepository.countByUserIdAndStatus(userId, Status.PENDING);
+        int endCount = reservationRepository.countByUserIdAndStatus(userId, Status.END);
+        return new ReservationCount(pendingCount, endCount);
     }
 }

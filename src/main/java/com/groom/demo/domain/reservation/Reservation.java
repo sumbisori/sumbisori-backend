@@ -46,7 +46,8 @@ public class Reservation extends BaseTimeEntity {
     @Column(nullable = false)
     private String reservationTime; // 예약 시간
 
-    @Column(nullable = false)
-    private boolean isCompleted; // 예약 완료 여부
+    @Column(columnDefinition = "varchar(20)")
+    @Enumerated(EnumType.STRING)
+    private Status status; // 예약 완료 여부
 
 }
