@@ -12,6 +12,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -47,5 +48,14 @@ public class SeafoodService {
                 .collect(Collectors.toList());
 
         return mySeafoods;
+    }
+
+    @Transactional
+    public void createSeafood(Long userId, Seafood seafood) {
+        Book book = Book.builder()
+                .userId(userId)
+                .seafood(seafood)
+                .build();
+        bookRepository.save(book);
     }
 }

@@ -9,8 +9,10 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -33,5 +35,12 @@ public class SeafoodController {
     @GetMapping("/my")
     public ResponseEntity<List<MySeafoodDto>> getMySeafoodList(@RequestHeader("userId") Long userId) {
         return ResponseEntity.ok(seafoodService.mySeafoodList(userId));
+    }
+
+    @Operation(description = "해산물 등록 + 인증")
+    @PostMapping
+    public ResponseEntity<Void> createSeafood(@RequestHeader("userId") Long userId, @RequestParam Seafood seafood) {
+        seafoodService.createSeafood(userId, seafood);
+        return ResponseEntity.ok().build();
     }
 }
