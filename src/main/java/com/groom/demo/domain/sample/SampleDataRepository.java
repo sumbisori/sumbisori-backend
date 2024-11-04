@@ -1,4 +1,4 @@
-package com.groom.demo;
+package com.groom.demo.domain.sample;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
