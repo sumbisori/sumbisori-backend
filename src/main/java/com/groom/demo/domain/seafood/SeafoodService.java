@@ -4,6 +4,8 @@ import com.groom.demo.domain.book.Book;
 import com.groom.demo.domain.book.BookRepository;
 import com.groom.demo.domain.seafood.dto.MySeafoodDto;
 import com.groom.demo.domain.seafood.dto.SeafoodRequest;
+import com.groom.demo.domain.seafood.dto.SeafoodResponse;
+import com.groom.demo.domain.seafood.repository.SeafoodRepository;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -19,6 +21,13 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class SeafoodService {
     private final BookRepository bookRepository;
+    private final SeafoodRepository seafoodRepository;
+
+    public List<SeafoodResponse> getAllSeafoods() {
+        return seafoodRepository.findAll().stream()
+                .map(SeafoodResponse::from)
+                .toList();
+    }
 
     public List<MySeafoodDto> mySeafoodList(Long userId) {
         // 사용자의 Book 목록을 가져오되, 없으면 빈 리스트를 반환합니다.
