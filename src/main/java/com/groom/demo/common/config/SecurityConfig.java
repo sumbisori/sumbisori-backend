@@ -16,10 +16,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.oauth2.client.endpoint.DefaultAuthorizationCodeTokenResponseClient;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -34,14 +32,9 @@ public class SecurityConfig {
     private final CustomFailureHandler customFailureHandler;
     private final JWTUtil jwtUtil;
     private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
-    private final RestTemplate proxiedRestTemplate;
 
     @Bean
     public SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
-        DefaultAuthorizationCodeTokenResponseClient accessTokenResponseClient =
-                new DefaultAuthorizationCodeTokenResponseClient();
-        accessTokenResponseClient.setRestOperations(proxiedRestTemplate);
-
         return http.authorizeHttpRequests(authorize -> authorize
                         .anyRequest().permitAll()
                 )
@@ -54,9 +47,6 @@ public class SecurityConfig {
 //                .exceptionHandling((auth) -> auth.authenticationEntryPoint(customAuthenticationEntryPoint)
 //                        .accessDeniedHandler(customAccessDeniedHandler))
                 .oauth2Login(oauth2 -> oauth2
-                        .tokenEndpoint(tokenEndpointConfig -> tokenEndpointConfig
-                                .accessTokenResponseClient(accessTokenResponseClient)
-                        )
                         .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig
                                 .userService(customOAuth2UserService)
                         )
