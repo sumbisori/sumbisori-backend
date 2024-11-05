@@ -13,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
 @RestController
 @Tag(name = "test", description = "Test API")
 public class SampleRestController {
-    private final RestTemplate proxiedRestTemplate;
+    private final RestTemplate restTemplate;
 
     @Operation(summary = "테스트 핑 API")
     @GetMapping("/test")
@@ -32,7 +32,7 @@ public class SampleRestController {
 
         for (String url : urls) {
             try {
-                proxiedRestTemplate.getForObject(url, String.class);
+                restTemplate.getForObject(url, String.class);
                 responseBuilder.append(url).append(": Connection Successful\n");
             } catch (Exception e) {
                 responseBuilder.append(url).append(": Connection Failed - ").append(e.getMessage()).append("\n");
