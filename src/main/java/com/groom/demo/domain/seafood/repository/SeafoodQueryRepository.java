@@ -33,7 +33,7 @@ public class SeafoodQueryRepository {
                         seafood.englishName,
                         seafood.description,
                         dateTemplate,
-                        seafoodCollection.count().intValue()
+                        seafoodCollection.quantity.sum()
                 ))
                 .from(seafood)
                 .leftJoin(seafoodCollection)
