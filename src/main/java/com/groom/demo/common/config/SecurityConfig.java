@@ -34,11 +34,10 @@ public class SecurityConfig {
     private final CustomFailureHandler customFailureHandler;
     private final JWTUtil jwtUtil;
     private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
-    private RestTemplate proxiedRestTemplate;
+    private final RestTemplate proxiedRestTemplate;
 
     @Bean
     public SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
-        // 프록시가 적용된 AccessTokenResponseClient 생성
         DefaultAuthorizationCodeTokenResponseClient accessTokenResponseClient =
                 new DefaultAuthorizationCodeTokenResponseClient();
         accessTokenResponseClient.setRestOperations(proxiedRestTemplate);
