@@ -3,6 +3,8 @@ package com.groom.demo.domain.place.service;
 import com.groom.demo.domain.place.dto.PlaceResponse;
 import com.groom.demo.domain.place.dto.PlaceMapResponse;
 import com.groom.demo.domain.place.entity.Place;
+import com.groom.demo.domain.place.error.PlaceErrorcode;
+import com.groom.demo.domain.place.error.exception.PlaceException;
 import com.groom.demo.domain.place.repository.PlaceRepository;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -19,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class PlaceService {
     public static final String DAY_FORMAT = "yyyy년 MM월 dd일";
+
     private final PlaceRepository placeRepository;
 
     public List<PlaceMapResponse> getAllPlaces() {
@@ -31,7 +34,7 @@ public class PlaceService {
 
     public PlaceResponse getPlaceById(Long placeId) {
         Place place = placeRepository.findById(placeId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 장소를 찾을 수 없습니다."));
+                .orElseThrow(() -> new PlaceException(PlaceErrorcode.PLACE_NOT_FOUND));
         List<String> availableDates = getAvailableDays();
         return PlaceResponse.of(place, availableDates);
     }
