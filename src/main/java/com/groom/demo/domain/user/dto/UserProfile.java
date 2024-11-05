@@ -1,4 +1,4 @@
-package com.groom.demo.domain.user;
+package com.groom.demo.domain.user.dto;
 
 import lombok.Builder;
 
