@@ -24,9 +24,8 @@ public class PlaceController implements PlaceApi {
     }
 
     @Override
-    @GetMapping("/place/{placeId}")
+    @GetMapping("/{placeId}")
     public ResponseEntity<PlaceResponse> getPlaceInfo(@PathVariable Long placeId) {
-        placeService.getPlaceById(placeId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(placeService.getPlaceById(placeId));
     }
 }
