@@ -27,18 +27,9 @@ public class ReservationService {
 
     @Transactional
     public void createReservation(Long userId, ReservationRequest reservationRequest) {
-        // 예약 생성 로직을 추가합니다.
-        Place place = placeRepository.findById(reservationRequest.getPlaceId())
+        Place place = placeRepository.findById(reservationRequest.placeId())
                 .orElseThrow(() -> new IllegalArgumentException("장소를 찾을 수 없습니다."));
-        Reservation reservation = Reservation.builder()
-                .reservationDate(reservationRequest.getSelectedAvailableDate())
-                .reservationTime(reservationRequest.getSelectedTime())
-                .status(Status.PENDING)
-                .name(reservationRequest.getPersonName())
-                .place(place)
-                .numberOfPeople(reservationRequest.getPeopleCount())
-                .userId(userId)
-                .build();
+        Reservation reservation = reservationRequest.of(userId, place);
         reservationRepository.save(reservation);
     }
 

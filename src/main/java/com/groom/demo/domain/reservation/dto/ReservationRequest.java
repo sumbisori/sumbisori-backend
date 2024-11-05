@@ -1,14 +1,20 @@
 package com.groom.demo.domain.reservation.dto;
 
-import com.groom.demo.domain.place.Place;
-import lombok.Data;
+import com.groom.demo.domain.place.entity.Place;
+import com.groom.demo.domain.reservation.entity.Reservation;
+import com.groom.demo.domain.reservation.entity.Reservation.Status;
 
-@Data
-public class ReservationRequest {
-    private Place place;
-    private String personName;
-    private String selectedAvailableDate;
-    private String selectedTime;
-    private int peopleCount;
-    private String phone;
+public record ReservationRequest(Long placeId, String personName, String selectedAvailableDate, String selectedTime,
+                                 int peopleCount, String phone) {
+    public Reservation of(Long userId, Place place) {
+        return Reservation.builder()
+                .reservationDate(selectedAvailableDate)
+                .reservationTime(selectedTime)
+                .status(Status.PENDING)
+                .name(personName)
+                .place(place)
+                .numberOfPeople(peopleCount)
+                .userId(userId)
+                .build();
+    }
 }
