@@ -45,7 +45,7 @@ public class SeafoodController implements SeafoodApi {
     @PostMapping
     public ResponseEntity<Void> createSeafood(@RequestHeader("userId") Long userId,
                                               @RequestBody SeafoodRequest request) {
-//        seafoodService.createSeafood(userId, request);
+        seafoodCollectionService.createSeafoodCollection(userId, request);
         return ResponseEntity.ok().build();
     }
 }

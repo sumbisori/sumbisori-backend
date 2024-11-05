@@ -32,4 +32,7 @@ public class SeafoodCollection extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "seafood_id", nullable = false)
     private Seafood seafood;
+
+    @Column
+    private int quantity;
 }
