@@ -1,5 +1,6 @@
 package com.groom.demo.domain.seafood.controller;
 
+import com.groom.demo.domain.collection.service.SeafoodCollectionService;
 import com.groom.demo.domain.seafood.SeafoodService;
 import com.groom.demo.domain.seafood.dto.MySeafoodDto;
 import com.groom.demo.domain.seafood.dto.SeafoodRequest;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class SeafoodController implements SeafoodApi {
     private final SeafoodService seafoodService;
+    private final SeafoodCollectionService seafoodCollectionService;
 
     @Override
     @GetMapping
@@ -34,15 +36,15 @@ public class SeafoodController implements SeafoodApi {
 
     @Override
     @GetMapping("/collected")
-    public ResponseEntity<?> getMySeafoods(Long userId) {
-        return ResponseEntity.ok().build();
+    public ResponseEntity<?> getMySeafoods(@RequestHeader("userId") Long userId) {
+        return ResponseEntity.ok(seafoodCollectionService.mySeafoodCollection(userId));
     }
 
     @Override
     @PostMapping
     public ResponseEntity<Void> createSeafood(@RequestHeader("userId") Long userId,
                                               @RequestBody SeafoodRequest request) {
-        seafoodService.createSeafood(userId, request);
+//        seafoodService.createSeafood(userId, request);
         return ResponseEntity.ok().build();
     }
 }
