@@ -1,5 +1,6 @@
 package com.groom.demo.domain.place.controller;
 
+import com.groom.demo.domain.place.dto.PlaceMapResponse;
 import com.groom.demo.domain.place.dto.PlaceResponse;
 import com.groom.demo.domain.place.service.PlaceService;
 import java.util.List;
@@ -18,25 +19,14 @@ public class PlaceController implements PlaceApi {
 
     @Override
     @GetMapping
-    public ResponseEntity<List<PlaceResponse>> getAllPlaces() {
+    public ResponseEntity<List<PlaceMapResponse>> getAllPlaces() {
         return ResponseEntity.ok(placeService.getAllPlaces());
     }
 
     @Override
     @GetMapping("/place/{placeId}")
-    public ResponseEntity<PlaceResponse> getPlaceInfo(@PathVariable String placeValue) {
-//        Place place = Place.valueOf(placeValue);
-//        PlaceListDto placeListDto = new PlaceListDto(
-//                place.name(),
-//                place.getName(),
-//                place.getAddress(),
-//                place.getPrice(),
-//                place.getDescription(),
-//                place.getImageUrl(),
-//                place.getAvailableDate(),
-//                place.getX(),
-//                place.getY()
-//        );
+    public ResponseEntity<PlaceResponse> getPlaceInfo(@PathVariable Long placeId) {
+        placeService.getPlaceById(placeId);
         return ResponseEntity.ok().build();
     }
 }
