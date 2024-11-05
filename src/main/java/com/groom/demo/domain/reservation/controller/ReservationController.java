@@ -7,6 +7,7 @@ import com.groom.demo.domain.reservation.entity.Reservation.Status;
 import com.groom.demo.domain.reservation.service.ReservationService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,6 +38,6 @@ public class ReservationController implements ReservationApi {
     public ResponseEntity<Void> createReservation(@RequestHeader("userId") Long userId,
                                                @RequestBody ReservationRequest reservationRequest) {
         reservationService.createReservation(userId, reservationRequest);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

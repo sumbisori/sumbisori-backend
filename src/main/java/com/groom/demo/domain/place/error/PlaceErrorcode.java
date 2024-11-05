@@ -14,6 +14,6 @@ public enum PlaceErrorcode implements ErrorCode {
     private final String message;
 
     public static class Const {
-        public static final String PLACE_NOT_FOUND = "NICKNAME_DUPLICATION";
+        public static final String PLACE_NOT_FOUND = "PLACE_NOT_FOUND";
     }
 }
