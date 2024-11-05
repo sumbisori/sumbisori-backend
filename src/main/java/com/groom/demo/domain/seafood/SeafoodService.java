@@ -23,16 +23,4 @@ public class SeafoodService {
     public List<MySeafoodDto> mySeafoodList(Long userId) {
         return seafoodQueryRepository.findAllSeafoodCollectionStatusByUserId(userId);
     }
-
-//    @Transactional
-//    public void createSeafood(Long userId, SeafoodRequest request) {
-//        int count = request.getCount();
-//        for (int i = 0; i < count; i++) {
-//            Book book = Book.builder()
-//                    .userId(userId)
-////                    .seafood(request.getSeafood())
-//                    .build();
-//            bookRepository.save(book);
-//        }
-//    }
 }
