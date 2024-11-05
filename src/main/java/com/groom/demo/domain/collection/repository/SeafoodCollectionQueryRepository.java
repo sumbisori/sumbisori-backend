@@ -28,4 +28,13 @@ public class SeafoodCollectionQueryRepository {
                 .groupBy(seafood.id, seafood.koreanName, seafood.englishName)
                 .fetch();
     }
+
+    public int sumQuantityByUserId(Long userId) {
+        Integer result = queryFactory
+                .select(seafoodCollection.quantity.sum())
+                .from(seafoodCollection)
+                .where(seafoodCollection.userId.eq(userId))
+                .fetchOne();
+        return result != null ? result : 0;
+    }
 }
