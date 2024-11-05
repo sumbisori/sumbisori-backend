@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/reservations")
-public class ReservationController {
+public class ReservationController implements ReservationApi {
     private final ReservationService reservationService;
 
     @GetMapping
@@ -34,7 +34,7 @@ public class ReservationController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createReservation(@RequestHeader("userId") Long userId,
+    public ResponseEntity<Void> createReservation(@RequestHeader("userId") Long userId,
                                                @RequestBody ReservationRequest reservationRequest) {
         reservationService.createReservation(userId, reservationRequest);
         return ResponseEntity.ok().build();

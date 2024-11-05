@@ -21,6 +21,6 @@ public interface ReservationApi {
     public ResponseEntity<ReservationCount> getMyReservationCount(@RequestHeader("userId") Long userId);
 
     @Operation(summary = "예약 생성")
-    public ResponseEntity<?> createReservation(@RequestHeader("userId") Long userId,
+    public ResponseEntity<Void> createReservation(@RequestHeader("userId") Long userId,
                                                @RequestBody ReservationRequest reservationRequest);
 }
