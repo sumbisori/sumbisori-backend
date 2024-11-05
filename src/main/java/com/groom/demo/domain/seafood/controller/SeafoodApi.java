@@ -7,9 +7,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Tag(name = "seafoods", description = "해산물 API")
 public interface SeafoodApi {
@@ -17,12 +14,11 @@ public interface SeafoodApi {
     ResponseEntity<List<SeafoodResponse>> getAllSeafoods();
 
     @Operation(summary = "해산물 수집 현황 조회 (인증)")
-    ResponseEntity<List<MySeafoodDto>> getSeafoodList(@RequestHeader("userId") Long userId);
+    ResponseEntity<List<MySeafoodDto>> getSeafoodList(Long userId);
 
     @Operation(summary = "나의 수집된 해산물 조회 (인증)")
-    ResponseEntity<?> getMySeafoods(@RequestParam Long userId);
+    ResponseEntity<?> getMySeafoods(Long userId);
 
     @Operation(summary = "해산물 등록 (인증)")
-    ResponseEntity<Void> createSeafood(@RequestHeader("userId") Long userId,
-                                       @RequestBody SeafoodRequest request);
+    ResponseEntity<Void> createSeafood(Long userId, SeafoodRequest request);
 }
