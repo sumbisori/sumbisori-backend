@@ -6,6 +6,8 @@ import com.groom.demo.domain.collection.repository.SeafoodCollectionQueryReposit
 import com.groom.demo.domain.collection.repository.SeafoodCollectionRepository;
 import com.groom.demo.domain.seafood.dto.SeafoodRequest;
 import com.groom.demo.domain.seafood.entity.Seafood;
+import com.groom.demo.domain.seafood.error.SeafoodErrorCode;
+import com.groom.demo.domain.seafood.error.exception.SeafoodException;
 import com.groom.demo.domain.seafood.repository.SeafoodRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +30,7 @@ public class SeafoodCollectionService {
     @Transactional
     public void createSeafoodCollection(Long userId, SeafoodRequest seafoodRequest) {
         Seafood seafood = seafoodRepository.findById(seafoodRequest.getSeafoodId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 해산물입니다."));
+                .orElseThrow(() -> new SeafoodException(SeafoodErrorCode.SEAFOOD_NOT_FOUND));
         SeafoodCollection seafoodCollection = SeafoodCollection.builder()
                 .userId(userId)
                 .seafood(seafood)
