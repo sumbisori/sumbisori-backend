@@ -1,4 +1,4 @@
-package com.groom.demo.domain.reservation;
+package com.groom.demo.domain.reservation.entity;
 
 import com.groom.demo.domain.base.entity.BaseTimeEntity;
 import com.groom.demo.domain.place.Place;
@@ -9,8 +9,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

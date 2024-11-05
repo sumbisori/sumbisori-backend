@@ -1,7 +1,9 @@
-package com.groom.demo.domain.reservation;
+package com.groom.demo.domain.reservation.controller;
 
 import com.groom.demo.domain.place.Place;
-import com.groom.demo.domain.place.PlaceListDto;
+import com.groom.demo.domain.place.dto.PlaceListDto;
+import com.groom.demo.domain.reservation.service.ReservationService;
+import com.groom.demo.domain.reservation.entity.Status;
 import com.groom.demo.domain.reservation.dto.ReservationCount;
 import com.groom.demo.domain.reservation.dto.ReservationDto;
 import com.groom.demo.domain.reservation.dto.ReservationRequest;

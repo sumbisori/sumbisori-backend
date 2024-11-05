@@ -1,4 +1,4 @@
-package com.groom.demo.domain.place;
+package com.groom.demo.domain.place.dto;
 
 import java.util.List;
 

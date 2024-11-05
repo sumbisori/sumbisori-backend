@@ -1,6 +1,6 @@
 package com.groom.demo.domain.reservation.dto;
 
-import com.groom.demo.domain.reservation.Status;
+import com.groom.demo.domain.reservation.entity.Status;
 import lombok.Builder;
 
 @Builder

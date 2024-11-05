@@ -1,8 +1,11 @@
-package com.groom.demo.domain.reservation;
+package com.groom.demo.domain.reservation.service;
 
+import com.groom.demo.domain.reservation.entity.Status;
 import com.groom.demo.domain.reservation.dto.ReservationCount;
 import com.groom.demo.domain.reservation.dto.ReservationDto;
 import com.groom.demo.domain.reservation.dto.ReservationRequest;
+import com.groom.demo.domain.reservation.entity.Reservation;
+import com.groom.demo.domain.reservation.repository.ReservationRepository;
 import com.groom.demo.domain.user.entity.User;
 import com.groom.demo.domain.user.repository.UserRepository;
 import java.util.List;

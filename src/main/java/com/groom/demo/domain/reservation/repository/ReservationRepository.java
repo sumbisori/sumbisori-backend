@@ -1,5 +1,7 @@
-package com.groom.demo.domain.reservation;
+package com.groom.demo.domain.reservation.repository;
 
+import com.groom.demo.domain.reservation.entity.Status;
+import com.groom.demo.domain.reservation.entity.Reservation;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
