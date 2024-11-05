@@ -1,4 +1,4 @@
-package com.groom.demo.domain.seafood;
+package com.groom.demo.domain.seafood.service;
 
 import com.groom.demo.domain.seafood.dto.MySeafoodDto;
 import com.groom.demo.domain.seafood.dto.SeafoodResponse;
