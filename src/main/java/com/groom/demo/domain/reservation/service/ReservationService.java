@@ -1,6 +1,8 @@
 package com.groom.demo.domain.reservation.service;
 
 import com.groom.demo.domain.place.entity.Place;
+import com.groom.demo.domain.place.error.PlaceErrorcode;
+import com.groom.demo.domain.place.error.exception.PlaceException;
 import com.groom.demo.domain.place.repository.PlaceRepository;
 import com.groom.demo.domain.reservation.dto.ReservationCount;
 import com.groom.demo.domain.reservation.dto.ReservationDto;
@@ -28,7 +30,7 @@ public class ReservationService {
     @Transactional
     public void createReservation(Long userId, ReservationRequest reservationRequest) {
         Place place = placeRepository.findById(reservationRequest.placeId())
-                .orElseThrow(() -> new IllegalArgumentException("장소를 찾을 수 없습니다."));
+                .orElseThrow(() -> new PlaceException(PlaceErrorcode.PLACE_NOT_FOUND));
         Reservation reservation = reservationRequest.of(userId, place);
         reservationRepository.save(reservation);
     }
