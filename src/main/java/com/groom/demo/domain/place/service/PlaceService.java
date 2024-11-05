@@ -1,6 +1,7 @@
 package com.groom.demo.domain.place.service;
 
 import com.groom.demo.domain.place.dto.PlaceResponse;
+import com.groom.demo.domain.place.dto.PlaceMapResponse;
 import com.groom.demo.domain.place.entity.Place;
 import com.groom.demo.domain.place.repository.PlaceRepository;
 import java.time.LocalDate;
@@ -20,13 +21,19 @@ public class PlaceService {
     public static final String DAY_FORMAT = "yyyy년 MM월 dd일";
     private final PlaceRepository placeRepository;
 
-    public List<PlaceResponse> getAllPlaces() {
+    public List<PlaceMapResponse> getAllPlaces() {
         List<Place> places = placeRepository.findAll();
-        List<String> availableDates = getAvailableDays();
 
         return places.stream()
-                .map(place -> PlaceResponse.of(place, availableDates))
+                .map(place -> PlaceMapResponse.from(place))
                 .toList();
+    }
+
+    public PlaceResponse getPlaceById(Long placeId) {
+        Place place = placeRepository.findById(placeId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 장소를 찾을 수 없습니다."));
+        List<String> availableDates = getAvailableDays();
+        return PlaceResponse.of(place, availableDates);
     }
 
     private static List<String> getAvailableDays() {
