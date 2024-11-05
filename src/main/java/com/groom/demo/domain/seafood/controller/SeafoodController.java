@@ -1,5 +1,6 @@
 package com.groom.demo.domain.seafood.controller;
 
+import com.groom.demo.domain.collection.dto.response.MyCollectionSeafood;
 import com.groom.demo.domain.collection.service.SeafoodCollectionService;
 import com.groom.demo.domain.seafood.SeafoodService;
 import com.groom.demo.domain.seafood.dto.MySeafoodDto;
@@ -36,7 +37,7 @@ public class SeafoodController implements SeafoodApi {
 
     @Override
     @GetMapping("/collected")
-    public ResponseEntity<?> getMySeafoods(@RequestHeader("userId") Long userId) {
+    public ResponseEntity<List<MyCollectionSeafood>> getMySeafoods(@RequestHeader("userId") Long userId) {
         return ResponseEntity.ok(seafoodCollectionService.mySeafoodCollection(userId));
     }
 
