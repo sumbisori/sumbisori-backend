@@ -3,10 +3,12 @@ package com.groom.demo.domain.place.controller;
 import com.groom.demo.domain.place.dto.PlaceMapResponse;
 import com.groom.demo.domain.place.dto.PlaceResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 
+@Tag(name = "places", description = "해녀체험 장소 API")
 public interface PlaceApi {
     @Operation(summary = "해녀체험 장소 목록 조회")
     public ResponseEntity<List<PlaceMapResponse>> getAllPlaces();
