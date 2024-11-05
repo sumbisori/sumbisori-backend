@@ -21,7 +21,7 @@ public class SeafoodCollectionQueryRepository {
                         seafood.id,
                         seafood.koreanName,
                         seafood.englishName,
-                        seafoodCollection.count().intValue()
+                        seafoodCollection.quantity.sum().intValue()
                 ))
                 .from(seafoodCollection)
                 .join(seafoodCollection.seafood, seafood).on(seafoodCollection.userId.eq(userId))
