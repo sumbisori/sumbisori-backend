@@ -29,6 +29,7 @@ public class OAuth2Config {
         return restTemplate;
     }
 
+    // Spring Security OAuth2 클라이언트가 액세스 토큰을 요청할 때 프록시 설정 등 커스텀 RestTemplate 설정을 적용
     @Bean
     public OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> oAuth2AccessTokenResponseClient(
             RestTemplate oAuthRestTemplate) {
