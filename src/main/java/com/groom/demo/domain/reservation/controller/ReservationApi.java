@@ -22,7 +22,7 @@ public interface ReservationApi {
     @Operation(summary = "예약 목록 갯수 조회 - 인증")
     public ResponseEntity<ReservationCount> getMyReservationCount(@LoginUser Long userId);
 
-    @Operation(summary = "예약 생성")
+    @Operation(summary = "예약 생성 - 인증")
     public ResponseEntity<Void> createReservation(@LoginUser Long userId,
                                                   @RequestBody ReservationRequest reservationRequest);
 }
