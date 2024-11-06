@@ -1,0 +1,72 @@
+server:
+  forward-headers-strategy: native
+  servlet:
+    context-path: /api
+    encoding:
+      charset: utf-8
+      force: true
+  port: 8080
+spring:
+  datasource:
+    url: ${DATABASE_URL}?allowPublicKeyRetrieval=true&useSSL=false
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+      default_batch_fetch_size: 100
+    open-in-view: false
+  jwt:
+    secret: ${JWT_SECRET}
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-id: ${KAKAO_CLIENT_ID}
+            client-secret: ${KAKAO_CLIENT_SECRET}
+            client-authentication-method: client_secret_post
+            redirect-uri: https://k1ec344612739a.user-app.krampoline.com/api/login/oauth2/code/kakao
+            authorization-grant-type: authorization_code
+            client-name: kakao
+            scope: account_email,profile_nickname,profile_image
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+
+logging:
+  level:
+    com:
+      groom:
+        demo:
+          common:
+            filter:
+              LoggingRequestInterceptor: DEBUG
+    org:
+      springframework:
+        web:
+          client:
+            RestTemplate: debug
+      hibernate:
+        SQL: debug
+        orm:
+          jdbc:
+            bind: trace
+
+springdoc:
+  default-consumes-media-type: application/json;charset=UTF-8
+  default-produces-media-type: application/json;charset=UTF-8
+  swagger-ui:
+    path: /docs
+    tags-sorter: alpha
+    operations-sorter: method
+client:
+  url: "https://www.sumbisori.site"
