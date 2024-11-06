@@ -21,7 +21,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 @RequiredArgsConstructor
 @Configuration
 public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
-    private static final String REDIRECT_URL_SUCCESS = "/";
+    private static final String REDIRECT_URL_SUCCESS = "/home";
 
     @Value("${client.url}")
     private String clientUrl;

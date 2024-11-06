@@ -38,6 +38,6 @@ public class CustomFailureHandler extends SimpleUrlAuthenticationFailureHandler 
         }
         // 다른 정보들 추가
         log.debug("Full error details", exception);
-        response.sendRedirect("/login?error"); // 원하는 리다이렉션 경로 설정
+        response.sendRedirect(clientUrl + REDIRECT_URL_FAILURE);
     }
 }
