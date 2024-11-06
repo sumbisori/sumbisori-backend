@@ -53,7 +53,9 @@ public class SecurityConfig {
                         .requestMatchers(GET,
                                 "/places",
                                 "/places/*",
-                                "/seafoods/types").permitAll()
+                                "/seafoods/types",
+                                "/seafoods",
+                                "/seafoods/collected").permitAll()
                         .requestMatchers(POST,
                                 "/users/logout").permitAll()
                         .anyRequest().authenticated()
