@@ -42,8 +42,6 @@ public class User extends BaseTimeEntity {
     private String nickname;
     @Column
     private String profileImageUrl;
-    @Column
-    private String password;
 
     @Getter
     @AllArgsConstructor
