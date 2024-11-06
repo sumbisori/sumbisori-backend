@@ -1,5 +1,6 @@
 package com.groom.demo.domain.seafood.controller;
 
+import com.groom.demo.common.config.LoginUser;
 import com.groom.demo.domain.collection.dto.response.MyCollectionSeafood;
 import com.groom.demo.domain.collection.service.SeafoodCollectionService;
 import com.groom.demo.domain.seafood.service.SeafoodService;
@@ -25,7 +26,7 @@ public class SeafoodController implements SeafoodApi {
 
     @Override
     @GetMapping
-    public ResponseEntity<List<MySeafoodDto>> getSeafoodList(@RequestHeader("userId") Long userId) {
+    public ResponseEntity<List<MySeafoodDto>> getSeafoodList(@LoginUser Long userId) {
         return ResponseEntity.ok(seafoodService.mySeafoodList(userId));
     }
 
@@ -37,13 +38,13 @@ public class SeafoodController implements SeafoodApi {
 
     @Override
     @GetMapping("/collected")
-    public ResponseEntity<List<MyCollectionSeafood>> getMySeafoods(@RequestHeader("userId") Long userId) {
+    public ResponseEntity<List<MyCollectionSeafood>> getMySeafoods(@LoginUser Long userId) {
         return ResponseEntity.ok(seafoodCollectionService.mySeafoodCollection(userId));
     }
 
     @Override
     @PostMapping
-    public ResponseEntity<Void> createSeafood(@RequestHeader("userId") Long userId,
+    public ResponseEntity<Void> createSeafood(@LoginUser Long userId,
                                               @RequestBody SeafoodRequest request) {
         seafoodCollectionService.createSeafoodCollection(userId, request);
         return ResponseEntity.ok().build();

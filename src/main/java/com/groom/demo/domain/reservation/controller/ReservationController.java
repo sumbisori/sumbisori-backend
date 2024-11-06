@@ -1,5 +1,6 @@
 package com.groom.demo.domain.reservation.controller;
 
+import com.groom.demo.common.config.LoginUser;
 import com.groom.demo.domain.reservation.dto.ReservationCount;
 import com.groom.demo.domain.reservation.dto.ReservationDto;
 import com.groom.demo.domain.reservation.dto.ReservationRequest;
@@ -12,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,19 +24,19 @@ public class ReservationController implements ReservationApi {
     private final ReservationService reservationService;
 
     @GetMapping
-    public ResponseEntity<List<ReservationDto>> getMyReservations(@RequestHeader("userId") Long userId,
+    public ResponseEntity<List<ReservationDto>> getMyReservations(@LoginUser Long userId,
                                                                   @RequestParam Status status) {
         return ResponseEntity.ok(reservationService.getMyReservations(userId, status));
     }
 
     @GetMapping("/count")
-    public ResponseEntity<ReservationCount> getMyReservationCount(@RequestHeader("userId") Long userId) {
+    public ResponseEntity<ReservationCount> getMyReservationCount(@LoginUser Long userId) {
         return ResponseEntity.ok(reservationService.getMyReservationCount(userId));
     }
 
     @PostMapping
-    public ResponseEntity<Void> createReservation(@RequestHeader("userId") Long userId,
-                                               @RequestBody ReservationRequest reservationRequest) {
+    public ResponseEntity<Void> createReservation(@LoginUser Long userId,
+                                                  @RequestBody ReservationRequest reservationRequest) {
         reservationService.createReservation(userId, reservationRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
