@@ -4,6 +4,9 @@ import com.groom.demo.common.filter.LoggingRequestInterceptor;
 import com.groom.demo.common.oauth2.CustomAuthorizationCodeTokenResponseClient;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
+import java.util.Arrays;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
@@ -13,13 +16,21 @@ import org.springframework.web.client.RestTemplate;
 
 @Configuration
 public class OAuth2Config {
+    @Value("${spring.profiles.active:}")
+    private String activeProfiles;
 
     @Bean
     public RestTemplate oAuthRestTemplate() {
         SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
 
-        Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("krmp-proxy.9rum.cc", 3128));
-        requestFactory.setProxy(proxy);
+        // 활성화된 프로필을 리스트로 변환
+        List<String> profiles = Arrays.asList(activeProfiles.split(","));
+
+        if (profiles.contains("prod")) {
+            // prod 프로필일 경우 프록시 설정
+            Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("krmp-proxy.9rum.cc", 3128));
+            requestFactory.setProxy(proxy);
+        }
 
         RestTemplate restTemplate = new RestTemplate(requestFactory);
 
