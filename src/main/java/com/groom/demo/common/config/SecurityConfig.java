@@ -49,7 +49,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/test").permitAll()
+                        .requestMatchers("/test", "/docs", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .requestMatchers(GET,
                                 "/places",
                                 "/places/*",
