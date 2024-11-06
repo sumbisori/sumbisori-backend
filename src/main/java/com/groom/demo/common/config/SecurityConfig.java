@@ -1,5 +1,12 @@
 package com.groom.demo.common.config;
 
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.groom.demo.common.error.handler.CustomAccessDeniedHandler;
+import com.groom.demo.common.error.handler.CustomAuthenticationEntryPoint;
+import com.groom.demo.common.error.handler.ExceptionHandlingFilter;
 import com.groom.demo.common.filter.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.groom.demo.common.filter.JWTFilter;
 import com.groom.demo.common.util.JWTUtil;
@@ -29,17 +36,27 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     private final CustomOAuth2UserService customOAuth2UserService;
     private final CustomSuccessHandler customSuccessHandler;
     private final CustomFailureHandler customFailureHandler;
     private final JWTUtil jwtUtil;
     private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
     private final OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> oAuth2AccessTokenResponseClient;
+    private final ObjectMapper objectMapper;
 
     @Bean
     public SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(authorize -> authorize
-                        .anyRequest().permitAll()
+                        .requestMatchers("/test").permitAll()
+                        .requestMatchers(GET,
+                                "/places",
+                                "/places/*",
+                                "/seafoods/types").permitAll()
+                        .requestMatchers(POST,
+                                "/users/logout").permitAll()
+                        .anyRequest().authenticated()
                 )
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .headers(header -> header.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable).disable())
@@ -47,8 +64,8 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .sessionManagement(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
-//                .exceptionHandling((auth) -> auth.authenticationEntryPoint(customAuthenticationEntryPoint)
-//                        .accessDeniedHandler(customAccessDeniedHandler))
+                .exceptionHandling((auth) -> auth.authenticationEntryPoint(customAuthenticationEntryPoint)
+                        .accessDeniedHandler(customAccessDeniedHandler))
                 .oauth2Login(oauth2 -> oauth2
                         .tokenEndpoint(tokenEndpointConfig -> tokenEndpointConfig
                                 .accessTokenResponseClient(oAuth2AccessTokenResponseClient)
@@ -63,6 +80,7 @@ public class SecurityConfig {
                         .failureHandler(customFailureHandler)
                 )
                 .addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new ExceptionHandlingFilter(objectMapper), JWTFilter.class)
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .build();
