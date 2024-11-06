@@ -1,10 +1,12 @@
 package com.groom.demo.domain.collection.repository;
 
+import static com.groom.demo.common.util.QuerydslUtil.nullSafeBuilder;
 import static com.groom.demo.domain.collection.entity.QSeafoodCollection.seafoodCollection;
 import static com.groom.demo.domain.seafood.entity.QSeafood.seafood;
 
 import com.groom.demo.domain.collection.dto.response.MyCollectionSeafood;
 import com.groom.demo.domain.collection.dto.response.QMyCollectionSeafood;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +26,7 @@ public class SeafoodCollectionQueryRepository {
                         seafoodCollection.quantity.sum().intValue()
                 ))
                 .from(seafoodCollection)
-                .join(seafoodCollection.seafood, seafood).on(seafoodCollection.userId.eq(userId))
+                .join(seafoodCollection.seafood, seafood).on(seafoodCollectionUserIdEq(userId))
                 .groupBy(seafood.id, seafood.koreanName, seafood.englishName)
                 .fetch();
     }
@@ -36,5 +38,9 @@ public class SeafoodCollectionQueryRepository {
                 .where(seafoodCollection.userId.eq(userId))
                 .fetchOne();
         return result != null ? result : 0;
+    }
+
+    private BooleanBuilder seafoodCollectionUserIdEq(Long userId) {
+        return nullSafeBuilder(() -> seafoodCollection.userId.eq(userId));
     }
 }

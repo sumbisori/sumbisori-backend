@@ -1,10 +1,13 @@
 package com.groom.demo.domain.seafood.repository;
 
+import static com.groom.demo.common.util.QuerydslUtil.nullSafeBuilder;
 import static com.groom.demo.domain.collection.entity.QSeafoodCollection.seafoodCollection;
 import static com.groom.demo.domain.seafood.entity.QSeafood.seafood;
+import static com.groom.demo.domain.user.entity.QUser.user;
 
 import com.groom.demo.domain.seafood.dto.MySeafoodDto;
 import com.groom.demo.domain.seafood.dto.QMySeafoodDto;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.dsl.DateTemplate;
 import com.querydsl.core.types.dsl.Expressions;
@@ -37,9 +40,13 @@ public class SeafoodQueryRepository {
                 ))
                 .from(seafood)
                 .leftJoin(seafoodCollection)
-                .on(seafoodCollection.seafood.eq(seafood).and(seafoodCollection.userId.eq(userId)))
+                .on(seafoodCollection.seafood.eq(seafood).and(seafoodCollectionUserIdEq(userId)))
                 .groupBy(seafood.id, seafood.koreanName, seafood.englishName, seafood.description)
                 .fetch();
+    }
+
+    private BooleanBuilder seafoodCollectionUserIdEq(Long userId) {
+        return nullSafeBuilder(() -> seafoodCollection.userId.eq(userId));
     }
 
 }
