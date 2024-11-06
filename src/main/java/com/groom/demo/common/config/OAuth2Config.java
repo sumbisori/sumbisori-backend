@@ -1,12 +1,12 @@
 package com.groom.demo.common.config;
 
 import com.groom.demo.common.filter.LoggingRequestInterceptor;
+import com.groom.demo.common.oauth2.CustomAuthorizationCodeTokenResponseClient;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
-import org.springframework.security.oauth2.client.endpoint.DefaultAuthorizationCodeTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
 import org.springframework.web.client.RestTemplate;
@@ -33,8 +33,6 @@ public class OAuth2Config {
     @Bean
     public OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> oAuth2AccessTokenResponseClient(
             RestTemplate oAuthRestTemplate) {
-        DefaultAuthorizationCodeTokenResponseClient client = new DefaultAuthorizationCodeTokenResponseClient();
-        client.setRestOperations(oAuthRestTemplate);
-        return client;
+        return new CustomAuthorizationCodeTokenResponseClient(oAuthRestTemplate);
     }
 }
