@@ -5,6 +5,7 @@ import com.groom.demo.domain.user.dto.KaKaoResponse;
 import com.groom.demo.domain.user.dto.OAuth2Response;
 import com.groom.demo.domain.user.entity.User;
 import com.groom.demo.domain.user.repository.UserRepository;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -13,14 +14,20 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
-
     private final UserRepository userRepository;
+    private final RestTemplate proxyRestTemplate;  // RestTemplate 자동 주입
+
+    @PostConstruct
+    public void init() {
+        this.setRestOperations(proxyRestTemplate);
+    }
 
     @Transactional
     @Override
