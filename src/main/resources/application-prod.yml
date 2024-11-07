@@ -46,7 +46,7 @@ logging:
   level:
     com:
       groom:
-        demo:
+        sumbisori:
           common:
             filter:
               LoggingRequestInterceptor: DEBUG
