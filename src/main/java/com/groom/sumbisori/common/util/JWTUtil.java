@@ -1,8 +1,15 @@
 package com.groom.sumbisori.common.util;
 
 import com.groom.sumbisori.domain.token.entity.TokenType;
+import com.groom.sumbisori.domain.token.error.TokenErrorCode;
+import com.groom.sumbisori.domain.token.error.exception.TokenException;
 import com.groom.sumbisori.domain.user.entity.User;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.security.SignatureException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -38,25 +45,25 @@ public class JWTUtil {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload()
                 .get(TYPE, String.class);
     }
-//
-//    public void validateToken(String token, TokenType tokenType) {
-//        try {
-//            Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token);
-//        } catch (ExpiredJwtException e) {
-//            throw new TokenException(TokenErrorCode.EXPIRED_TOKEN);
-//        } catch (UnsupportedJwtException e) {
-//            throw new TokenException(TokenErrorCode.UNSUPPORTED_TOKEN);
-//        } catch (MalformedJwtException e) {
-//            throw new TokenException(TokenErrorCode.MALFORMED_TOKEN);
-//        } catch (SignatureException e) {
-//            throw new TokenException(TokenErrorCode.SIGNATURE_EXCEPTION);
-//        } catch (JwtException e) {
-//            throw new TokenException(TokenErrorCode.INVALID_TOKEN);
-//        } catch (Exception e) {
-//            throw new TokenException(TokenErrorCode.MALFORMED_TOKEN);
-//        }
-//        validateTokenType(token, tokenType);
-//    }
+
+    public void validateToken(String token, TokenType tokenType) {
+        try {
+            Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token);
+        } catch (ExpiredJwtException e) {
+            throw new TokenException(TokenErrorCode.EXPIRED_TOKEN);
+        } catch (UnsupportedJwtException e) {
+            throw new TokenException(TokenErrorCode.UNSUPPORTED_TOKEN);
+        } catch (MalformedJwtException e) {
+            throw new TokenException(TokenErrorCode.MALFORMED_TOKEN);
+        } catch (SignatureException e) {
+            throw new TokenException(TokenErrorCode.SIGNATURE_EXCEPTION);
+        } catch (JwtException e) {
+            throw new TokenException(TokenErrorCode.INVALID_TOKEN);
+        } catch (Exception e) {
+            throw new TokenException(TokenErrorCode.MALFORMED_TOKEN);
+        }
+        validateTokenType(token, tokenType);
+    }
 
     public String createToken(User user, TokenType tokenType) {
         LocalDateTime now = LocalDateTime.now();
@@ -71,11 +78,11 @@ public class JWTUtil {
                 .compact();
     }
 
-//    private void validateTokenType(String token, TokenType tokenType) {
-//        String type = getType(token);
-//        if (!type.equals(tokenType.name())) {
-//            throw new TokenException(TokenErrorCode.INVALID_TOKEN_TYPE);
-//        }
-//    }
+    private void validateTokenType(String token, TokenType tokenType) {
+        String type = getType(token);
+        if (!type.equals(tokenType.name())) {
+            throw new TokenException(TokenErrorCode.INVALID_TOKEN_TYPE);
+        }
+    }
 
 }

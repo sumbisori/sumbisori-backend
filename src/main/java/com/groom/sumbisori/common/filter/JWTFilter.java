@@ -29,8 +29,9 @@ public class JWTFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         Cookie accessCookie = CookieUtil.getCookieByName(request, TokenType.ACCESS.name());
         if (accessCookie != null) {
-            String tempToken = accessCookie.getValue();
-            setAuthentication(tempToken);
+            String accessToken = accessCookie.getValue();
+            jwtUtil.validateToken(accessToken, TokenType.ACCESS);
+            setAuthentication(accessToken);
             filterChain.doFilter(request, response);
         } else {
             filterChain.doFilter(request, response);
