@@ -22,6 +22,8 @@ spring:
         format_sql: true
       default_batch_fetch_size: 100
     open-in-view: false
+  flyway:
+    enabled: false
   output:
     ansi:
       enabled: always
