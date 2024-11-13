@@ -9,7 +9,6 @@ public class KaKaoResponse implements OAuth2Response {
     private final Map<String, Object> attribute;
 
     public KaKaoResponse(Map<String, Object> attribute) {
-        log.info("attribute = {}", attribute);
         this.attribute = attribute;
     }
 
