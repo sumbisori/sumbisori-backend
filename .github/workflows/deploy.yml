@@ -14,11 +14,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.ACTION_KEY }}
+          token: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
 
       - name: Set VERSION from PR title
         run: |
-          VERSION=$(echo "${{ github.event.pull_request.title }}" | sed -n 's/release: version \(.*\)/\1/p')
+          VERSION=$(echo "${{ github.event.pull_request.title }}" | sed -n 's/release: \(.*\)/\1/p')
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
 
       - name: Set up JDK 17
@@ -35,7 +35,8 @@ jobs:
 
       - name: Build and push backend Docker image
         run: |
-          echo "${{ secrets.ACTION_KEY }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          echo "${{ env.VERSION }}"
+          echo "${{ secrets.PERSONAL_GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
           docker build -t ghcr.io/${{ github.repository }}:${{ env.VERSION }} .
           docker push ghcr.io/${{ github.repository }}:${{ env.VERSION }}
           echo "IMAGE_NAME=ghcr.io/${{ github.repository }}:${{ env.VERSION }}" >> $GITHUB_ENV
@@ -47,7 +48,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
           script: |
-            echo "${{ secrets.ACTION_KEY }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            echo "${{ secrets.PERSONAL_GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             docker pull ${{ env.IMAGE_NAME }}
             docker stop $(docker ps -a -q)
             docker run -d --log-driver=syslog -p 8080:8080 \
