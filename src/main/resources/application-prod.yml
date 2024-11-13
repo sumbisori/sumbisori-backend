@@ -8,10 +8,10 @@ server:
   port: 8080
 spring:
   datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${DATABASE_URL}?allowPublicKeyRetrieval=true&useSSL=false
-    driver-class-name: org.mariadb.jdbc.Driver
-    username: root
-    password: root
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: validate
