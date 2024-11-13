@@ -28,14 +28,14 @@ DROP TABLE IF EXISTS users;
 CREATE TABLE users
 (
     user_id           BIGINT AUTO_INCREMENT NOT NULL,
-    created_at        datetime              NULL,
-    updated_at        datetime              NULL,
+    nickname          VARCHAR(255)          NULL,
     email             VARCHAR(255)          NULL,
+    profile_image_url VARCHAR(255)          NULL,
     provider_type     VARCHAR(20)           NULL,
     provider_id       VARCHAR(255)          NULL,
     user_role         VARCHAR(20)           NULL,
-    nickname          VARCHAR(255)          NULL,
-    profile_image_url VARCHAR(255)          NULL,
+    created_at        datetime              NULL,
+    updated_at        datetime              NULL,
     CONSTRAINT pk_users PRIMARY KEY (user_id)
 );
 
@@ -43,8 +43,6 @@ DROP TABLE IF EXISTS reservation;
 CREATE TABLE reservation
 (
     reservation_id   BIGINT AUTO_INCREMENT NOT NULL,
-    created_at       datetime              NULL,
-    updated_at       datetime              NULL,
     user_id          BIGINT                NOT NULL,
     place_id         BIGINT                NOT NULL,
     name             VARCHAR(255)          NOT NULL,
@@ -52,6 +50,8 @@ CREATE TABLE reservation
     reservation_date VARCHAR(255)          NOT NULL,
     reservation_time VARCHAR(255)          NOT NULL,
     status           VARCHAR(20)           NULL,
+    created_at       datetime              NULL,
+    updated_at       datetime              NULL,
     CONSTRAINT pk_reservation PRIMARY KEY (reservation_id)
 );
 
@@ -59,11 +59,11 @@ DROP TABLE IF EXISTS seafood_collection;
 CREATE TABLE seafood_collection
 (
     seafood_collection_id BIGINT AUTO_INCREMENT NOT NULL,
-    created_at            datetime              NULL,
-    updated_at            datetime              NULL,
     user_id               BIGINT                NULL,
     seafood_id            BIGINT                NOT NULL,
     quantity              INT                   NULL,
+    created_at            datetime              NULL,
+    updated_at            datetime              NULL,
     CONSTRAINT pk_seafoodcollection PRIMARY KEY (seafood_collection_id)
 );
 
