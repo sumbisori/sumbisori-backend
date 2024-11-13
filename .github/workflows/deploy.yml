@@ -35,6 +35,7 @@ jobs:
 
       - name: Build and push backend Docker image
         run: |
+          echo "${{ env.VERSION }}"
           echo "${{ secrets.PERSONAL_GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
           docker build -t ghcr.io/${{ github.repository }}:${{ env.VERSION }} .
           docker push ghcr.io/${{ github.repository }}:${{ env.VERSION }}
