@@ -18,7 +18,7 @@ jobs:
 
       - name: Set VERSION from PR title
         run: |
-          VERSION=$(echo "${{ github.event.pull_request.title }}" | sed -n 's/release: version \(.*\)/\1/p')
+          VERSION=$(echo "${{ github.event.pull_request.title }}" | sed -n 's/release: \(.*\)/\1/p')
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
 
       - name: Set up JDK 17
