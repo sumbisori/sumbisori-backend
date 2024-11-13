@@ -62,7 +62,6 @@ logging:
         orm:
           jdbc:
             bind: trace
-
 springdoc:
   default-consumes-media-type: application/json;charset=UTF-8
   default-produces-media-type: application/json;charset=UTF-8
