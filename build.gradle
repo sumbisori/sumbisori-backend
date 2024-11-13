@@ -57,7 +57,7 @@ tasks.named('test') {
 }
 
 bootJar {
-    archiveFileName = 'kakao-1.0.jar'
+    archiveFileName = 'sumbisori-1.0.jar'
 }
 
 clean {
