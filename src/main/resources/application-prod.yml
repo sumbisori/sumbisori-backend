@@ -61,4 +61,7 @@ springdoc:
     tags-sorter: alpha
     operations-sorter: method
 client:
+  cookie:
+    domain: ".sumbisori.site"
   url: "https://www.sumbisori.site"
+

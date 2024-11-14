@@ -5,16 +5,21 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.Base64;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
 import org.springframework.util.SerializationUtils;
 
 public class CookieUtil {
+    @Value("${client.cookie.domain}")
+    private static String cookieDomain;
+
     public static void createTokenCookie(HttpServletResponse response, String token, TokenType tokenType) {
         ResponseCookie cookie = ResponseCookie.from(tokenType.name(), token)
                 .path("/")
                 .sameSite("None")
                 .httpOnly(true)
                 .secure(true)
+                .domain(cookieDomain)
                 .maxAge(tokenType.getExpirationTime())
                 .build();
         response.addHeader("Set-Cookie", cookie.toString());
