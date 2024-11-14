@@ -9,6 +9,7 @@ import com.groom.sumbisori.common.error.handler.CustomAuthenticationEntryPoint;
 import com.groom.sumbisori.common.error.handler.ExceptionHandlingFilter;
 import com.groom.sumbisori.common.filter.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.groom.sumbisori.common.filter.JWTFilter;
+import com.groom.sumbisori.common.util.CookieUtil;
 import com.groom.sumbisori.common.util.JWTUtil;
 import com.groom.sumbisori.domain.user.oauth2.CustomFailureHandler;
 import com.groom.sumbisori.domain.user.oauth2.CustomSuccessHandler;
@@ -42,6 +43,7 @@ public class SecurityConfig {
     private final JWTUtil jwtUtil;
     private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
     private final ObjectMapper objectMapper;
+    private final CookieUtil cookieUtil;
 
     @Bean
     public SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
@@ -75,7 +77,7 @@ public class SecurityConfig {
                         .successHandler(customSuccessHandler)
                         .failureHandler(customFailureHandler)
                 )
-                .addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JWTFilter(jwtUtil, cookieUtil), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new ExceptionHandlingFilter(objectMapper), JWTFilter.class)
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))

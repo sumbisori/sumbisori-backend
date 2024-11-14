@@ -1,8 +1,7 @@
 package com.groom.sumbisori.domain.user.oauth2;
 
-import static com.groom.sumbisori.common.util.CookieUtil.createTokenCookie;
-
 import com.groom.sumbisori.common.filter.HttpCookieOAuth2AuthorizationRequestRepository;
+import com.groom.sumbisori.common.util.CookieUtil;
 import com.groom.sumbisori.domain.token.entity.TokenType;
 import com.groom.sumbisori.domain.token.service.TokenService;
 import com.groom.sumbisori.domain.user.dto.CustomUserDetails;
@@ -26,6 +25,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     @Value("${client.url}")
     private String clientUrl;
 
+    private final CookieUtil cookieUtil;
     private final TokenService tokenService;
     private final HttpCookieOAuth2AuthorizationRequestRepository authorizationRequestRepository;
 
@@ -35,7 +35,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         authorizationRequestRepository.removeAuthorizationRequestCookies(response);
         User user = ((CustomUserDetails) authentication.getPrincipal()).getUser();
         String refresh = tokenService.createAccessToken(user);
-        createTokenCookie(response, refresh, TokenType.ACCESS);
+        cookieUtil.createTokenCookie(response, refresh, TokenType.ACCESS);
         response.sendRedirect(clientUrl + REDIRECT_URL_SUCCESS);
         log.info("소셜로그인 성공 user ID: {}", user.getId());
     }

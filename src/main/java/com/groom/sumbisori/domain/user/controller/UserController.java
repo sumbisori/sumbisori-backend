@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/users")
 public class UserController implements UserApi {
     private final UserService userService;
+    private final CookieUtil cookieUtil;
 
     @Override
     @GetMapping
@@ -28,18 +29,7 @@ public class UserController implements UserApi {
     @Override
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(HttpServletResponse response) {
-        CookieUtil.expireCookie(response, TokenType.ACCESS.name());
+        cookieUtil.expireCookie(response, TokenType.ACCESS.name());
         return ResponseEntity.ok().build();
     }
-
-    //    @PostMapping
-//    public ResponseEntity<Void> signup(@RequestBody SignRequest signRequest) {
-//        userService.signup(signRequest);
-//        return ResponseEntity.status(HttpStatus.CREATED).build();
-//    }
-//
-//    @PostMapping("/login")
-//    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
-//        return ResponseEntity.status(HttpStatus.CREATED).body(userService.login(loginRequest));
-//    }
 }
