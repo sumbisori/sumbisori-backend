@@ -23,11 +23,12 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Slf4j
 public class JWTFilter extends OncePerRequestFilter {
     private final JWTUtil jwtUtil;
+    private final CookieUtil cookieUtil;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        Cookie accessCookie = CookieUtil.getCookieByName(request, TokenType.ACCESS.name());
+        Cookie accessCookie = cookieUtil.getCookieByName(request, TokenType.ACCESS.name());
         if (accessCookie != null) {
             String accessToken = accessCookie.getValue();
             jwtUtil.validateToken(accessToken, TokenType.ACCESS);
