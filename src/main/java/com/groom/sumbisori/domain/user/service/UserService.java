@@ -13,13 +13,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class UserService {
     private final UserDeleteService userDeleteService;
     private final KakaoClient kakaoClient;
     private final UserRepository userRepository;
     private final SeafoodCollectionQueryRepository seafoodCollectionQueryRepository;
 
+    @Transactional(readOnly = true)
     public UserProfile getMyInfo(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
