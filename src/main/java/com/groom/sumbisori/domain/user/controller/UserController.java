@@ -46,8 +46,9 @@ public class UserController implements UserApi {
 
     @Override
     @DeleteMapping
-    public ResponseEntity<Void> deleteUser(@LoginUser Long userId) {
+    public ResponseEntity<Void> deleteUser(@LoginUser Long userId, HttpServletResponse response) {
         userService.deleteUser(userId);
+        cookieUtil.expireCookie(response, TokenType.ACCESS.name());
         return ResponseEntity.noContent().build();
     }
 }

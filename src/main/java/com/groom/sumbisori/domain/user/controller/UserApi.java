@@ -30,5 +30,5 @@ public interface UserApi {
                     @ApiExceptionExplanation(value = UserErrorCode.class, constant = KAKAO_UNLINK_FAILED, name = "카카오 연결 끊기에 실패했을 때")
             }
     )
-    ResponseEntity<Void> deleteUser(@LoginUser Long userId);
+    ResponseEntity<Void> deleteUser(@LoginUser Long userId, HttpServletResponse response);
 }
