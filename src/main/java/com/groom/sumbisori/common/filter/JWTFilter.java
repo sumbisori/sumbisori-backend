@@ -3,7 +3,7 @@ package com.groom.sumbisori.common.filter;
 import com.groom.sumbisori.common.util.CookieUtil;
 import com.groom.sumbisori.common.util.JWTUtil;
 import com.groom.sumbisori.domain.token.entity.TokenType;
-import com.groom.sumbisori.domain.user.dto.CustomUserDetails;
+import com.groom.sumbisori.domain.user.dto.common.CustomUserDetails;
 import com.groom.sumbisori.domain.user.entity.User;
 import com.groom.sumbisori.domain.user.entity.User.UserRole;
 import jakarta.servlet.FilterChain;

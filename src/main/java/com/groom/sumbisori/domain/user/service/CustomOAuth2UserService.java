@@ -1,8 +1,8 @@
 package com.groom.sumbisori.domain.user.service;
 
-import com.groom.sumbisori.domain.user.dto.CustomUserDetails;
-import com.groom.sumbisori.domain.user.dto.KaKaoResponse;
-import com.groom.sumbisori.domain.user.dto.OAuth2Response;
+import com.groom.sumbisori.domain.user.dto.common.CustomUserDetails;
+import com.groom.sumbisori.domain.user.dto.common.KaKaoResponse;
+import com.groom.sumbisori.domain.user.dto.common.OAuth2Response;
 import com.groom.sumbisori.domain.user.entity.User;
 import com.groom.sumbisori.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,11 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private final UserRepository userRepository;
 
-    @Transactional
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = super.loadUser(userRequest);
@@ -31,13 +29,21 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         }
         OAuth2Response oAuth2Response = new KaKaoResponse(oAuth2User.getAttributes());
 
-        User user = findOrCreateMember(oAuth2Response, registrationId);
+        User user = createAndUpdateMember(oAuth2Response, registrationId);
         return new CustomUserDetails(user, oAuth2User.getAttributes());
     }
 
-    private User findOrCreateMember(OAuth2Response oAuth2Response, String providerType) {
+    @Transactional
+    public User createAndUpdateMember(OAuth2Response oAuth2Response, String providerType) {
         return userRepository.findByProviderTypeAndProviderId(providerType, oAuth2Response.getProviderId())
+                .map(existingUser -> updateMember(existingUser, oAuth2Response))
                 .orElseGet(() -> registerNewMember(oAuth2Response));
+    }
+
+    private User updateMember(User existingUser, OAuth2Response oAuth2Response) {
+        existingUser.update(oAuth2Response.getEmail(), oAuth2Response.getNickname(),
+                oAuth2Response.getProfileImage());
+        return existingUser;
     }
 
     private User registerNewMember(OAuth2Response oAuth2Response) {

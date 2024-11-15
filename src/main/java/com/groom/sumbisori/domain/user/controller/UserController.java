@@ -3,15 +3,15 @@ package com.groom.sumbisori.domain.user.controller;
 import com.groom.sumbisori.common.config.LoginUser;
 import com.groom.sumbisori.common.util.CookieUtil;
 import com.groom.sumbisori.domain.token.entity.TokenType;
-import com.groom.sumbisori.domain.user.dto.UserProfile;
+import com.groom.sumbisori.domain.user.dto.response.UserProfile;
 import com.groom.sumbisori.domain.user.service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,5 +42,13 @@ public class UserController implements UserApi {
         }
         cookieUtil.expireCookie(response, TokenType.ACCESS.name());
         response.sendRedirect(clientUrl);
+    }
+
+    @Override
+    @DeleteMapping
+    public ResponseEntity<Void> deleteUser(@LoginUser Long userId, HttpServletResponse response) {
+        userService.deleteUser(userId);
+        cookieUtil.expireCookie(response, TokenType.ACCESS.name());
+        return ResponseEntity.noContent().build();
     }
 }

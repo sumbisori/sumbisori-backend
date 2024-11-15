@@ -1,6 +1,6 @@
 package com.groom.sumbisori.common.config;
 
-import com.groom.sumbisori.domain.user.dto.CustomUserDetails;
+import com.groom.sumbisori.domain.user.dto.common.CustomUserDetails;
 import org.springframework.core.MethodParameter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

@@ -4,7 +4,7 @@ import com.groom.sumbisori.common.filter.HttpCookieOAuth2AuthorizationRequestRep
 import com.groom.sumbisori.common.util.CookieUtil;
 import com.groom.sumbisori.domain.token.entity.TokenType;
 import com.groom.sumbisori.domain.token.service.TokenService;
-import com.groom.sumbisori.domain.user.dto.CustomUserDetails;
+import com.groom.sumbisori.domain.user.dto.common.CustomUserDetails;
 import com.groom.sumbisori.domain.user.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
