@@ -68,4 +68,5 @@ client:
 custom:
   oauth2:
     kakao:
+      admin-key: ${KAKAO_ADMIN_KEY}
       logout-uri: https://kauth.kakao.com/oauth/logout?client_id=${spring.security.oauth2.client.registration.kakao.client-id}&logout_redirect_uri=${server.url}/api/users/logout
