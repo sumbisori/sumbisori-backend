@@ -50,13 +50,13 @@ public class SecurityConfig {
         return http.authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/test", "/docs", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .requestMatchers(GET,
+                                "/users/logout",
+                                "/oauth2/authorization/kakao/logout",
                                 "/places",
                                 "/places/*",
                                 "/seafoods/types",
                                 "/seafoods",
                                 "/seafoods/collected").permitAll()
-                        .requestMatchers(POST,
-                                "/users/logout").permitAll()
                         .anyRequest().authenticated()
                 )
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
