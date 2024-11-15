@@ -1,4 +1,5 @@
 server:
+  url: https://api.sumbisori.site
   forward-headers-strategy: native
   servlet:
     context-path: /api
@@ -64,3 +65,7 @@ client:
     domain: ".sumbisori.site"
   url: "https://www.sumbisori.site"
 
+custom:
+  oauth2:
+    kakao:
+      logout-uri: https://kauth.kakao.com/oauth/logout?client_id=${spring.security.oauth2.client.registration.kakao.client-id}&logout_redirect_uri=${server.url}/api/users/logout
