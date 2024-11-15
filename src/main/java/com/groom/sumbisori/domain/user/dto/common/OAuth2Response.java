@@ -1,4 +1,4 @@
-package com.groom.sumbisori.domain.user.dto;
+package com.groom.sumbisori.domain.user.dto.common;
 
 import com.groom.sumbisori.domain.user.entity.User;
 import com.groom.sumbisori.domain.user.entity.User.UserRole;

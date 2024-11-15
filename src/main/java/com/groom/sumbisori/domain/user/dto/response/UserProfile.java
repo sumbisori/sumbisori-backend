@@ -1,4 +1,4 @@
-package com.groom.sumbisori.domain.user.dto;
+package com.groom.sumbisori.domain.user.dto.response;
 
 import lombok.Builder;
 

@@ -1,8 +1,8 @@
 package com.groom.sumbisori.domain.user.service;
 
-import com.groom.sumbisori.domain.user.dto.CustomUserDetails;
-import com.groom.sumbisori.domain.user.dto.KaKaoResponse;
-import com.groom.sumbisori.domain.user.dto.OAuth2Response;
+import com.groom.sumbisori.domain.user.dto.common.CustomUserDetails;
+import com.groom.sumbisori.domain.user.dto.common.KaKaoResponse;
+import com.groom.sumbisori.domain.user.dto.common.OAuth2Response;
 import com.groom.sumbisori.domain.user.entity.User;
 import com.groom.sumbisori.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private final UserRepository userRepository;
 
-    @Transactional
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = super.loadUser(userRequest);
@@ -40,7 +39,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 .orElseGet(() -> registerNewMember(oAuth2Response));
     }
 
-    private User registerNewMember(OAuth2Response oAuth2Response) {
+    @Transactional
+    public User registerNewMember(OAuth2Response oAuth2Response) {
         log.info("소셜로그인으로 처음 로그인(강제 회원가입): {}", oAuth2Response.getProvider());
         User user = oAuth2Response.toEntity();
         return userRepository.save(user);
