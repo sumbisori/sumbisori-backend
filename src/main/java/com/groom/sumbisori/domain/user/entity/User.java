@@ -9,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -45,10 +46,14 @@ public class User extends BaseTimeEntity {
     @Column
     private String profileImageUrl;
 
+    @Column
+    private LocalDateTime lastLoginAt;
+
     public void update(String email, String nickname, String profileImageUrl) {
         this.email = email;
         this.nickname = nickname;
         this.profileImageUrl = profileImageUrl;
+        this.lastLoginAt = LocalDateTime.now();
     }
 
     @Getter

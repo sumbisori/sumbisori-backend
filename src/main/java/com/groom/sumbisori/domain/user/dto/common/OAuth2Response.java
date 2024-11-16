@@ -2,6 +2,7 @@ package com.groom.sumbisori.domain.user.dto.common;
 
 import com.groom.sumbisori.domain.user.entity.User;
 import com.groom.sumbisori.domain.user.entity.User.UserRole;
+import java.time.LocalDateTime;
 
 public interface OAuth2Response {
     String getProvider();
@@ -22,6 +23,7 @@ public interface OAuth2Response {
                 .nickname(getNickname())
                 .profileImageUrl(getProfileImage())
                 .userRole(UserRole.USER)
+                .lastLoginAt(LocalDateTime.now())
                 .build();
     }
 }
