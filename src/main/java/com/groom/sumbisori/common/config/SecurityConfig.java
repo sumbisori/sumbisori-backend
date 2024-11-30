@@ -56,7 +56,8 @@ public class SecurityConfig {
                                 "/places/*",
                                 "/seafoods/types",
                                 "/seafoods",
-                                "/seafoods/collected").permitAll()
+                                "/seafoods/collected",
+                                "/contents/youtube").permitAll()
                         .anyRequest().authenticated()
                 )
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
