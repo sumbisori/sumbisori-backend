@@ -1,7 +1,7 @@
 services:
   mysql:
     image: mysql:8.0
-    container_name: sumbisori
+    container_name: sumbisori-mysql
     ports:
       - "3307:3306"
     environment:
@@ -14,9 +14,20 @@ services:
       - mysql_data:/var/lib/mysql
     networks:
       - local_network
+  redis:
+    image: redis:7.2.4
+    restart: always
+    container_name: sumbisori-redis
+    ports:
+      - 6379:6379
+    networks:
+      - local_network
+    volumes:
+      - redis:/data
 
 volumes:
   mysql_data:
+  redis:
 
 networks:
   local_network:
