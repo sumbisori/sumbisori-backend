@@ -6,10 +6,12 @@ import com.groom.sumbisori.common.error.ErrorResponse;
 import com.groom.sumbisori.common.error.GlobalErrorCode;
 import com.groom.sumbisori.common.error.GlobalException;
 import com.groom.sumbisori.common.error.exception.BusinessException;
+import jakarta.validation.ConstraintViolationException;
 import java.io.IOException;
 import java.util.List;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.validator.internal.engine.path.PathImpl;
 import org.springframework.context.MessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
@@ -72,6 +74,25 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             logException(e, errorCode);
             return handleExceptionInternal(errorCode);
         }
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<?> handleConstraintViolation(ConstraintViolationException ex) {
+        GlobalErrorCode errorCode = GlobalErrorCode.VALIDATION_FAILED;
+
+        String[] errorMessages = ex.getConstraintViolations().stream()
+                .map(violation -> {
+                    String field = ((PathImpl) violation.getPropertyPath()).getLeafNode().toString();
+                    String message = violation.getMessage();
+                    return String.format("%s: %s", field, message);
+                })
+                .toArray(String[]::new); // List가 아닌 배열로 변환
+        logException(ex, errorCode, errorMessages);
+
+        ErrorResponse errorResponse = ErrorResponse.of(errorCode, errorMessages);
+        return ResponseEntity
+                .status(errorCode.getHttpStatus())
+                .body(errorResponse);
     }
 
     // 2. ResponseEntityExceptionHandler에서 오버라이드된 핸들러
