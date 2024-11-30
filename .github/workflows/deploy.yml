@@ -53,13 +53,6 @@ jobs:
             docker stop $(docker ps -a -q)
             docker run -d --log-driver=syslog -p 8080:8080 \
             -e SPRING_PROFILES_ACTIVE=prod \
-            -e DATABASE_URL="${{ secrets.DATABASE_URL }}" \
-            -e DATABASE_USERNAME="${{ secrets.DATABASE_USERNAME }}" \
-            -e DATABASE_PASSWORD="${{ secrets.DATABASE_PASSWORD }}" \
-            -e JWT_SECRET="${{ secrets.JWT_SECRET }}" \
-            -e KAKAO_CLIENT_ID="${{ secrets.KAKAO_CLIENT_ID }}" \
-            -e KAKAO_CLIENT_SECRET="${{ secrets.KAKAO_CLIENT_SECRET }}" \
-            -e KAKAO_ADMIN_KEY="${{ secrets.KAKAO_ADMIN_KEY }}" \
             ${{ env.IMAGE_NAME }}
             docker rm $(docker ps --filter 'status=exited' -a -q)
             docker image prune -a -f
