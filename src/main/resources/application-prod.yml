@@ -8,11 +8,21 @@ server:
       force: true
   port: 8080
 spring:
+  config:
+    activate:
+      on-profile: prod
+    import: aws-parameterstore:/config/sumbisori/
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${DATABASE_URL}?allowPublicKeyRetrieval=true&useSSL=false
     username: ${DATABASE_USERNAME}
     password: ${DATABASE_PASSWORD}
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+      repositories:
+        enabled: false
   jpa:
     hibernate:
       ddl-auto: validate
@@ -70,3 +80,5 @@ custom:
     kakao:
       admin-key: ${KAKAO_ADMIN_KEY}
       logout-uri: https://kauth.kakao.com/oauth/logout?client_id=${spring.security.oauth2.client.registration.kakao.client-id}&logout_redirect_uri=${server.url}/api/users/logout
+youtube:
+  api-key: ${YOUTUBE_API_KEY}
