@@ -129,6 +129,7 @@
 ## **시스템 아키텍쳐 System Architecture**
 
 ### 현재
+![image](https://github.com/user-attachments/assets/4d71ad61-dbc3-4206-8567-f387123c75e1)
 
 
 ### 당시 해커톤

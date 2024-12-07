@@ -1,9 +1,4 @@
 server:
-  config:
-    activate:
-      on-profile: prod
-    import: aws-parameterstore:/config/sumbisori/
-
   url: https://api.sumbisori.site
   forward-headers-strategy: native
   servlet:
@@ -13,6 +8,10 @@ server:
       force: true
   port: 8080
 spring:
+  config:
+    activate:
+      on-profile: prod
+    import: aws-parameterstore:/config/sumbisori/
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${DATABASE_URL}?allowPublicKeyRetrieval=true&useSSL=false
