@@ -17,6 +17,7 @@ public class YoutubeRedisRepository {
     private final RedisTemplate<String, YoutubeResponse> redisTemplate;
 
     public void saveYoutubeVideosToCache(List<YoutubeResponse> youtubeResponses) {
+        redisTemplate.delete(YOUTUBE_KEY);
         BoundSetOperations<String, YoutubeResponse> setOps = redisTemplate.boundSetOps(YOUTUBE_KEY);
         youtubeResponses.forEach(setOps::add);
         redisTemplate.expire(YOUTUBE_KEY, Duration.ofDays(1));

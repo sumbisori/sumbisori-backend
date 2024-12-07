@@ -51,7 +51,7 @@ jobs:
             echo "${{ secrets.PERSONAL_GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             docker pull ${{ env.IMAGE_NAME }}
             docker stop $(docker ps -a -q)
-            docker run -d --log-driver=syslog -p 8080:8080 \
+            docker run -d --log-driver=syslog --name backend -p 8080:8080 \
             -e SPRING_PROFILES_ACTIVE=prod \
             ${{ env.IMAGE_NAME }}
             docker rm $(docker ps --filter 'status=exited' -a -q)
