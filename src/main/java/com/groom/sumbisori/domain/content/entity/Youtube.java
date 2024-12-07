@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -30,7 +31,13 @@ public class Youtube {
     private String title;
 
     @Column
+    private String channelTitle;
+
+    @Column
     private String thumbnailUrl;
+
+    @Column
+    private BigInteger viewCount;
 
     @Column
     private LocalDateTime publishTime;
