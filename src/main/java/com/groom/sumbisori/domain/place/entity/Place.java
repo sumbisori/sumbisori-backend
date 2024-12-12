@@ -27,7 +27,7 @@ public class Place {
     @Column
     private int price;
 
-    @Column
+    @Column(length = 1000)
     private String imageUrl;
 
     @Column
@@ -35,4 +35,10 @@ public class Place {
 
     @Column
     private double longitude;
+
+    @Column
+    private String phoneNumber;
+
+    @Column
+    private String link;
 }
