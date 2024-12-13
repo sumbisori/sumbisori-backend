@@ -1,10 +1,10 @@
 package com.groom.sumbisori.domain.content.controller;
 
 import com.groom.sumbisori.domain.content.dto.response.YoutubeResponse;
-import com.groom.sumbisori.domain.content.service.YoutubeLookupService;
+import com.groom.sumbisori.domain.content.service.YoutubeRandomPicker;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import java.util.Set;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -18,12 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/contents")
 public class ContentController implements ContentApi {
-    private final YoutubeLookupService youtubeLookupService;
+    private final YoutubeRandomPicker youtubeRandomPicker;
 
     @Override
     @GetMapping("/youtube")
-    public ResponseEntity<Set<YoutubeResponse>> getYoutubeList(
+    public ResponseEntity<List<YoutubeResponse>> getYoutubeList(
             @RequestParam(required = false, defaultValue = "5") @Min(1) @Max(50) int count) {
-        return ResponseEntity.ok(youtubeLookupService.lookup(count));
+        return ResponseEntity.ok(youtubeRandomPicker.lookup(count));
     }
 }
