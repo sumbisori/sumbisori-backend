@@ -50,7 +50,7 @@ jobs:
           script: |
             echo "${{ secrets.PERSONAL_GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             docker pull ${{ env.IMAGE_NAME }}
-            docker stop $(docker ps -a -q)
+            docker rm -f backend || true
             docker run -d --log-driver=syslog --name backend -p 8080:8080 \
             -e SPRING_PROFILES_ACTIVE=prod \
             ${{ env.IMAGE_NAME }}
