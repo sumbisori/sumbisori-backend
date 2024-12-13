@@ -55,5 +55,4 @@ jobs:
             docker run -d --log-driver=syslog --name backend -p 8080:8080 \
             -e SPRING_PROFILES_ACTIVE=prod \
             ${{ env.IMAGE_NAME }}
-            docker rm $(docker ps --filter 'status=exited' -a -q)
             docker image prune -a -f
