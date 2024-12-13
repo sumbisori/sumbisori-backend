@@ -9,6 +9,10 @@ import org.springframework.data.redis.core.BoundSetOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
+/**
+ * @deprecated Redis에서 로컬 캐시로 변경으로 인한 Deprecated
+ */
+@Deprecated
 @Repository
 @RequiredArgsConstructor
 public class YoutubeRedisRepository {

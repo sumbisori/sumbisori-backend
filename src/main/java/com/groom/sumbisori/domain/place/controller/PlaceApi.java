@@ -4,7 +4,6 @@ import static com.groom.sumbisori.domain.place.error.PlaceErrorcode.Const.PLACE_
 
 import com.groom.sumbisori.common.springdoc.ApiExceptionExplanation;
 import com.groom.sumbisori.common.springdoc.ApiResponseExplanations;
-import com.groom.sumbisori.domain.place.dto.PlaceMapResponse;
 import com.groom.sumbisori.domain.place.dto.PlaceResponse;
 import com.groom.sumbisori.domain.place.error.PlaceErrorcode;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Tag(name = "places", description = "해녀체험 장소 API")
 public interface PlaceApi {
     @Operation(summary = "해녀체험 장소 목록 조회")
-    public ResponseEntity<List<PlaceMapResponse>> getAllPlaces();
+    public ResponseEntity<List<PlaceResponse>> getAllPlaces();
 
     @Operation(summary = "해녀체험 장소 상세 조회")
     @ApiResponseExplanations(
