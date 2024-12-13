@@ -6,8 +6,8 @@ import com.google.api.services.youtube.YouTube.Videos;
 import com.google.api.services.youtube.model.SearchListResponse;
 import com.google.api.services.youtube.model.SearchResult;
 import com.google.api.services.youtube.model.VideoListResponse;
+import com.groom.sumbisori.common.constant.CacheType;
 import com.groom.sumbisori.domain.content.dto.response.YoutubeResponse;
-import com.groom.sumbisori.domain.content.respoistory.YoutubeRedisRepository;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Collections;
@@ -17,10 +17,14 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.interceptor.SimpleKey;
+import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Service
+@Profile("prod")
 @RequiredArgsConstructor
 @Slf4j
 public class YoutubeService {
@@ -34,8 +38,8 @@ public class YoutubeService {
     private static final String VIDEOS_FIELDS = "items(id,statistics(viewCount))";
 
     private final YoutubeUpdateService youtubeUpdateService;
-    private final YoutubeRedisRepository youtubeRedisRepository;
     private final YouTube youtubeClient;
+    private final CacheManager cacheManager;
 
     @Value("${youtube.api-key}")
     private String apiKey;
@@ -51,7 +55,7 @@ public class YoutubeService {
         List<YoutubeResponse> youtubeResponses = youtubeList.stream()
                 .map(result -> YoutubeResponse.from(result, videoViews.get(result.getId().getVideoId())))
                 .toList();
-        youtubeRedisRepository.saveYoutubeVideosToCache(youtubeResponses);
+        cacheManager.getCache(CacheType.YOUTUBES.getCacheName()).put(SimpleKey.EMPTY, youtubeResponses);
         youtubeUpdateService.update(youtubeResponses);
         log.info("YouTube API에서 데이터를 가져와 캐시에 저장했습니다.");
     }

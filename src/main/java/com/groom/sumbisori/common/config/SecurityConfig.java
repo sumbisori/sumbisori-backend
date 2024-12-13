@@ -1,7 +1,6 @@
 package com.groom.sumbisori.common.config;
 
 import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.groom.sumbisori.common.error.handler.CustomAccessDeniedHandler;
@@ -51,7 +50,6 @@ public class SecurityConfig {
                         .requestMatchers("/test", "/docs", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .requestMatchers(GET,
                                 "/users/logout",
-                                "/oauth2/authorization/kakao/logout",
                                 "/places",
                                 "/places/*",
                                 "/seafoods/types",
