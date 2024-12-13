@@ -1,6 +1,5 @@
 package com.groom.sumbisori.domain.place.controller;
 
-import com.groom.sumbisori.domain.place.dto.PlaceMapResponse;
 import com.groom.sumbisori.domain.place.dto.PlaceResponse;
 import com.groom.sumbisori.domain.place.service.PlaceService;
 import java.util.List;
@@ -19,7 +18,7 @@ public class PlaceController implements PlaceApi {
 
     @Override
     @GetMapping
-    public ResponseEntity<List<PlaceMapResponse>> getAllPlaces() {
+    public ResponseEntity<List<PlaceResponse>> getAllPlaces() {
         return ResponseEntity.ok(placeService.getAllPlaces());
     }
 

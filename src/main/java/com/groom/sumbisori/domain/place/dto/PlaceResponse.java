@@ -1,12 +1,11 @@
 package com.groom.sumbisori.domain.place.dto;
 
 import com.groom.sumbisori.domain.place.entity.Place;
-import java.util.List;
 
 public record PlaceResponse(Long placeId, String name, String address,
-                            int price, String desc, String imageUrl, List<String> availableDate,
-                            double latitude, double longitude) {
-    public static PlaceResponse of(Place place, List<String> availableDate) {
+                            int price, String desc, String imageUrl, double latitude, double longitude, String phoneNumber,
+                            String link) {
+    public static PlaceResponse from(Place place) {
         return new PlaceResponse(
                 place.getId(),
                 place.getName(),
@@ -14,9 +13,10 @@ public record PlaceResponse(Long placeId, String name, String address,
                 place.getPrice(),
                 place.getDescription(),
                 place.getImageUrl(),
-                availableDate,
                 place.getLatitude(),
-                place.getLongitude()
+                place.getLongitude(),
+                place.getPhoneNumber(),
+                place.getLink()
         );
     }
 }
