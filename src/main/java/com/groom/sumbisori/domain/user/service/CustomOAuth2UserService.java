@@ -12,13 +12,11 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
-    private final UserRepository userRepository;
     private final UserService userService;
 
     @Override
@@ -29,7 +27,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             throw new OAuth2AuthenticationException("유효하지않는 OAuth2 제공자입니다.");
         }
         OAuth2Response oAuth2Response = new KaKaoResponse(oAuth2User.getAttributes());
-
         User user = userService.createAndUpdateMember(oAuth2Response, registrationId);
         return new CustomUserDetails(user, oAuth2User.getAttributes());
     }
