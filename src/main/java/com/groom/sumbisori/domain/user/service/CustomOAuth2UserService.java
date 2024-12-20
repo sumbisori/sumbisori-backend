@@ -4,7 +4,6 @@ import com.groom.sumbisori.domain.user.dto.common.CustomUserDetails;
 import com.groom.sumbisori.domain.user.dto.common.KaKaoResponse;
 import com.groom.sumbisori.domain.user.dto.common.OAuth2Response;
 import com.groom.sumbisori.domain.user.entity.User;
-import com.groom.sumbisori.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
