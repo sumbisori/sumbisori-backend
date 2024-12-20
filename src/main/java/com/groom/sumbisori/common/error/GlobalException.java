@@ -3,7 +3,7 @@ package com.groom.sumbisori.common.error;
 import lombok.Getter;
 
 @Getter
-public class GlobalException extends RuntimeException{
+public class GlobalException extends RuntimeException {
     private final GlobalErrorCode errorCode;
 
     public GlobalException(final GlobalErrorCode errorCode) {
