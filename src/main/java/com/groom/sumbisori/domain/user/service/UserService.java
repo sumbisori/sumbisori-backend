@@ -1,5 +1,6 @@
 package com.groom.sumbisori.domain.user.service;
 
+import com.groom.sumbisori.domain.badge.dto.event.SignUpEvent;
 import com.groom.sumbisori.domain.collection.repository.SeafoodCollectionQueryRepository;
 import com.groom.sumbisori.domain.user.dto.common.OAuth2Response;
 import com.groom.sumbisori.domain.user.dto.response.UserProfile;
@@ -10,6 +11,7 @@ import com.groom.sumbisori.domain.user.oauth2.KakaoClient;
 import com.groom.sumbisori.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +23,7 @@ public class UserService {
     private final KakaoClient kakaoClient;
     private final UserRepository userRepository;
     private final SeafoodCollectionQueryRepository seafoodCollectionQueryRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional(readOnly = true)
     public UserProfile getMyInfo(Long userId) {
@@ -56,7 +59,8 @@ public class UserService {
 
     private User registerNewMember(OAuth2Response oAuth2Response) {
         log.info("소셜로그인으로 처음 로그인(강제 회원가입): {}", oAuth2Response.getProvider());
-        User user = oAuth2Response.toEntity();
-        return userRepository.save(user);
+        User user = userRepository.save(oAuth2Response.toEntity());
+        eventPublisher.publishEvent(SignUpEvent.of(user.getId()));
+        return user;
     }
 }
