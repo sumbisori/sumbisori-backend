@@ -7,3 +7,6 @@ CREATE TABLE badge
     type       VARCHAR(255)          NULL,
     CONSTRAINT pk_badge PRIMARY KEY (badge_id)
 );
+
+ALTER TABLE badge
+    ADD CONSTRAINT uk_badge_user_id_type UNIQUE (user_id, type);
