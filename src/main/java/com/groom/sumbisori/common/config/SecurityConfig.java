@@ -49,7 +49,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/docs", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers(
+                                "/api/docs",
+                                "/swagger-ui/**",
+                                "/api/v3/api-docs/**",
+                                "/actuator/**").permitAll()
                         .requestMatchers(GET,
                                 "/api/users/logout",
                                 "/api/places",
