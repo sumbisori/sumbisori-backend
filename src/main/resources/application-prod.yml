@@ -2,7 +2,6 @@ server:
   url: https://api.sumbisori.site
   forward-headers-strategy: native
   servlet:
-    context-path: /api
     encoding:
       charset: utf-8
       force: true
