@@ -41,7 +41,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(BusinessException.class)
     protected ResponseEntity<?> handleBusinessException(BusinessException e) {
         ErrorCode errorCode = e.getErrorCode();
-        logException(e, errorCode);
+        if (errorCode.getHttpStatus().is5xxServerError()) {
+            logException(e, errorCode);
+        }
         return handleExceptionInternal(errorCode);
     }
 
@@ -51,7 +53,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(GlobalException.class)
     protected ResponseEntity<?> handleGlobalException(GlobalException e) {
         GlobalErrorCode errorCode = e.getErrorCode();
-        logException(e, errorCode);
+        if (errorCode.getHttpStatus().is5xxServerError()) {
+            logException(e, errorCode);
+        }
         return handleExceptionInternal(errorCode);
     }
 
@@ -61,7 +65,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     protected ResponseEntity<?> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
         GlobalErrorCode errorCode = GlobalErrorCode.UNSUPPORTED_PARAMETER_TYPE;
-        logException(e, errorCode);
         return handleExceptionInternal(errorCode);
     }
 
@@ -87,7 +90,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                     return String.format("%s: %s", field, message);
                 })
                 .toArray(String[]::new); // List가 아닌 배열로 변환
-        logException(ex, errorCode, errorMessages);
 
         ErrorResponse errorResponse = ErrorResponse.of(errorCode, errorMessages);
         return ResponseEntity
@@ -107,7 +109,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             @NonNull final HttpStatusCode status,
             @NonNull final WebRequest request) {
         GlobalErrorCode errorCode = GlobalErrorCode.UNSUPPORTED_PARAMETER_NAME;
-        logException(e, errorCode);
         return handleExceptionInternal(errorCode);
     }
 
@@ -120,7 +121,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                                                                    @NonNull final HttpStatusCode status,
                                                                    @NonNull final WebRequest request) {
         final GlobalErrorCode errorCode = GlobalErrorCode.RESOURCE_NOT_FOUND;
-        logException(e, errorCode);
         return handleExceptionInternal(errorCode);
     }
 
@@ -133,7 +133,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                                                                      @NonNull HttpStatusCode status,
                                                                      @NonNull WebRequest request) {
         final GlobalErrorCode errorCode = GlobalErrorCode.INVALID_REQUEST_PARAMETER;
-        logException(ex, errorCode);
         return handleExceptionInternal(errorCode);
     }
 
@@ -151,7 +150,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .stream()
                 .map(error -> error.getField() + ": " + error.getDefaultMessage())
                 .toArray(String[]::new);
-        logException(ex, errorCode, detailedErrorMessages);
 
         ErrorResponse errorResponse = ErrorResponse.of(errorCode, detailedErrorMessages);
         return ResponseEntity
@@ -171,7 +169,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         // 모든 오류를 추출
         List<? extends MessageSourceResolvable> allErrors = ex.getAllErrors();
-        log.info("allErrors = {}", allErrors);
 
         // 필드명과 기본 메시지를 조합하여 "필드명: 메시지" 형식으로 변환
         String[] errorMessages = allErrors.stream()
@@ -183,8 +180,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                     return fieldName + ": " + error.getDefaultMessage(); // 필드명과 기본 메시지 결합
                 })
                 .toArray(String[]::new);
-
-        logException(ex, errorCode, errorMessages);
 
         ErrorResponse errorResponse = ErrorResponse.of(errorCode, errorMessages);
         return ResponseEntity
@@ -202,7 +197,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                                                                   @NonNull WebRequest request) {
 
         GlobalErrorCode errorCode = GlobalErrorCode.INVALID_REQUEST_PARAMETER;
-        logException(ex, errorCode, ex.getMessage());
 
         ErrorResponse errorResponse = ErrorResponse.from(errorCode);
         return ResponseEntity
@@ -220,7 +214,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     // 3. 예외 로깅 메서드들
-
     /**
      * 예외 정보를 로깅 (ErrorCode 메시지 사용)
      */
@@ -231,23 +224,23 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 errorCode.getMessage());
     }
 
-    /**
-     * 예외 정보를 로깅 (단일 메시지 사용)
-     */
-    private void logException(final Exception e, final ErrorCode errorCode, final String message) {
-        log.error(LOG_FORMAT,
-                e.getClass(),
-                errorCode.getHttpStatus().value(),
-                message);
-    }
-
-    /**
-     * 예외 정보를 로깅 (다중 메시지 사용)
-     */
-    private void logException(final Exception e, final ErrorCode errorCode, final String[] message) {
-        log.error(LOG_FORMAT,
-                e.getClass(),
-                errorCode.getHttpStatus().value(),
-                String.join("; ", message));
-    }
+//    /**
+//     * 예외 정보를 로깅 (단일 메시지 사용)
+//     */
+//    private void logException(final Exception e, final ErrorCode errorCode, final String message) {
+//        log.error(LOG_FORMAT,
+//                e.getClass(),
+//                errorCode.getHttpStatus().value(),
+//                message);
+//    }
+//
+//    /**
+//     * 예외 정보를 로깅 (다중 메시지 사용)
+//     */
+//    private void logException(final Exception e, final ErrorCode errorCode, final String[] message) {
+//        log.error(LOG_FORMAT,
+//                e.getClass(),
+//                errorCode.getHttpStatus().value(),
+//                String.join("; ", message));
+//    }
 }
