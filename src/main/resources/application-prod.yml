@@ -2,7 +2,6 @@ server:
   url: https://api.sumbisori.site
   forward-headers-strategy: native
   servlet:
-    context-path: /api
     encoding:
       charset: utf-8
       force: true
@@ -83,3 +82,12 @@ custom:
       logout-uri: https://kauth.kakao.com/oauth/logout?client_id=${spring.security.oauth2.client.registration.kakao.client-id}&logout_redirect_uri=${server.url}/api/users/logout
 youtube:
   api-key: ${YOUTUBE_API_KEY}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+        exclude: env,beans
+  server:
+    port: ${MANAGEMENT_SERVER_PORT}

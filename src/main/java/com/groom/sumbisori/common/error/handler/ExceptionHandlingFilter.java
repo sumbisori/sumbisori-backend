@@ -51,6 +51,8 @@ public class ExceptionHandlingFilter extends OncePerRequestFilter {
     }
 
     private void logException(final Exception e, final ErrorCode errorCode) {
-        log.error(LOG_FORMAT, e.getClass(), errorCode.getHttpStatus().value(), errorCode.getMessage());
+        if (errorCode.getHttpStatus().is5xxServerError()) {
+            log.error(LOG_FORMAT, e.getClass(), errorCode.getHttpStatus().value(), errorCode.getMessage());
+        }
     }
 }

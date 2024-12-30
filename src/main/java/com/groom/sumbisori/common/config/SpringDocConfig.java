@@ -29,12 +29,8 @@ public class SpringDocConfig {
                 .title("Sumbisori API")
                 .version("v1");
 
-        // /api 경로를 기본 경로로 추가
-        Server server = new Server().url("/api").description("Base API path");
-
         return new OpenAPI()
-                .info(info)
-                .addServersItem(server);
+                .info(info);
     }
 
     @Bean

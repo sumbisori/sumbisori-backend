@@ -33,6 +33,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+    private static final String OAUTH2_REDIRECT_BASE_URI = "/api/login/oauth2/code/*";
+    private static final String OAUTH2_AUTHORIZATION_BASE_URI = "/api/oauth2/authorization";
 
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
@@ -47,15 +49,19 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/test", "/docs", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers(
+                                "/api/docs",
+                                "/swagger-ui/**",
+                                "/api/v3/api-docs/**",
+                                "/actuator/**").permitAll()
                         .requestMatchers(GET,
-                                "/users/logout",
-                                "/places",
-                                "/places/*",
-                                "/seafoods/types",
-                                "/seafoods",
-                                "/seafoods/collected",
-                                "/contents/youtube").permitAll()
+                                "/api/users/logout",
+                                "/api/places",
+                                "/api/places/*",
+                                "/api/seafoods/types",
+                                "/api/seafoods",
+                                "/api/seafoods/collected",
+                                "/api/contents/youtube").permitAll()
                         .anyRequest().authenticated()
                 )
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
@@ -67,10 +73,14 @@ public class SecurityConfig {
                 .exceptionHandling((auth) -> auth.authenticationEntryPoint(customAuthenticationEntryPoint)
                         .accessDeniedHandler(customAccessDeniedHandler))
                 .oauth2Login(oauth2 -> oauth2
+                        .redirectionEndpoint(redirectionEndpointConfig -> redirectionEndpointConfig
+                                .baseUri(OAUTH2_REDIRECT_BASE_URI)
+                        )
                         .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig
                                 .userService(customOAuth2UserService)
                         )
                         .authorizationEndpoint(authorization -> authorization
+                                .baseUri(OAUTH2_AUTHORIZATION_BASE_URI)
                                 .authorizationRequestRepository(httpCookieOAuth2AuthorizationRequestRepository)
                         )
                         .successHandler(customSuccessHandler)
