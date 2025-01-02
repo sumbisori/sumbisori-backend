@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/badges")
 @RequiredArgsConstructor
 public class BadgeController implements BadgeApi {
-
     private final BadgeLookupService badgeLookupService;
 
     @Override
