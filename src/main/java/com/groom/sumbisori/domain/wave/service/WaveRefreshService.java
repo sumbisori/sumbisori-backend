@@ -21,7 +21,7 @@ public class WaveRefreshService {
     /**
      * 매 시각 31분, 01분에 캐시 업데이트
      */
-    @Async("waveExecutor")
+    @Async
     public void refresh(Spot spot) {
         String response = waveApiClient.fetch(spot);
         WaveResponse waveResponse = waveResponseParser.parse(response);
