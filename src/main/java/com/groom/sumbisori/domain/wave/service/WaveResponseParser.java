@@ -2,6 +2,7 @@ package com.groom.sumbisori.domain.wave.service;
 
 import com.groom.sumbisori.common.error.GlobalErrorCode;
 import com.groom.sumbisori.common.error.GlobalException;
+import com.groom.sumbisori.domain.content.entity.Spot;
 import com.groom.sumbisori.domain.wave.dto.WaveResponse;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -27,13 +28,13 @@ public class WaveResponseParser {
     /**
      * 응답 문자열을 분석(파싱)하여 WaveResponse 객체로 변환
      */
-    public WaveResponse parse(String response) {
+    public WaveResponse parse(String response, Spot spot) {
         String[] lines = response.split("\n");
-        validateResponseLength(lines);
+        validateResponseLength(lines, spot);
 
         String dataLine = lines[DATA_LINE_INDEX].trim();
         String[] fields = dataLine.split(",");
-        validateFieldCount(fields, dataLine);
+        validateFieldCount(fields, dataLine, spot);
 
         double waveHeight = parseToDouble(fields[FIELD_WAVE_HEIGHT]);
         double waterTemperature = parseToDouble(fields[FIELD_WATER_TEMPERATURE]);
@@ -44,9 +45,9 @@ public class WaveResponseParser {
     /**
      * 응답 라인 수를 검증
      */
-    private void validateResponseLength(String[] lines) {
+    private void validateResponseLength(String[] lines, Spot spot) {
         if (lines.length < MINIMUM_LINE_LENGTH) {
-            log.error("Invalid response length: {}. lines: {}", lines.length, Arrays.toString(lines));
+            log.error("Invalid response length: {}. Spot: {}, lines: {}", lines.length, spot.getSpotName(), Arrays.toString(lines));
             throw new GlobalException(GlobalErrorCode.EXTERNAL_API_ERROR);
         }
     }
@@ -54,11 +55,11 @@ public class WaveResponseParser {
     /**
      * 데이터 필드 개수 검증
      */
-    private void validateFieldCount(String[] fields, String rawLine) {
+    private void validateFieldCount(String[] fields, String rawLine, Spot spot) {
         if (fields.length < MINIMUM_FIELD_COUNT) {
             log.error(
-                    "Insufficient fields in response line. Expected >= {}, Found: {}. fields: {}, rawLine: '{}'",
-                    MINIMUM_FIELD_COUNT, fields.length, Arrays.toString(fields), rawLine
+                    "Insufficient fields in response line. Expected >= {}, Found: {}. Spot: {}, fields: {}, rawLine: '{}'",
+                    MINIMUM_FIELD_COUNT, fields.length, spot.getSpotName(), Arrays.toString(fields), rawLine
             );
             throw new GlobalException(GlobalErrorCode.EXTERNAL_API_ERROR);
         }

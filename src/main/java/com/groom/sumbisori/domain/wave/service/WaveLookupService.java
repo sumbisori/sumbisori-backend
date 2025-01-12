@@ -15,7 +15,7 @@ public class WaveLookupService {
     @Cacheable(value = "waves", key = "#spot.spotId")
     public WaveResponse lookup(Spot spot) {
         String response = waveApiClient.fetch(spot);
-        WaveResponse waveResponse = waveResponseParser.parse(response);
+        WaveResponse waveResponse = waveResponseParser.parse(response, spot);
         return waveResponse;
     }
 }
