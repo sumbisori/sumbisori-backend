@@ -18,13 +18,13 @@ public class WaveCacheScheduler implements ApplicationListener<ApplicationReadyE
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
-        log.debug("Initializing wave info for all spots");
+        log.info("Initializing wave info for all spots");
         refreshAllSpots();
     }
 
     @Scheduled(cron = "0 1,31 * * * ?")
     public void refreshAllSpots() {
-        log.debug("Refreshing wave info for all spots at 1 and 31 minutes past the hour");
+        log.info("Refreshing wave info for all spots at 1 and 31 minutes past the hour");
         for (Spot spot : Spot.values()) {
             waveRefreshService.refresh(spot);
         }
