@@ -22,9 +22,9 @@ public class WaveCacheScheduler implements ApplicationListener<ApplicationReadyE
         refreshAllSpots();
     }
 
-    @Scheduled(cron = "0 1,31 * * * ?")
+    @Scheduled(cron = "0 5,35 * * * ?")
     public void refreshAllSpots() {
-        log.info("Refreshing wave info for all spots at 1 and 31 minutes past the hour");
+        log.info("Refreshing wave info for all spots started");
         for (Spot spot : Spot.values()) {
             waveRefreshService.refresh(spot);
         }
