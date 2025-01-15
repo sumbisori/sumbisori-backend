@@ -58,6 +58,7 @@ logging:
   level:
     org:
       springframework.jdbc.core.JdbcTemplate: DEBUG
+      springframework.cache: TRACE
       hibernate:
         SQL: debug
         orm:
