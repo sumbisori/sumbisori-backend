@@ -58,6 +58,7 @@ logging:
   level:
     org:
       springframework.jdbc.core.JdbcTemplate: DEBUG
+      springframework.cache: TRACE
       hibernate:
         SQL: debug
         orm:
@@ -85,6 +86,7 @@ api:
   key:
     youtube: ${YOUTUBE_API_KEY}
     wave: ${WAVE_API_KEY}
+    weather: ${WEATHER_API_KEY}
 
 management:
   endpoints:
