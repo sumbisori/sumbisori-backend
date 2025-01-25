@@ -1,0 +1,92 @@
+server:
+  url: https://api.dev.sumbisori.site
+  forward-headers-strategy: native
+  servlet:
+    encoding:
+      charset: utf-8
+      force: true
+  port: 8080
+spring:
+  config:
+    activate:
+      on-profile: dev
+    import: aws-parameterstore:/config/sumbisori/
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${DATABASE_URL}?allowPublicKeyRetrieval=true&useSSL=false
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+      default_batch_fetch_size: 100
+    open-in-view: false
+  flyway:
+    enabled: true
+  jwt:
+    secret: ${JWT_SECRET}
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-id: ${KAKAO_CLIENT_ID}
+            client-secret: ${KAKAO_CLIENT_SECRET}
+            client-authentication-method: client_secret_post
+            redirect-uri: https://api.dev.sumbisori.site/api/login/oauth2/code/kakao
+            authorization-grant-type: authorization_code
+            client-name: kakao
+            scope: account_email,profile_nickname,profile_image
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+
+logging:
+  level:
+    org:
+      springframework.jdbc.core.JdbcTemplate: DEBUG
+      springframework.cache: TRACE
+      hibernate:
+        SQL: debug
+        orm:
+          jdbc:
+            bind: trace
+springdoc:
+  default-consumes-media-type: application/json;charset=UTF-8
+  default-produces-media-type: application/json;charset=UTF-8
+  swagger-ui:
+    path: /docs
+    tags-sorter: alpha
+    operations-sorter: method
+client:
+  cookie:
+    domain: ".sumbisori.site"
+  url: "https://dev.sumbisori.site"
+
+custom:
+  oauth2:
+    kakao:
+      admin-key: ${KAKAO_ADMIN_KEY}
+      logout-uri: https://kauth.kakao.com/oauth/logout?client_id=${spring.security.oauth2.client.registration.kakao.client-id}&logout_redirect_uri=${server.url}/api/users/logout
+
+api:
+  key:
+    youtube: ${YOUTUBE_API_KEY}
+    wave: ${WAVE_API_KEY}
+    weather: ${WEATHER_API_KEY}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+        exclude: env,beans
+  server:
+    port: ${MANAGEMENT_SERVER_PORT}
