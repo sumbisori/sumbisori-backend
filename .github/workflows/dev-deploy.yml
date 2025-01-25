@@ -34,7 +34,7 @@ jobs:
 
       - name: Build and push to development Docker registry
         run: |
-          echo "${{ secrets.PERSONAL_GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ secrets.GITHUB_ACTOR }} --password-stdin
+          echo "${{ secrets.PERSONAL_GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
           docker build -t ghcr.io/sumbisori/sumbisori-backend-dev:${{ env.VERSION }} .
           docker push ghcr.io/sumbisori/sumbisori-backend-dev:${{ env.VERSION }}
           echo "IMAGE_NAME=ghcr.io/sumbisori/sumbisori-backend-dev:${{ env.VERSION }}" >> $GITHUB_ENV
