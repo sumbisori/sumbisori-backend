@@ -4,6 +4,7 @@ import static com.groom.sumbisori.domain.place.error.PlaceErrorcode.Const.PLACE_
 
 import com.groom.sumbisori.common.springdoc.ApiExceptionExplanation;
 import com.groom.sumbisori.common.springdoc.ApiResponseExplanations;
+import com.groom.sumbisori.domain.place.dto.PlaceLocationResponse;
 import com.groom.sumbisori.domain.place.dto.PlaceResponse;
 import com.groom.sumbisori.domain.place.error.PlaceErrorcode;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,4 +25,7 @@ public interface PlaceApi {
             }
     )
     public ResponseEntity<PlaceResponse> getPlaceInfo(@PathVariable Long placeId);
+
+    @Operation(summary = "해녀체험 장소 위치 정보 조회")
+    public ResponseEntity<List<PlaceLocationResponse>> getPlaceLocations();
 }
