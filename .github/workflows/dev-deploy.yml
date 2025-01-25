@@ -3,7 +3,7 @@ name: Build and Deploy to Development Server
 on:
   pull_request:
     branches:
-      - dev
+      - develop
 
 jobs:
   build-and-push-backend:
