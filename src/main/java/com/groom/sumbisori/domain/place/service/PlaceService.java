@@ -1,5 +1,6 @@
 package com.groom.sumbisori.domain.place.service;
 
+import com.groom.sumbisori.domain.place.dto.PlaceLocationResponse;
 import com.groom.sumbisori.domain.place.dto.PlaceResponse;
 import com.groom.sumbisori.domain.place.entity.Place;
 import com.groom.sumbisori.domain.place.error.PlaceErrorcode;
@@ -29,5 +30,12 @@ public class PlaceService {
         Place place = placeRepository.findById(placeId)
                 .orElseThrow(() -> new PlaceException(PlaceErrorcode.PLACE_NOT_FOUND));
         return PlaceResponse.from(place);
+    }
+
+    @Cacheable(cacheNames = "placeLocations")
+    public List<PlaceLocationResponse> getAllPlaceLocations() {
+        return placeRepository.findAll().stream()
+                .map(place -> PlaceLocationResponse.from(place))
+                .toList();
     }
 }
