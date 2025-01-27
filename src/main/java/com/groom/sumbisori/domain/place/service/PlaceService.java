@@ -5,6 +5,7 @@ import com.groom.sumbisori.domain.place.dto.PlaceResponse;
 import com.groom.sumbisori.domain.place.entity.Place;
 import com.groom.sumbisori.domain.place.error.PlaceErrorcode;
 import com.groom.sumbisori.domain.place.error.exception.PlaceException;
+import com.groom.sumbisori.domain.place.repository.PlaceQueryRepository;
 import com.groom.sumbisori.domain.place.repository.PlaceRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -17,17 +18,18 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class PlaceService {
     private final PlaceRepository placeRepository;
+    private final PlaceQueryRepository placeQueryRepository;
 
     @Cacheable(cacheNames = "places")
     public List<PlaceResponse> getAllPlaces() {
-        return placeRepository.findAll().stream()
+        return placeQueryRepository.findAll().stream()
                 .map(place -> PlaceResponse.from(place))
                 .toList();
     }
 
     @Cacheable(cacheNames = "placeDetails", key = "#placeId")
     public PlaceResponse getPlaceById(Long placeId) {
-        Place place = placeRepository.findById(placeId)
+        Place place = placeQueryRepository.findById(placeId)
                 .orElseThrow(() -> new PlaceException(PlaceErrorcode.PLACE_NOT_FOUND));
         return PlaceResponse.from(place);
     }
