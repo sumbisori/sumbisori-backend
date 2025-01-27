@@ -4,7 +4,7 @@ import com.groom.sumbisori.domain.place.entity.Place;
 import java.util.List;
 
 public record PlaceResponse(Long placeId, String name, String address,
-                            int price, List<PlaceDescriptionResponse> description, String imageUrl, double latitude,
+                            int price, List<PlaceDescriptionResponse> details, String imageUrl, double latitude,
                             double longitude,
                             String phoneNumber,
                             String link) {
