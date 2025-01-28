@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-@Profile("prod")
+@Profile("!local")
 public class WeatherCacheScheduler implements ApplicationListener<ApplicationReadyEvent> {
     private final WeatherRefreshService weatherRefreshService;
 
