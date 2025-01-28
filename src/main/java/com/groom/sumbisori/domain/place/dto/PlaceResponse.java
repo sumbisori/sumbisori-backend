@@ -1,11 +1,11 @@
 package com.groom.sumbisori.domain.place.dto;
 
-import com.groom.sumbisori.common.util.JsonUtil;
 import com.groom.sumbisori.domain.place.entity.Place;
-import java.util.Map;
+import java.util.List;
 
 public record PlaceResponse(Long placeId, String name, String address,
-                            int price, Map<String, String> desc, String imageUrl, double latitude, double longitude,
+                            int price, List<PlaceDescriptionResponse> details, String imageUrl, double latitude,
+                            double longitude,
                             String phoneNumber,
                             String link) {
     public static PlaceResponse from(Place place) {
@@ -14,7 +14,10 @@ public record PlaceResponse(Long placeId, String name, String address,
                 place.getName(),
                 place.getAddress(),
                 place.getPrice(),
-                JsonUtil.parseJsonToMap(place.getDescription()),
+                place.getDescriptions().stream()
+                        .map(desc -> PlaceDescriptionResponse.from(desc.getTitle(),
+                                desc.getDescription()))
+                        .toList(),
                 place.getImageUrl(),
                 place.getLatitude(),
                 place.getLongitude(),

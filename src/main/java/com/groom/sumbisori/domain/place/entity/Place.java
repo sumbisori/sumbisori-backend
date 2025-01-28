@@ -2,9 +2,13 @@ package com.groom.sumbisori.domain.place.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,9 +24,6 @@ public class Place {
 
     @Column
     private String name;
-
-    @Column(columnDefinition = "TEXT")
-    private String description;
 
     @Column
     private String address;
@@ -44,4 +45,7 @@ public class Place {
 
     @Column
     private String link;
+
+    @OneToMany(mappedBy = "place", fetch = FetchType.LAZY)
+    private List<PlaceDescription> descriptions = new ArrayList<>();
 }
