@@ -29,7 +29,10 @@ public class Place {
     private String address;
 
     @Column
-    private int price;
+    private int minPrice;
+
+    @Column
+    private int maxPrice;
 
     @Column(length = 1000)
     private String imageUrl;
@@ -45,6 +48,9 @@ public class Place {
 
     @Column
     private String link;
+
+    @Column
+    private String reservationLink;
 
     @OneToMany(mappedBy = "place", fetch = FetchType.LAZY)
     private List<PlaceDescription> descriptions = new ArrayList<>();
