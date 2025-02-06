@@ -14,4 +14,7 @@ public enum WaveErrorcode implements ErrorCode {
     private final HttpStatus httpStatus;
     private final String message;
 
+    public static class Const {
+        public static final String WAVE_DATA_NOT_FOUND = "WAVE_DATA_NOT_FOUND";
+    }
 }
