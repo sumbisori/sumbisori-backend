@@ -1,6 +1,7 @@
 package com.groom.sumbisori.domain.content.controller;
 
 import static com.groom.sumbisori.common.error.GlobalErrorCode.Const.EXTERNAL_API_ERROR;
+import static com.groom.sumbisori.domain.wave.error.WaveErrorcode.Const.WAVE_DATA_NOT_FOUND;
 
 import com.groom.sumbisori.common.error.GlobalErrorCode;
 import com.groom.sumbisori.common.springdoc.ApiExceptionExplanation;
@@ -8,6 +9,7 @@ import com.groom.sumbisori.common.springdoc.ApiResponseExplanations;
 import com.groom.sumbisori.domain.content.dto.response.YoutubeResponse;
 import com.groom.sumbisori.domain.content.entity.Spot;
 import com.groom.sumbisori.domain.wave.dto.WaveResponse;
+import com.groom.sumbisori.domain.wave.error.WaveErrorcode;
 import com.groom.sumbisori.domain.weather.dto.WeatherResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -28,7 +30,7 @@ public interface ContentApi {
     @Operation(summary = "해양 정보 조회")
     @ApiResponseExplanations(
             errors = {
-                    @ApiExceptionExplanation(value = GlobalErrorCode.class, constant = EXTERNAL_API_ERROR, name = "외부 api 호출 실패"),
+                    @ApiExceptionExplanation(value = WaveErrorcode.class, constant = WAVE_DATA_NOT_FOUND, name = "현재 해당 지역 파고 정보 제공 X"),
             }
     )
     ResponseEntity<WaveResponse> getWaveInfo(

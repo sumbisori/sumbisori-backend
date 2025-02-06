@@ -1,8 +1,8 @@
 package com.groom.sumbisori.domain.wave.service;
 
-import com.groom.sumbisori.common.error.GlobalErrorCode;
-import com.groom.sumbisori.common.error.GlobalException;
 import com.groom.sumbisori.domain.content.entity.Spot;
+import com.groom.sumbisori.domain.wave.error.WaveErrorcode;
+import com.groom.sumbisori.domain.wave.error.WaveException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import lombok.RequiredArgsConstructor;
@@ -39,9 +39,8 @@ public class WaveApiClient {
                 .uri(requestUrl)
                 .retrieve()
                 .onStatus(HttpStatusCode::isError, (request, clientResponse) -> {
-                    log.error("External API returned error status. Spot name: {}, URL: {}", spot.getSpotName(),
-                            requestUrl);
-                    throw new GlobalException(GlobalErrorCode.EXTERNAL_API_ERROR);
+                    log.error("외부 API 오류 - 파고 데이터 조회 실패 (Spot: {})", spot.getSpotName());
+                    throw new WaveException(WaveErrorcode.EXTERNAL_API_ERROR);
                 })
                 .body(String.class);
     }
