@@ -1,5 +1,5 @@
 server:
-  url: https://api.sumbisori.site
+  url: https://api.dev.sumbisori.site
   forward-headers-strategy: native
   servlet:
     encoding:
@@ -9,19 +9,13 @@ server:
 spring:
   config:
     activate:
-      on-profile: prod
+      on-profile: dev
     import: aws-parameterstore:/config/sumbisori/
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${DATABASE_URL}?allowPublicKeyRetrieval=true&useSSL=false
     username: ${DATABASE_USERNAME}
     password: ${DATABASE_PASSWORD}
-#  data:
-#    redis:
-#      host: ${REDIS_HOST}
-#      port: ${REDIS_PORT}
-#      repositories:
-#        enabled: false
   jpa:
     hibernate:
       ddl-auto: validate
@@ -43,7 +37,7 @@ spring:
             client-id: ${KAKAO_CLIENT_ID}
             client-secret: ${KAKAO_CLIENT_SECRET}
             client-authentication-method: client_secret_post
-            redirect-uri: https://api.sumbisori.site/api/login/oauth2/code/kakao
+            redirect-uri: https://api.dev.sumbisori.site/api/login/oauth2/code/kakao
             authorization-grant-type: authorization_code
             client-name: kakao
             scope: account_email,profile_nickname,profile_image
@@ -74,7 +68,7 @@ springdoc:
 client:
   cookie:
     domain: ".sumbisori.site"
-  url: "https://www.sumbisori.site"
+  url: "https://dev.sumbisori.site"
 
 custom:
   oauth2:

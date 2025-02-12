@@ -24,7 +24,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Service
-@Profile("prod")
+@Profile("!local")
 @RequiredArgsConstructor
 @Slf4j
 public class YoutubeService {

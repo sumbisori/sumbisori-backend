@@ -14,16 +14,16 @@ services:
       - mysql_data:/var/lib/mysql
     networks:
       - local_network
-  redis:
-    image: redis:7.2.4
-    restart: always
-    container_name: sumbisori-redis
-    ports:
-      - 6379:6379
-    networks:
-      - local_network
-    volumes:
-      - redis:/data
+#  redis:
+#    image: redis:7.2.4
+#    restart: always
+#    container_name: sumbisori-redis
+#    ports:
+#      - 6379:6379
+#    networks:
+#      - local_network
+#    volumes:
+#      - redis:/data
   prometheus:
     image: prom/prometheus
     container_name: sumbisori-prometheus
@@ -52,7 +52,7 @@ services:
 
 volumes:
   mysql_data:
-  redis:
+#  redis:
   grafana-data:
 
 networks:

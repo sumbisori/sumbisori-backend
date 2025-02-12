@@ -1,12 +1,11 @@
 package com.groom.sumbisori.domain.wave.service;
 
-import com.groom.sumbisori.common.error.GlobalErrorCode;
-import com.groom.sumbisori.common.error.GlobalException;
 import com.groom.sumbisori.domain.content.entity.Spot;
 import com.groom.sumbisori.domain.wave.dto.WaveResponse;
+import com.groom.sumbisori.domain.wave.error.WaveErrorcode;
+import com.groom.sumbisori.domain.wave.error.WaveException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -34,7 +33,7 @@ public class WaveResponseParser {
 
         String dataLine = lines[DATA_LINE_INDEX].trim();
         String[] fields = dataLine.split(",");
-        validateFieldCount(fields, dataLine, spot);
+        validateFieldCount(fields, spot);
 
         double waveHeight = parseToDouble(fields[FIELD_WAVE_HEIGHT]);
         double waterTemperature = parseToDouble(fields[FIELD_WATER_TEMPERATURE]);
@@ -47,21 +46,18 @@ public class WaveResponseParser {
      */
     private void validateResponseLength(String[] lines, Spot spot) {
         if (lines.length < MINIMUM_LINE_LENGTH) {
-            log.error("Invalid response length: {}. Spot: {}, lines: {}", lines.length, spot.getSpotName(), Arrays.toString(lines));
-            throw new GlobalException(GlobalErrorCode.EXTERNAL_API_ERROR);
+            log.error("파고 데이터 제공 불가 - Spot: {}", spot.getSpotName());
+            throw new WaveException(WaveErrorcode.WAVE_DATA_NOT_FOUND);
         }
     }
 
     /**
      * 데이터 필드 개수 검증
      */
-    private void validateFieldCount(String[] fields, String rawLine, Spot spot) {
+    private void validateFieldCount(String[] fields, Spot spot) {
         if (fields.length < MINIMUM_FIELD_COUNT) {
-            log.error(
-                    "Insufficient fields in response line. Expected >= {}, Found: {}. Spot: {}, fields: {}, rawLine: '{}'",
-                    MINIMUM_FIELD_COUNT, fields.length, spot.getSpotName(), Arrays.toString(fields), rawLine
-            );
-            throw new GlobalException(GlobalErrorCode.EXTERNAL_API_ERROR);
+            log.error("파고 데이터 제공 불가 - Spot: {}", spot.getSpotName());
+            throw new WaveException(WaveErrorcode.WAVE_DATA_NOT_FOUND);
         }
     }
 
@@ -72,8 +68,8 @@ public class WaveResponseParser {
         try {
             return Double.parseDouble(value.trim());
         } catch (NumberFormatException ex) {
-            log.error("Invalid format for double value: {}", value);
-            throw new GlobalException(GlobalErrorCode.EXTERNAL_API_ERROR);
+            log.error("파고 데이터 파싱 실패 - 잘못된 숫자 형식 (값: {})", value);
+            throw new WaveException(WaveErrorcode.WAVE_DATA_NOT_FOUND);
         }
     }
 
@@ -84,8 +80,8 @@ public class WaveResponseParser {
         try {
             return LocalDateTime.parse(value.trim(), DATE_TIME_FORMATTER);
         } catch (Exception ex) {
-            log.error("Invalid date format: {}", value);
-            throw new GlobalException(GlobalErrorCode.EXTERNAL_API_ERROR);
+            log.error("파고 데이터 파싱 실패 - 잘못된 날짜 형식 (값: {})", value);
+            throw new WaveException(WaveErrorcode.WAVE_DATA_NOT_FOUND);
         }
     }
 }

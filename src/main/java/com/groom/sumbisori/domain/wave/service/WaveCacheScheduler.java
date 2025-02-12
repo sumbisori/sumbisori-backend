@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-@Profile("prod")
+@Profile("!local")
 public class WaveCacheScheduler implements ApplicationListener<ApplicationReadyEvent> {
     private final WaveRefreshService waveRefreshService;
 
