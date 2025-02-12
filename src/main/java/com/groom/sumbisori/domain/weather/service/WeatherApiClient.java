@@ -18,7 +18,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Slf4j
 @RequiredArgsConstructor
 public class WeatherApiClient {
-    private static final String BASE_URL = "https://api.openweathermap.org/data/2.5/weather";
+    private static final String BASE_URL = "https://pro.openweathermap.org/data/2.5/weather";
     private static final String PARAM_LAT = "lat";
     private static final String PARAM_LON = "lon";
     private static final String PARAM_APPID = "appid";
