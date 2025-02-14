@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-and-push-backend:
-    if: ${{ startsWith(github.event.pull_request.head.ref, 'release/') }}
+    if: ${{ startsWith(github.event.pull_request.head.ref, 'release/') || startsWith(github.event.pull_request.head.ref, 'hotfix/') }}
     runs-on: ubuntu-latest
 
     steps:
@@ -18,7 +18,7 @@ jobs:
 
       - name: Set VERSION from PR title
         run: |
-          VERSION=$(echo "${{ github.event.pull_request.title }}" | sed -n 's/release: \(.*\)/\1/p')
+          VERSION=$(echo "${{ github.event.pull_request.title }}" | sed -n 's/^\(release\|hotfix\): \(.*\)/\2/p')
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
 
       - name: Set up JDK 17
