@@ -2,6 +2,7 @@ package com.groom.sumbisori.domain.place.repository;
 
 import static com.groom.sumbisori.domain.place.entity.QPlace.place;
 import static com.groom.sumbisori.domain.place.entity.QPlaceDescription.placeDescription;
+import static com.groom.sumbisori.domain.place.entity.QIcon.icon;
 
 import com.groom.sumbisori.domain.place.entity.Place;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -18,6 +19,7 @@ public class PlaceQueryRepository {
     public Optional<Place> findById(Long placeId) {
         Place result = queryFactory.selectFrom(place)
                 .leftJoin(place.descriptions, placeDescription).fetchJoin()
+                .leftJoin(placeDescription.icon, icon).fetchJoin()
                 .where(place.id.eq(placeId))
                 .fetchOne();
         return Optional.ofNullable(result);
