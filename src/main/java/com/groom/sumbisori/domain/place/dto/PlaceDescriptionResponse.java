@@ -7,22 +7,20 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public record PlaceDescriptionResponse(
-        List<DescriptionItem> operationInfo,
-        List<DescriptionItem> facilities,
-        List<DescriptionItem> inquiries
+        List<OperationInfoItem> operationInfo,
+        List<FacilityItem> facilities,
+        List<InquiryItem> inquiries
 ) {
     public static PlaceDescriptionResponse from(List<PlaceDescription> descriptions) {
-        // 한 번의 스트림 처리로 타입별 분류
-        Map<Type, List<DescriptionItem>> groupedDescriptions = descriptions.stream()
-                .collect(Collectors.groupingBy(
-                        PlaceDescription::getType,
-                        Collectors.mapping(DescriptionItem::from, Collectors.toList())
-                ));
+        Map<Type, List<PlaceDescription>> grouped = descriptions.stream()
+                .collect(Collectors.groupingBy(PlaceDescription::getType));
 
         return new PlaceDescriptionResponse(
-                groupedDescriptions.getOrDefault(Type.INFO, List.of()),
-                groupedDescriptions.getOrDefault(Type.FACILITY, List.of()),
-                groupedDescriptions.getOrDefault(Type.INQUIRY, List.of())
-        );
+                grouped.getOrDefault(Type.INFO, List.of()).stream()
+                        .map(OperationInfoItem::from).toList(),
+                grouped.getOrDefault(Type.FACILITY, List.of()).stream()
+                        .map(FacilityItem::from).toList(),
+                grouped.getOrDefault(Type.INQUIRY, List.of()).stream()
+                        .map(InquiryItem::from).toList());
     }
 }
