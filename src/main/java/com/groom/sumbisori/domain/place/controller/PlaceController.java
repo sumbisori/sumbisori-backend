@@ -2,6 +2,7 @@ package com.groom.sumbisori.domain.place.controller;
 
 import com.groom.sumbisori.domain.place.dto.PlaceLocationResponse;
 import com.groom.sumbisori.domain.place.dto.PlaceResponse;
+import com.groom.sumbisori.domain.place.dto.SimplePlaceResponse;
 import com.groom.sumbisori.domain.place.service.PlaceService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ public class PlaceController implements PlaceApi {
 
     @Override
     @GetMapping
-    public ResponseEntity<List<PlaceResponse>> getAllPlaces() {
+    public ResponseEntity<List<SimplePlaceResponse>> getAllPlaces() {
         return ResponseEntity.ok(placeService.getAllPlaces());
     }
 
