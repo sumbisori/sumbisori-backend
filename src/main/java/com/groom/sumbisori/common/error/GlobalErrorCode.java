@@ -24,5 +24,6 @@ public enum GlobalErrorCode implements ErrorCode {
 
     public static class Const {
         public static final String EXTERNAL_API_ERROR = "EXTERNAL_API_ERROR";
+        public static final String VALIDATION_FAILED = "VALIDATION_FAILED";
     }
 }
