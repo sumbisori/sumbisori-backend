@@ -90,3 +90,16 @@ management:
         exclude: env,beans
   server:
     port: ${MANAGEMENT_SERVER_PORT}
+
+cloud:
+  aws:
+    cloudfront:
+      domain: ${CLOUDFRONT_DOMAIN}
+    s3:
+      bucket: ${S3_BUCKET}
+    credentials:
+      access-key: ${AWS_ACCESS_KEY}
+      secret-key: ${AWS_SECRET_KEY}
+    region: ${AWS_REGION}
+    stack:
+      auto: false
