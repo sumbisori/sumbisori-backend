@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S3 파일 업로드</title>
+</head>
+<body>
+<h2>S3 파일 업로드</h2>
+
+<!-- Pre-Signed URL 입력 -->
+<label for="presignedUrl">Pre-Signed URL:</label>
+<input type="text" id="presignedUrl" placeholder="Pre-Signed URL을 입력하세요" size="80">
+
+<br><br>
+
+<!-- 파일 선택 -->
+<label for="fileInput">업로드할 파일 선택:</label>
+<input type="file" id="fileInput">
+
+<br><br>
+
+<!-- 파일 타입과 크기 출력 -->
+<div id="fileInfo">
+    <p>파일 타입: <span id="fileType">없음</span></p>
+    <p>파일 크기: <span id="fileSize">없음</span></p>
+</div>
+
+<br><br>
+
+<!-- 업로드 버튼 -->
+<button onclick="uploadFile()">파일 업로드</button>
+
+<p id="status"></p>
+
+<script>
+    // 파일 타입과 크기를 표시하는 함수
+    function displayFileInfo(file) {
+        const fileTypeElement = document.getElementById("fileType");
+        const fileSizeElement = document.getElementById("fileSize");
+
+        // 파일 타입과 크기를 화면에 표시 (바이트 단위로 출력)
+        fileTypeElement.textContent = file.type || "알 수 없음";
+        fileSizeElement.textContent = file.size + " bytes";  // 바이트 단위로 표시
+    }
+
+    // 파일 선택 시 호출되는 이벤트 리스너
+    document.getElementById("fileInput").addEventListener("change", (event) => {
+        const file = event.target.files[0];  // 선택한 파일 가져오기
+        if (file) {
+            displayFileInfo(file);  // 파일 정보 표시
+        }
+    });
+
+    async function uploadFile() {
+        const presignedUrl = document.getElementById("presignedUrl").value; // 입력한 URL 가져오기
+        const fileInput = document.getElementById("fileInput").files[0]; // 선택한 파일 가져오기
+        const statusElement = document.getElementById("status");
+
+        if (!presignedUrl) {
+            alert("Pre-Signed URL을 입력하세요.");
+            return;
+        }
+
+        if (!fileInput) {
+            alert("업로드할 파일을 선택하세요.");
+            return;
+        }
+
+        // 선택한 파일의 타입과 크기를 사전에 설정된 것과 비교 (테스트용)
+        const uploadedFileType = fileInput.type;
+        const uploadedFileSize = fileInput.size;
+
+        console.log("선택된 파일 타입:", uploadedFileType);
+        console.log("선택된 파일 크기:", uploadedFileSize);
+
+        try {
+            // S3에 파일 업로드
+            const response = await fetch(presignedUrl, {
+                method: "PUT",
+                body: fileInput,
+                headers: {
+                    "Content-Type": uploadedFileType // 파일의 MIME 타입 지정
+                }
+            });
+
+            if (response.ok) {
+                statusElement.innerHTML = `✅ 업로드 성공! <br> 파일 URL: <a href="${presignedUrl.split('?')[0]}" target="_blank">${presignedUrl.split('?')[0]}</a>`;
+            } else {
+                statusElement.innerHTML = "❌ 업로드 실패: " + response.statusText;
+            }
+        } catch (error) {
+            statusElement.innerHTML = "❌ 오류 발생: " + error.message;
+        }
+    }
+</script>
+</body>
+</html>
