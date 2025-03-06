@@ -37,6 +37,7 @@ public class WaveResponseParser {
 
         double waveHeight = parseToDouble(fields[FIELD_WAVE_HEIGHT]);
         double waterTemperature = parseToDouble(fields[FIELD_WATER_TEMPERATURE]);
+        validateData(waveHeight, waterTemperature, spot);
         LocalDateTime observationTime = parseToLocalDateTime(fields[FIELD_OBSERVATION_TIME]);
         return WaveResponse.of(waveHeight, waterTemperature, observationTime);
     }
@@ -81,6 +82,16 @@ public class WaveResponseParser {
             return LocalDateTime.parse(value.trim(), DATE_TIME_FORMATTER);
         } catch (Exception ex) {
             log.error("파고 데이터 파싱 실패 - 잘못된 날짜 형식 (값: {})", value);
+            throw new WaveException(WaveErrorcode.WAVE_DATA_NOT_FOUND);
+        }
+    }
+
+    /**
+     * 파싱된 데이터가 비정상적인 경우 예외를 던지기 위한 검증 함수
+     */
+    private void validateData(double waveHeight, double waterTemperature, Spot spot) {
+        if (waveHeight == -99 || waterTemperature == -99) {
+            log.error("비정상 파고 데이터 - Spot: {} (파고: {}, 수온: {})", spot.getSpotName(), waveHeight, waterTemperature);
             throw new WaveException(WaveErrorcode.WAVE_DATA_NOT_FOUND);
         }
     }
