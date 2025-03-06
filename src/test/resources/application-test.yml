@@ -60,3 +60,15 @@ client:
   cookie:
     domain: test
   url: "http://test"
+
+custom:
+  oauth2:
+    kakao:
+      admin-key: test-key
+      logout-uri: test
+
+api:
+  key:
+    youtube: test
+    wave: test
+    weather: test
