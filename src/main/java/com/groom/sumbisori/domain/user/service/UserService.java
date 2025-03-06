@@ -12,6 +12,8 @@ import com.groom.sumbisori.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,7 +48,7 @@ public class UserService {
 
     @Transactional
     public User createAndUpdateMember(OAuth2Response oAuth2Response, String providerType) {
-        return userRepository.findByProviderTypeAndProviderId(providerType, oAuth2Response.getProviderId())
+        return userRepository.findByProviderIdAndProviderType(oAuth2Response.getProviderId(), providerType)
                 .map(existingUser -> updateMember(existingUser, oAuth2Response))
                 .orElseGet(() -> registerNewMember(oAuth2Response));
     }
@@ -58,9 +60,16 @@ public class UserService {
     }
 
     private User registerNewMember(OAuth2Response oAuth2Response) {
-        log.info("소셜로그인으로 처음 로그인(강제 회원가입): {}", oAuth2Response.getProvider());
-        User user = userRepository.save(oAuth2Response.toEntity());
-        eventPublisher.publishEvent(SignUpEvent.of(user.getId()));
-        return user;
+        try {
+            User user = userRepository.save(oAuth2Response.toEntity());
+            log.info("첫 소셜 로그인 및 회원가입 진행 - 제공자: {} / 사용자 ID: {}", oAuth2Response.getProvider(),
+                    oAuth2Response.getProviderId());
+            eventPublisher.publishEvent(SignUpEvent.of(user.getId()));
+            return user;
+        } catch (DataIntegrityViolationException e) {
+            log.error("중복된 사용자 - 제공자: {}, providerId: {}", oAuth2Response.getProvider(),
+                    oAuth2Response.getProviderId());
+            throw new OAuth2AuthenticationException("duplicate user");
+        }
     }
 }
