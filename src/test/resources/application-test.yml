@@ -72,3 +72,14 @@ api:
     youtube: test
     wave: test
     weather: test
+
+cloud:
+  aws:
+    cloudfront:
+      domain: test
+    s3:
+      bucket: test
+    credentials:
+      access-key: test
+      secret-key: test
+    region: test
