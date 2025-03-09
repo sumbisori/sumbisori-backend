@@ -47,7 +47,25 @@ spring:
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
-
+  ai:
+    retry:
+      max-attempts: 3
+      backoff:
+        initial-interval: 1s
+        multiplier: 2
+        max-interval: 15s
+      on-http-codes: [ 429, 500, 502, 503 ]
+      exclude-on-http-codes: [ 400, 403, 404 ]
+      on-client-errors: false
+    openai:
+      api-key: ${OPENAI_API_KEY}
+      chat:
+        options:
+          model: gpt-4o-mini
+          temperature: 0.2
+          top-p: 0.8
+          presence-penalty: 0.2
+          max-tokens: 512
 logging:
   level:
     org:

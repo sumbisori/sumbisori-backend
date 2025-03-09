@@ -47,7 +47,9 @@ spring:
             user-name-attribute: id
   jwt:
     secret: UI4Tv+IPs8QP8Cu18EgE83vi5tk3YLTmDPplA3EeBQg=
-
+  ai:
+    openai:
+      api-key: test
 logging:
   level:
     '[com.example.kakao]': DEBUG
