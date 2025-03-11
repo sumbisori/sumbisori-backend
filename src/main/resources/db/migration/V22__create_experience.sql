@@ -24,6 +24,12 @@ CREATE TABLE file
     CONSTRAINT pk_file PRIMARY KEY (file_id)
 );
 
+DELETE
+FROM seafood_collection;
+
+ALTER TABLE seafood_collection
+    AUTO_INCREMENT = 1;
+
 ALTER TABLE seafood_collection
     ADD experience_id BIGINT NOT NULL;
 
