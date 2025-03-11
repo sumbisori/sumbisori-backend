@@ -30,7 +30,7 @@ public class FileController implements FileApi {
     }
 
     @GetMapping("/analyze")
-    public ResponseEntity<List<SeafoodRecognitionResponse>> imageAnalyze(@RequestParam String key) {
-        return ResponseEntity.ok(imageAnalyzeService.analyze(key));
+    public ResponseEntity<List<SeafoodRecognitionResponse>> imageAnalyze(@RequestParam String imageIdentifier) {
+        return ResponseEntity.ok(imageAnalyzeService.analyze(imageIdentifier));
     }
 }

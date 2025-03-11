@@ -44,7 +44,7 @@ public interface FileApi {
     )
     @ApiResponseExplanations(
             errors = {
-                    @ApiExceptionExplanation(value = FileErrorcode.class, constant = Const.INVALID_FILE, name = "유효하지 않은 objectKey 입니다."),
+                    @ApiExceptionExplanation(value = FileErrorcode.class, constant = Const.INVALID_FILE, name = "유효하지 않은 imageIdentifier 입니다."),
                     @ApiExceptionExplanation(value = FileErrorcode.class, constant = Const.S3_ERROR, name = "S3 서비스 오류입니다."),
                     @ApiExceptionExplanation(value = FileErrorcode.class, constant = Const.CHAT_GPT_ERROR, name = "Chat GPT 서비스 오류입니다.")
             }
