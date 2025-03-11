@@ -1,6 +1,6 @@
 package com.groom.sumbisori.domain.file.controller;
 
-import com.groom.sumbisori.domain.file.dto.PreSignedUrlRequest;
+import com.groom.sumbisori.domain.file.dto.request.PreSignedUrlRequest;
 import com.groom.sumbisori.domain.file.dto.PreSignedUrlResponse;
 import com.groom.sumbisori.domain.file.dto.SeafoodRecognitionResponse;
 import com.groom.sumbisori.domain.file.service.ImageAnalyzeService;

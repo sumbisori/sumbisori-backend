@@ -3,7 +3,7 @@ package com.groom.sumbisori.domain.file.controller;
 import com.groom.sumbisori.common.error.GlobalErrorCode;
 import com.groom.sumbisori.common.springdoc.ApiExceptionExplanation;
 import com.groom.sumbisori.common.springdoc.ApiResponseExplanations;
-import com.groom.sumbisori.domain.file.dto.PreSignedUrlRequest;
+import com.groom.sumbisori.domain.file.dto.request.PreSignedUrlRequest;
 import com.groom.sumbisori.domain.file.dto.PreSignedUrlResponse;
 import com.groom.sumbisori.domain.file.dto.SeafoodRecognitionResponse;
 import com.groom.sumbisori.domain.file.error.FileErrorcode;
