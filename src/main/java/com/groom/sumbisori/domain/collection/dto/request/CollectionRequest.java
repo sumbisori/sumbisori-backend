@@ -13,6 +13,6 @@ public record CollectionRequest(
 
         @NotNull(message = "quantity는 필수입니다.")
         @Min(value = 1, message = "quantity는 1 이상이어야 합니다.")
-        @Max(value = 99, message = "quantity는 99 이하 입니다.")
+        @Max(value = 20, message = "quantity는 20 이하 입니다.")
         int quantity) {
 }

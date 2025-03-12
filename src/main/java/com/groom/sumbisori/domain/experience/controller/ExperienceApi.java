@@ -51,7 +51,7 @@ public interface ExperienceApi {
                                     - 파일의 순서는 필수입니다. (1부터 순서대로 파일 사이즈만큼)
                                     - 파일의 순서는 1 이상 ~ 10까지 가능합니다.
                                     - seafoodId는 필수입니다.
-                                    - quantity는 필수, 1 이상 ~ 100 미만이어야 합니다.
+                                    - quantity는 필수, 1 이상 ~ 20 이하여야 합니다.
                                     """
                     ),
                     @ApiExceptionExplanation(value = PlaceErrorcode.class, constant = PlaceErrorcode.Const.PLACE_NOT_FOUND, name = "체험 장소를 찾을 수 없습니다."),
