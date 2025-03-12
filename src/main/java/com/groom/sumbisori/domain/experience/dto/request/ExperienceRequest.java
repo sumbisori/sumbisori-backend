@@ -14,42 +14,24 @@ import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.List;
 
-public record ExperienceRequest(
-        @NotNull(message = "체험 날짜는 필수입니다.")
-        LocalDate experienceDate,
+public record ExperienceRequest(@NotNull(message = "체험 날짜는 필수입니다.") LocalDate experienceDate,
 
-        @NotNull(message = "장소 ID는 필수입니다.")
-        @Positive(message = "장소 ID는 양수여야 합니다.")
-        Long placeId,
+                                @NotNull(message = "장소 ID는 필수입니다.") @Positive(message = "장소 ID는 양수여야 합니다.") Long placeId,
 
-        @NotNull(message = "날씨 정보는 필수입니다.")
-        Weather weather,
+                                @NotNull(message = "날씨 정보는 필수입니다.") Weather weather,
 
-        @NotNull(message = "동반자 유형은 필수입니다.")
-        CompanionType companionType,
+                                @NotNull(message = "동반자 유형은 필수입니다.") CompanionType companionType,
 
-        @Size(max = 10, message = "최대 10개의 파일을 요청할 수 있습니다.")
-        List<FileRequest> files,
+                                @Size(max = 10, message = "최대 10개의 파일을 요청할 수 있습니다.") List<FileRequest> files,
 
-        @Size(max = 150, message = "최대 150자까지 입력할 수 있습니다.")
-        String impression,
+                                @Size(min = 10, max = 150, message = "최소 10자 ~ 최대 150자까지 입력할 수 있습니다.") String impression,
 
-        @Min(value = 1, message = "만족도는 1점 이상이어야 합니다.")
-        @Max(value = 5, message = "만족도는 5점을 초과할 수 없습니다.")
-        int satisfaction,
+                                @Min(value = 1, message = "만족도는 1점 이상이어야 합니다.") @Max(value = 5, message = "만족도는 5점을 초과할 수 없습니다.") int satisfaction,
 
-        @Size(max = 5, message = "최대 5개의 파일을 요청할 수 있습니다.")
-        List<CollectionRequest> collections
-) {
-        public Experience of(Long userId, Place place, ExperienceRequest experienceRequest) {
-                return Experience.builder()
-                        .userId(userId)
-                        .place(place)
-                        .experienceDate(experienceRequest.experienceDate())
-                        .weather(experienceRequest.weather())
-                        .companionType(experienceRequest.companionType())
-                        .impression(experienceRequest.impression())
-                        .satisfaction(experienceRequest.satisfaction())
-                        .build();
-        }
+                                @Size(max = 5, message = "최대 5개의 수집을 요청할 수 있습니다.") List<CollectionRequest> collections) {
+    public Experience of(Long userId, Place place, ExperienceRequest experienceRequest) {
+        return Experience.builder().userId(userId).place(place).experienceDate(experienceRequest.experienceDate())
+                .weather(experienceRequest.weather()).companionType(experienceRequest.companionType())
+                .impression(experienceRequest.impression()).satisfaction(experienceRequest.satisfaction()).build();
+    }
 }

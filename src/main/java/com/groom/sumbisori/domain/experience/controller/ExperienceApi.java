@@ -27,7 +27,7 @@ public interface ExperienceApi {
                         - 날씨 정보: 필수
                         - 동반자 유형: 필수
                         - 파일: 최대 10개 (imageIdentifier, 순서)
-                        - 소감: 최대 150자
+                        - 소감: 최소 10자 ~ 최대 150자
                         - 만족도: 1 ~ 5점
                         - 채집 정보: 최대 5개 (imageIdentifier, seafoodId, 수량)
                     """
@@ -44,7 +44,7 @@ public interface ExperienceApi {
                                     - 날씨 정보는 필수입니다.
                                     - 동반자 유형은 필수입니다.
                                     - 최대 10개의 파일을 요청할 수 있습니다.
-                                    - 최대 150자까지 입력할 수 있습니다.
+                                    - 최소 10자 ~ 최대 150자까지 입력할 수 있습니다.
                                     - 만족도는 1점 이상이어야 합니다.
                                     - 만족도는 5점을 초과할 수 없습니다.
                                     - 파일의 imageIdentifier는 필수입니다.
