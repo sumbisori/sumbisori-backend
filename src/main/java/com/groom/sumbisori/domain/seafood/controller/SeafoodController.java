@@ -3,16 +3,13 @@ package com.groom.sumbisori.domain.seafood.controller;
 import com.groom.sumbisori.common.config.LoginUser;
 import com.groom.sumbisori.domain.collection.dto.response.MyCollectionSeafood;
 import com.groom.sumbisori.domain.collection.service.SeafoodCollectionService;
-import com.groom.sumbisori.domain.seafood.service.SeafoodService;
 import com.groom.sumbisori.domain.seafood.dto.MySeafoodDto;
-import com.groom.sumbisori.domain.seafood.dto.SeafoodRequest;
 import com.groom.sumbisori.domain.seafood.dto.SeafoodResponse;
+import com.groom.sumbisori.domain.seafood.service.SeafoodService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,13 +36,5 @@ public class SeafoodController implements SeafoodApi {
     @GetMapping("/collected")
     public ResponseEntity<List<MyCollectionSeafood>> getMySeafoods(@LoginUser Long userId) {
         return ResponseEntity.ok(seafoodCollectionService.mySeafoodCollection(userId));
-    }
-
-    @Override
-    @PostMapping
-    public ResponseEntity<Void> createSeafood(@LoginUser Long userId,
-                                              @RequestBody SeafoodRequest request) {
-        seafoodCollectionService.createSeafoodCollection(userId, request);
-        return ResponseEntity.ok().build();
     }
 }

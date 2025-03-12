@@ -24,42 +24,43 @@ public class SeafoodQueryRepository {
     private final JPAQueryFactory queryFactory;
 
     public List<MySeafoodDto> findAllSeafoodCollectionStatusByUserId(Long userId) {
-        DateTemplate<String> dateTemplate = Expressions.dateTemplate(
-                String.class,
-                "coalesce(DATE_FORMAT(MIN({0}), {1}), {2})",
-                seafoodCollection.createdAt,
-                ConstantImpl.create("%Y년 %m월 %d일"),
-                ConstantImpl.create("")
-        );
-
-        NumberExpression<Integer> quantitySum = seafoodCollection.quantity.sum();
-        StringExpression descriptionExpression = new CaseBuilder()
-                .when(quantitySum.isNull().or(quantitySum.eq(0)))
-                .then("아직 수집하지 못했어요")
-                .otherwise(seafood.description);
-
-        return queryFactory
-                .select(new QMySeafoodDto(
-                        seafood.id,
-                        seafood.koreanName,
-                        seafood.englishName,
-                        descriptionExpression,
-                        dateTemplate,
-                        quantitySum
-                ))
-                .from(seafood)
-                .leftJoin(seafoodCollection)
-                .on(seafoodCollection.seafood.eq(seafood).and(seafoodCollectionUserIdEq(userId)))
-                .groupBy(
-                        seafood.id,
-                        seafood.koreanName,
-                        seafood.englishName
-                )
-                .fetch();
+//        DateTemplate<String> dateTemplate = Expressions.dateTemplate(
+//                String.class,
+//                "coalesce(DATE_FORMAT(MIN({0}), {1}), {2})",
+//                seafoodCollection.createdAt,
+//                ConstantImpl.create("%Y년 %m월 %d일"),
+//                ConstantImpl.create("")
+//        );
+//
+//        NumberExpression<Integer> quantitySum = seafoodCollection.quantity.sum();
+//        StringExpression descriptionExpression = new CaseBuilder()
+//                .when(quantitySum.isNull().or(quantitySum.eq(0)))
+//                .then("아직 수집하지 못했어요")
+//                .otherwise(seafood.description);
+//
+//        return queryFactory
+//                .select(new QMySeafoodDto(
+//                        seafood.id,
+//                        seafood.koreanName,
+//                        seafood.englishName,
+//                        descriptionExpression,
+//                        dateTemplate,
+//                        quantitySum
+//                ))
+//                .from(seafood)
+//                .leftJoin(seafoodCollection)
+//                .on(seafoodCollection.seafood.eq(seafood).and(seafoodCollectionUserIdEq(userId)))
+//                .groupBy(
+//                        seafood.id,
+//                        seafood.koreanName,
+//                        seafood.englishName
+//                )
+//                .fetch();
+        return List.of();
     }
 
-    private BooleanBuilder seafoodCollectionUserIdEq(Long userId) {
-        return nullSafeBuilder(() -> seafoodCollection.userId.eq(userId));
-    }
+//    private BooleanBuilder seafoodCollectionUserIdEq(Long userId) {
+//        return nullSafeBuilder(() -> seafoodCollection.userId.eq(userId));
+//    }
 
 }
