@@ -24,6 +24,9 @@ public class FileCopyService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucketName;
 
+    /**
+     * S3 버킷에서 파일을 복사
+     */
     public void copy(String imageIdentifier) {
         if (!s3Util.doesObjectExist(BEFORE_PREFIX + imageIdentifier)) {
             throw new FileException(FileErrorcode.INVALID_FILE);
