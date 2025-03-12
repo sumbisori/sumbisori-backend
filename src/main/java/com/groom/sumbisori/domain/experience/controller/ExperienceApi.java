@@ -29,7 +29,7 @@ public interface ExperienceApi {
                         - 파일: 최대 10개 (imageIdentifier, 순서)
                         - 소감: 최대 150자
                         - 만족도: 1 ~ 5점
-                        - 채집 정보: 최대 10개 (imageIdentifier, seafoodId, 수량)
+                        - 채집 정보: 최대 5개 (imageIdentifier, seafoodId, 수량)
                     """
     )
     @ApiResponseExplanations(

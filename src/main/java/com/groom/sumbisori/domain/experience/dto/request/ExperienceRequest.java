@@ -38,7 +38,7 @@ public record ExperienceRequest(
         @Max(value = 5, message = "만족도는 5점을 초과할 수 없습니다.")
         int satisfaction,
 
-        @Size(max = 10, message = "최대 10개의 파일을 요청할 수 있습니다.")
+        @Size(max = 5, message = "최대 5개의 파일을 요청할 수 있습니다.")
         List<CollectionRequest> collections
 ) {
         public Experience of(Long userId, Place place, ExperienceRequest experienceRequest) {
