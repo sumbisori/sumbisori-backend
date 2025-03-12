@@ -22,6 +22,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Slf4j
 public class ExperienceCreateService {
+    private static final int YEARS_LIMIT = 5;
+
     private final PlaceRepository placeRepository;
     private final ExperienceRepository experienceRepository;
     private final FileImageCreateService fileImageCreateService;
@@ -48,7 +50,10 @@ public class ExperienceCreateService {
     }
 
     private void validate(ExperienceRequest experienceRequest) {
-        if (experienceRequest.experienceDate().isAfter(LocalDate.now())) {
+        LocalDate experienceDate = experienceRequest.experienceDate();
+        LocalDate today = LocalDate.now();
+        LocalDate fiveYearsAgo = today.minusYears(YEARS_LIMIT);
+        if (experienceDate.isAfter(today) || experienceDate.isBefore(fiveYearsAgo)) {
             throw new ExperienceException(ExperienceErrorcode.EXPERIENCE_DATE_INVALID);
         }
     }
