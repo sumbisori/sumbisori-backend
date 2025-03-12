@@ -6,7 +6,4 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 public interface SeafoodCollectionRepository extends JpaRepository<SeafoodCollection, Long> {
-    @Modifying
-    @Query("DELETE FROM SeafoodCollection sc WHERE sc.userId = :userId")
-    void deleteByUserId(Long userId);
 }

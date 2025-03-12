@@ -1,4 +1,4 @@
-package com.groom.sumbisori.domain.collection.entity;
+package com.groom.sumbisori.domain.file.entity;
 
 import com.groom.sumbisori.domain.base.entity.BaseTimeEntity;
 import jakarta.persistence.Column;
@@ -19,14 +19,15 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Table(name = "seafood_collection",
+@Table(name = "file",
         indexes = {
-                @Index(name = "idx_seafood_collection_experience", columnList = "experienceId")
+                //커버링 인덱스 사용 예정
+                @Index(name = "idx_file_experience_sequence", columnList = "experience_id, sequence, imageIdentifier")
         })
-public class SeafoodCollection extends BaseTimeEntity {
+public class File extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "seafood_collection_id")
+    @Column(name = "file_id")
     private Long id;
 
     @Column(nullable = false)
@@ -34,4 +35,7 @@ public class SeafoodCollection extends BaseTimeEntity {
 
     @Column(nullable = false)
     private String imageIdentifier;
+
+    @Column(nullable = false)
+    private int sequence;
 }

@@ -14,8 +14,8 @@ public class ImageAnalyzeService {
     private final S3PreSignedUrlService s3PreSignedUrlService;
     private final ChatGPTService chatGPTService;
 
-    public List<SeafoodRecognitionResponse> analyze(String objectKey) {
-        URL preSignedGetUrl = s3PreSignedUrlService.getPreSignedGetUrl(objectKey);
+    public List<SeafoodRecognitionResponse> analyze(String imageIdentifier) {
+        URL preSignedGetUrl = s3PreSignedUrlService.getPreSignedGetUrl(imageIdentifier);
         return chatGPTService.analyzeSeafoodImage(preSignedGetUrl);
     }
 }

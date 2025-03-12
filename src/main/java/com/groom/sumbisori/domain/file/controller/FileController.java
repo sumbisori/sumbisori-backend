@@ -1,6 +1,6 @@
 package com.groom.sumbisori.domain.file.controller;
 
-import com.groom.sumbisori.domain.file.dto.PreSignedUrlRequest;
+import com.groom.sumbisori.domain.file.dto.request.PreSignedUrlRequest;
 import com.groom.sumbisori.domain.file.dto.PreSignedUrlResponse;
 import com.groom.sumbisori.domain.file.dto.SeafoodRecognitionResponse;
 import com.groom.sumbisori.domain.file.service.ImageAnalyzeService;
@@ -30,7 +30,7 @@ public class FileController implements FileApi {
     }
 
     @GetMapping("/analyze")
-    public ResponseEntity<List<SeafoodRecognitionResponse>> imageAnalyze(@RequestParam String key) {
-        return ResponseEntity.ok(imageAnalyzeService.analyze(key));
+    public ResponseEntity<List<SeafoodRecognitionResponse>> imageAnalyze(@RequestParam String imageIdentifier) {
+        return ResponseEntity.ok(imageAnalyzeService.analyze(imageIdentifier));
     }
 }

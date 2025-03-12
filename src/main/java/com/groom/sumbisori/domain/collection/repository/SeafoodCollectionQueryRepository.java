@@ -18,29 +18,31 @@ public class SeafoodCollectionQueryRepository {
     private final JPAQueryFactory queryFactory;
 
     public List<MyCollectionSeafood> findSeafoodCollectionByUserId(Long userId) {
-        return queryFactory
-                .select(new QMyCollectionSeafood(
-                        seafood.id,
-                        seafood.koreanName,
-                        seafood.englishName,
-                        seafoodCollection.quantity.sum().intValue()
-                ))
-                .from(seafoodCollection)
-                .join(seafoodCollection.seafood, seafood).on(seafoodCollectionUserIdEq(userId))
-                .groupBy(seafood.id, seafood.koreanName, seafood.englishName)
-                .fetch();
+//        return queryFactory
+//                .select(new QMyCollectionSeafood(
+//                        seafood.id,
+//                        seafood.koreanName,
+//                        seafood.englishName,
+//                        seafoodCollection.quantity.sum().intValue()
+//                ))
+//                .from(seafoodCollection)
+//                .join(seafoodCollection.seafood, seafood).on(seafoodCollectionUserIdEq(userId))
+//                .groupBy(seafood.id, seafood.koreanName, seafood.englishName)
+//                .fetch();
+        return List.of();
     }
 
     public int sumQuantityByUserId(Long userId) {
-        Integer result = queryFactory
-                .select(seafoodCollection.quantity.sum())
-                .from(seafoodCollection)
-                .where(seafoodCollection.userId.eq(userId))
-                .fetchOne();
-        return result != null ? result : 0;
+//        Integer result = queryFactory
+//                .select(seafoodCollection.quantity.sum())
+//                .from(seafoodCollection)
+//                .where(seafoodCollection.userId.eq(userId))
+//                .fetchOne();
+//        return result != null ? result : 0;
+        return 0; //임시
     }
 
-    private BooleanBuilder seafoodCollectionUserIdEq(Long userId) {
-        return nullSafeBuilder(() -> seafoodCollection.userId.eq(userId));
-    }
+//    private BooleanBuilder seafoodCollectionUserIdEq(Long userId) {
+//        return nullSafeBuilder(() -> seafoodCollection.userId.eq(userId));
+//    }
 }

@@ -1,7 +1,7 @@
 package com.groom.sumbisori.domain.file.service;
 
-import com.groom.sumbisori.domain.file.dto.FileInfo;
-import com.groom.sumbisori.domain.file.dto.PreSignedUrlRequest;
+import com.groom.sumbisori.domain.file.dto.request.FileInfo;
+import com.groom.sumbisori.domain.file.dto.request.PreSignedUrlRequest;
 import com.groom.sumbisori.domain.file.dto.PreSignedUrlResponse;
 import com.groom.sumbisori.domain.file.error.FileErrorcode;
 import com.groom.sumbisori.domain.file.error.FileException;
@@ -43,12 +43,12 @@ public class S3PreSignedUrlService {
     }
 
     private PreSignedUrlResponse getPreSignedPutUrl(FileInfo fileInfo) {
-        String objectKey = S3_UPLOAD_PREFIX + UUID.randomUUID();
+        String imageIdentifier = UUID.randomUUID().toString();
 
         // 1. S3에 업로드할 객체 요청 생성
         PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                 .bucket(bucketName)
-                .key(objectKey)
+                .key(S3_UPLOAD_PREFIX + imageIdentifier)
                 .contentType(fileInfo.contentType())
                 .contentLength(fileInfo.size())
                 .build();
@@ -60,13 +60,14 @@ public class S3PreSignedUrlService {
                 .build();
 
         // 3. Pre-Signed URL 생성
-        return new PreSignedUrlResponse(s3PreSigner.presignPutObject(presignRequest).url().toExternalForm(), objectKey);
+        return new PreSignedUrlResponse(s3PreSigner.presignPutObject(presignRequest).url().toExternalForm(), imageIdentifier);
     }
 
     /**
      * GET - 파일 다운로드용
      */
-    public URL getPreSignedGetUrl(String objectKey) {
+    public URL getPreSignedGetUrl(String imageIdentifier) {
+        String objectKey = S3_UPLOAD_PREFIX + imageIdentifier;
         if (!s3Util.doesObjectExist(objectKey)) {
             throw new FileException(FileErrorcode.INVALID_FILE);
         }
