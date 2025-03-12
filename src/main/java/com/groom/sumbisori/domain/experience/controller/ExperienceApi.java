@@ -4,6 +4,7 @@ import com.groom.sumbisori.common.config.LoginUser;
 import com.groom.sumbisori.common.error.GlobalErrorCode;
 import com.groom.sumbisori.common.springdoc.ApiExceptionExplanation;
 import com.groom.sumbisori.common.springdoc.ApiResponseExplanations;
+import com.groom.sumbisori.domain.collectionitem.error.CollectionItemErrorcode;
 import com.groom.sumbisori.domain.experience.dto.request.ExperienceRequest;
 import com.groom.sumbisori.domain.experience.dto.response.ExperienceResponse;
 import com.groom.sumbisori.domain.experience.error.ExperienceErrorcode;
@@ -55,9 +56,10 @@ public interface ExperienceApi {
                                     """
                     ),
                     @ApiExceptionExplanation(value = PlaceErrorcode.class, constant = PlaceErrorcode.Const.PLACE_NOT_FOUND, name = "체험 장소를 찾을 수 없습니다."),
-                    @ApiExceptionExplanation(value = ExperienceErrorcode.class, constant = ExperienceErrorcode.Const.EXPERIENCE_DATE_INVALID, name = "체험 날짜는 오늘 포함 이전이어야 합니다."),
+                    @ApiExceptionExplanation(value = ExperienceErrorcode.class, constant = ExperienceErrorcode.Const.EXPERIENCE_DATE_INVALID, name = "체험 날짜가 유효하지 않습니다."),
                     @ApiExceptionExplanation(value = FileErrorcode.class, constant = FileErrorcode.Const.INVALID_FILE, name = "유효하지 않은 imageIdentifier 입니다."),
                     @ApiExceptionExplanation(value = FileErrorcode.class, constant = FileErrorcode.Const.INVALID_SEQUENCE, name = "유효하지 않는 sequence 입니다.(1부터 시작 ~ 파일 사이즈까지)"),
+                    @ApiExceptionExplanation(value = CollectionItemErrorcode.class, constant = CollectionItemErrorcode.Const.DUPLICATE_SEAFOOD, name = "해산물이 중복되었습니다."),
                     @ApiExceptionExplanation(value = SeafoodErrorCode.class, constant = SeafoodErrorCode.Const.SEAFOOD_NOT_FOUND, name = "해산물을 찾을 수 없습니다."),
                     @ApiExceptionExplanation(value = FileErrorcode.class, constant = FileErrorcode.Const.S3_ERROR, name = "S3 서비스 오류입니다."),
             }
