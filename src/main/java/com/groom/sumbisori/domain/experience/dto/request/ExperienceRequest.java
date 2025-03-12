@@ -24,9 +24,9 @@ public record ExperienceRequest(@NotNull(message = "체험 날짜는 필수입�
 
                                 @Size(max = 10, message = "최대 10개의 파일을 요청할 수 있습니다.") List<FileRequest> files,
 
-                                @Size(min = 10, max = 150, message = "최소 10자 ~ 최대 150자까지 입력할 수 있습니다.") String impression,
+                                @NotNull(message = "체험 소감은 필수입니다.") @Size(min = 10, max = 150, message = "최소 10자 ~ 최대 150자까지 입력할 수 있습니다.") String impression,
 
-                                @Min(value = 1, message = "만족도는 1점 이상이어야 합니다.") @Max(value = 5, message = "만족도는 5점을 초과할 수 없습니다.") int satisfaction,
+                                @NotNull(message = "만족도는 필수입니다.") @Min(value = 1, message = "만족도는 1점 이상이어야 합니다.") @Max(value = 5, message = "만족도는 5점을 초과할 수 없습니다.") int satisfaction,
 
                                 @Size(max = 5, message = "최대 5개의 수집을 요청할 수 있습니다.") List<CollectionRequest> collections) {
     public Experience of(Long userId, Place place, ExperienceRequest experienceRequest) {
