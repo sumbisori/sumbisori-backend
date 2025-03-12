@@ -4,5 +4,5 @@ import lombok.Getter;
 
 @Getter
 public enum CompanionType {
-    ALONE, FRIEND, LOVER, FAMILY
+    ALONE, FRIEND, LOVER, FAMILY, COLLEAGUE, RELATIVE;
 }
