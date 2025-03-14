@@ -2,7 +2,7 @@ package com.groom.sumbisori.domain.collection.service;
 
 import com.groom.sumbisori.domain.collection.dto.request.CollectionRequest;
 import com.groom.sumbisori.domain.collection.entity.SeafoodCollection;
-import com.groom.sumbisori.domain.collection.repository.SeafoodCollectionRepository;
+import com.groom.sumbisori.domain.collection.repository.CollectionRepository;
 import com.groom.sumbisori.domain.collectionitem.service.CollectionItemCreateService;
 import com.groom.sumbisori.domain.file.service.FileCopyService;
 import jakarta.transaction.Transactional;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 public class CollectionCreateService {
     private final FileCopyService fileCopyService;
     private final CollectionItemCreateService collectionItemCreateService;
-    private final SeafoodCollectionRepository seafoodCollectionRepository;
+    private final CollectionRepository collectionRepository;
 
     @Transactional
     public void create(Long userId, List<CollectionRequest> seafoodCollectionRequests, LocalDate experienceDate,
@@ -29,7 +29,7 @@ public class CollectionCreateService {
                     .userId(userId)
                     .collectedAt(experienceDate)
                     .build();
-            seafoodCollectionRepository.save(seafoodCollection);
+            collectionRepository.save(seafoodCollection);
             collectionItemCreateService.create(seafoodCollection.getId(), request.collectionInfos());
         }
     }
