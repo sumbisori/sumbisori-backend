@@ -1,7 +1,7 @@
 package com.groom.sumbisori.domain.user.service;
 
 import com.groom.sumbisori.domain.badge.dto.event.SignUpEvent;
-import com.groom.sumbisori.domain.collection.repository.SeafoodCollectionQueryRepository;
+import com.groom.sumbisori.domain.collection.repository.CollectionQueryRepository;
 import com.groom.sumbisori.domain.user.dto.common.OAuth2Response;
 import com.groom.sumbisori.domain.user.dto.response.UserProfile;
 import com.groom.sumbisori.domain.user.entity.User;
@@ -24,14 +24,14 @@ public class UserService {
     private final UserDeleteService userDeleteService;
     private final KakaoClient kakaoClient;
     private final UserRepository userRepository;
-    private final SeafoodCollectionQueryRepository seafoodCollectionQueryRepository;
+    private final CollectionQueryRepository collectionQueryRepository;
     private final ApplicationEventPublisher eventPublisher;
 
     @Transactional(readOnly = true)
     public UserProfile getMyInfo(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
-        int count = seafoodCollectionQueryRepository.sumQuantityByUserId(userId);
+        int count = collectionQueryRepository.sumQuantityByUserId(userId);
         return UserProfile.builder()
                 .count(count)
                 .profileImageUrl(user.getProfileImageUrl())
