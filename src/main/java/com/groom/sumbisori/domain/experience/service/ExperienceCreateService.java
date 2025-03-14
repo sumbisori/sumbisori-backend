@@ -1,6 +1,6 @@
 package com.groom.sumbisori.domain.experience.service;
 
-import com.groom.sumbisori.domain.collection.service.SeafoodCollectionCreateService;
+import com.groom.sumbisori.domain.collection.service.CollectionCreateService;
 import com.groom.sumbisori.domain.experience.domain.Experience;
 import com.groom.sumbisori.domain.experience.dto.request.ExperienceRequest;
 import com.groom.sumbisori.domain.experience.dto.response.ExperienceResponse;
@@ -27,7 +27,7 @@ public class ExperienceCreateService {
     private final PlaceRepository placeRepository;
     private final ExperienceRepository experienceRepository;
     private final FileImageCreateService fileImageCreateService;
-    private final SeafoodCollectionCreateService seafoodCollectionCreateService;
+    private final CollectionCreateService collectionCreateService;
 
     @Transactional
     public ExperienceResponse create(Long userId, ExperienceRequest experienceRequest) {
@@ -45,7 +45,8 @@ public class ExperienceCreateService {
         fileImageCreateService.create(experienceRequest.files(), experienceId);
 
         // 4. 수집 생성
-        seafoodCollectionCreateService.create(userId, experienceRequest.collections(), experienceId);
+        collectionCreateService.create(userId, experienceRequest.collections(),
+                experienceRequest.experienceDate(), experienceId);
         return new ExperienceResponse(experienceId);
     }
 

@@ -27,7 +27,7 @@ public class CollectionItemCreateService {
      * CollectionItem을 생성
      */
     @Transactional
-    public void create(Long userId, Long collectionId, List<CollectionInfo> collectionInfos) {
+    public void create(Long collectionId, List<CollectionInfo> collectionInfos) {
         // 1. 해산물이 먼저 중복이 없는가?
         validateDuplicateSeafood(collectionInfos);
 
@@ -36,7 +36,7 @@ public class CollectionItemCreateService {
 
         // 3. CollectionItem 생성
         List<CollectionItem> items = collectionInfos.stream()
-                .map(info -> createCollectionItem(userId, collectionId, info, seafoodMap))
+                .map(info -> createCollectionItem(collectionId, info, seafoodMap))
                 .toList();
 
         collectionItemRepository.saveAll(items);
@@ -74,10 +74,9 @@ public class CollectionItemCreateService {
         return seafoodMap;
     }
 
-    private static CollectionItem createCollectionItem(Long userId, Long collectionId, CollectionInfo info,
+    private static CollectionItem createCollectionItem(Long collectionId, CollectionInfo info,
                                                        Map<Long, Seafood> seafoodMap) {
         return CollectionItem.builder()
-                .userId(userId)
                 .seafoodCollectionId(collectionId)
                 .seafood(seafoodMap.get(info.seafoodId()))
                 .quantity(info.quantity())
