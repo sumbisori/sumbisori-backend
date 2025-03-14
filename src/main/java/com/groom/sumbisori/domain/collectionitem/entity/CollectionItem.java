@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Table(name = "seafood_collection_item",
         indexes = {
-                @Index(name = "idx_collection_item_lookup", columnList = "seafood_collection_id, seafood_id, quantity"),
+                @Index(name = "idx_seafood_collection_covering", columnList = "seafood_collection_id, seafood_id, quantity"),
         })
 public class CollectionItem extends BaseTimeEntity {
     @Id
