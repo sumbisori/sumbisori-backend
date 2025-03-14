@@ -58,9 +58,9 @@ public class SecurityConfig {
                                 "/api/users/logout",
                                 "/api/places",
                                 "/api/places/*",
-                                "/api/seafoods/types",
+                                "/api/collections",
                                 "/api/seafoods",
-                                "/api/seafoods/collected",
+                                "/api/collections/status",
                                 "/api/contents/*").permitAll()
                         .anyRequest().authenticated()
                 )

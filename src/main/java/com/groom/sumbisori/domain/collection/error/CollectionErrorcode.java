@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @AllArgsConstructor
-public enum SeafoodCollectionErrorcode implements ErrorCode {
+public enum CollectionErrorcode implements ErrorCode {
     ;
 
     private final HttpStatus httpStatus;
