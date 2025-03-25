@@ -29,7 +29,8 @@ import lombok.NoArgsConstructor;
 @Table(
         name = "experience",
         indexes = {
-                @Index(name = "idx_experience_user_id", columnList = "user_id")
+                @Index(name = "idx_experience_user_id", columnList = "user_id"),
+                @Index(name = "idx_user_date", columnList = "user_id, experience_date DESC")
         }
 )
 public class Experience extends BaseTimeEntity {
