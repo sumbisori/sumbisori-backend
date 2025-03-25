@@ -30,7 +30,7 @@ public class ExperienceCreateService {
     private final CollectionCreateService collectionCreateService;
 
     @Transactional
-    public ExperienceResponse create(Long userId, ExperienceRequest experienceRequest) {
+    public void create(Long userId, ExperienceRequest experienceRequest) {
         // 1. 검사
         validate(experienceRequest);
 
@@ -47,7 +47,6 @@ public class ExperienceCreateService {
         // 4. 수집 생성
         collectionCreateService.create(userId, experienceRequest.collections(),
                 experienceRequest.experienceDate(), experienceId);
-        return new ExperienceResponse(experienceId);
     }
 
     private void validate(ExperienceRequest experienceRequest) {
