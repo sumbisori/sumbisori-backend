@@ -2,12 +2,15 @@ package com.groom.sumbisori.domain.experience.repository;
 
 import static com.groom.sumbisori.domain.experience.domain.QExperience.experience;
 import static com.groom.sumbisori.domain.file.entity.QFile.file;
+import static com.groom.sumbisori.domain.place.entity.QPlace.place;
 
+import com.groom.sumbisori.domain.experience.dto.ExperienceDetailQueryDto;
 import com.groom.sumbisori.domain.experience.dto.ExperienceQueryDto;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -44,5 +47,38 @@ public class ExperienceQueryRepository {
                 .where(experience.userId.eq(userId));
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
+    }
+
+    public Optional<ExperienceDetailQueryDto> findByExperienceId(Long userId, Long experienceId) {
+        Optional<ExperienceDetailQueryDto> result = Optional.ofNullable(queryFactory
+                .select(Projections.constructor(ExperienceDetailQueryDto.class,
+                        experience.id,
+                        experience.experienceDate,
+                        experience.satisfaction,
+                        experience.companionType,
+                        experience.weather,
+                        experience.impression,
+                        experience.createdAt,
+                        place.name)
+                )
+                .from(experience)
+                .where(experience.id.eq(experienceId).and(experience.userId.eq(userId)))
+                .join(place).on(place.eq(experience.place))
+                .fetchOne());
+
+        result.ifPresent(response -> response.addImageIdentifiers(
+                getImageIdentifiers(response.getExperienceId())
+        ));
+
+        return result;
+    }
+
+    private List<String> getImageIdentifiers(Long experienceId) {
+        return queryFactory
+                .select(file.imageIdentifier)
+                .from(file)
+                .where(file.experienceId.eq(experienceId))
+                .orderBy(file.sequence.asc())
+                .fetch();
     }
 }
