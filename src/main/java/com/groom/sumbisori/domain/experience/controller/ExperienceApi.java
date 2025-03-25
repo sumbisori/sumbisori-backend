@@ -1,6 +1,7 @@
 package com.groom.sumbisori.domain.experience.controller;
 
 import com.groom.sumbisori.common.config.LoginUser;
+import com.groom.sumbisori.common.dto.PageResponse;
 import com.groom.sumbisori.common.error.GlobalErrorCode;
 import com.groom.sumbisori.common.springdoc.ApiExceptionExplanation;
 import com.groom.sumbisori.common.springdoc.ApiResponseExplanations;
@@ -15,10 +16,14 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
 @Tag(name = "experiences", description = "체험 API")
 public interface ExperienceApi {
+    @Operation(summary = "체험 조회")
+    ResponseEntity<PageResponse<ExperienceResponse>> getExperienceByUserId(@LoginUser Long userId, Pageable pageable);
+
     @Operation(
             summary = "체험 등록",
             description = """
@@ -64,7 +69,6 @@ public interface ExperienceApi {
                     @ApiExceptionExplanation(value = FileErrorcode.class, constant = FileErrorcode.Const.S3_ERROR, name = "S3 서비스 오류입니다."),
             }
     )
-    ResponseEntity<ExperienceResponse> createExperience(@LoginUser Long userId,
-                                                        @RequestBody @Valid ExperienceRequest experienceRequest);
-
+    ResponseEntity<Void> createExperience(@LoginUser Long userId,
+                                          @RequestBody @Valid ExperienceRequest experienceRequest);
 }
