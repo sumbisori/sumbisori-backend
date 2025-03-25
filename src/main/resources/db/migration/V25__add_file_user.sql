@@ -1,0 +1,5 @@
+ALTER TABLE file
+    ADD user_id BIGINT NULL;
+
+ALTER TABLE file
+    MODIFY user_id BIGINT NOT NULL;

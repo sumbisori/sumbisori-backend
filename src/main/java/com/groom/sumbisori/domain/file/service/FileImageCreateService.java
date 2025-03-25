@@ -20,13 +20,14 @@ public class FileImageCreateService {
     private final FileCopyService fileCopyService;
 
     @Transactional
-    public void create(List<FileRequest> files, Long experienceId) {
+    public void create(List<FileRequest> files, Long userId, Long experienceId) {
         validateSequence(files);
         List<File> fileEntities = files.stream().map(f -> {
             String imageIdentifier = f.imageIdentifier();
             fileCopyService.copy(imageIdentifier);
             return File.builder()
                     .imageIdentifier(imageIdentifier)
+                    .userId(userId)
                     .experienceId(experienceId)
                     .sequence(f.sequence())
                     .build();

@@ -30,6 +30,9 @@ public class File extends BaseTimeEntity {
     private Long id;
 
     @Column(nullable = false)
+    private Long userId;
+
+    @Column(nullable = false)
     private Long experienceId;
 
     @Column(nullable = false, unique = true)
@@ -39,6 +42,6 @@ public class File extends BaseTimeEntity {
     private int sequence;
 
     public boolean isOwner(Long userId) {
-        return this.experienceId.equals(userId);
+        return this.userId.equals(userId);
     }
 }

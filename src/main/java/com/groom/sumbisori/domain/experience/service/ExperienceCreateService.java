@@ -42,7 +42,7 @@ public class ExperienceCreateService {
         Long experienceId = experience.getId();
 
         // 3. 체험 이미지 생성
-        fileImageCreateService.create(experienceRequest.files(), experienceId);
+        fileImageCreateService.create(experienceRequest.files(), userId, experienceId);
 
         // 4. 수집 생성
         collectionCreateService.create(userId, experienceRequest.collections(),
