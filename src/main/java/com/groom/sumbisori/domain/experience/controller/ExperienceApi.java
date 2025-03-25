@@ -1,11 +1,13 @@
 package com.groom.sumbisori.domain.experience.controller;
 
 import com.groom.sumbisori.common.config.LoginUser;
+import com.groom.sumbisori.common.dto.PageResponse;
 import com.groom.sumbisori.common.error.GlobalErrorCode;
 import com.groom.sumbisori.common.springdoc.ApiExceptionExplanation;
 import com.groom.sumbisori.common.springdoc.ApiResponseExplanations;
 import com.groom.sumbisori.domain.collectionitem.error.CollectionItemErrorcode;
 import com.groom.sumbisori.domain.experience.dto.request.ExperienceRequest;
+import com.groom.sumbisori.domain.experience.dto.response.ExperienceDetailResponse;
 import com.groom.sumbisori.domain.experience.dto.response.ExperienceResponse;
 import com.groom.sumbisori.domain.experience.error.ExperienceErrorcode;
 import com.groom.sumbisori.domain.file.error.FileErrorcode;
@@ -15,10 +17,26 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Tag(name = "experiences", description = "체험 API")
 public interface ExperienceApi {
+    @Operation(summary = "체험 조회", description = "sort -  최신순 고정")
+    ResponseEntity<PageResponse<ExperienceResponse>> getExperienceByUserId(@LoginUser Long userId,
+                                                                           @ParameterObject Pageable pageable);
+
+    @Operation(summary = "체험 상세 조회")
+    @ApiResponseExplanations(
+            errors = {
+                    @ApiExceptionExplanation(value = ExperienceErrorcode.class, constant = ExperienceErrorcode.Const.EXPERIENCE_NOT_FOUND, name = "체험을 찾을 수 없습니다."),
+            }
+    )
+    ResponseEntity<ExperienceDetailResponse> getExperienceDetail(@LoginUser Long userId,
+                                                                 @PathVariable Long experienceId);
+
     @Operation(
             summary = "체험 등록",
             description = """
@@ -64,7 +82,6 @@ public interface ExperienceApi {
                     @ApiExceptionExplanation(value = FileErrorcode.class, constant = FileErrorcode.Const.S3_ERROR, name = "S3 서비스 오류입니다."),
             }
     )
-    ResponseEntity<ExperienceResponse> createExperience(@LoginUser Long userId,
-                                                        @RequestBody @Valid ExperienceRequest experienceRequest);
-
+    ResponseEntity<Void> createExperience(@LoginUser Long userId,
+                                          @RequestBody @Valid ExperienceRequest experienceRequest);
 }

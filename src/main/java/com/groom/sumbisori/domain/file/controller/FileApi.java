@@ -1,11 +1,12 @@
 package com.groom.sumbisori.domain.file.controller;
 
+import com.groom.sumbisori.common.config.LoginUser;
 import com.groom.sumbisori.common.error.GlobalErrorCode;
 import com.groom.sumbisori.common.springdoc.ApiExceptionExplanation;
 import com.groom.sumbisori.common.springdoc.ApiResponseExplanations;
-import com.groom.sumbisori.domain.file.dto.request.PreSignedUrlRequest;
 import com.groom.sumbisori.domain.file.dto.PreSignedUrlResponse;
 import com.groom.sumbisori.domain.file.dto.SeafoodRecognitionResponse;
+import com.groom.sumbisori.domain.file.dto.request.PreSignedUrlRequest;
 import com.groom.sumbisori.domain.file.error.FileErrorcode;
 import com.groom.sumbisori.domain.file.error.FileErrorcode.Const;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,10 +14,20 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @Tag(name = "files", description = "파일 API")
 public interface FileApi {
+    @Operation(summary = "파일 이미지 조회")
+    @ApiResponseExplanations(
+            errors = {
+                    @ApiExceptionExplanation(value = FileErrorcode.class, constant = Const.INVALID_PERMISSION, name = "권한이 없습니다."),
+                    @ApiExceptionExplanation(value = FileErrorcode.class, constant = Const.FILE_NOT_FOUND, name = "파일을 찾을 수 없습니다."),
+            }
+    )
+    ResponseEntity<byte[]> getFileImage(@LoginUser Long userId, @PathVariable String imageIdentifier);
+
     @Operation(
             summary = "S3 Pre-signed URL 생성",
             description = """

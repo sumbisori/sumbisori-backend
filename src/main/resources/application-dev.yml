@@ -1,10 +1,6 @@
 server:
   url: https://api.dev.sumbisori.site
   forward-headers-strategy: native
-  servlet:
-    encoding:
-      charset: utf-8
-      force: true
   port: 8080
 spring:
   config:

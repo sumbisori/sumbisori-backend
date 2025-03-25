@@ -21,7 +21,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Table(name = "file",
         indexes = {
-                //커버링 인덱스 사용 예정
                 @Index(name = "idx_file_experience_sequence", columnList = "experience_id, sequence, imageIdentifier")
         })
 public class File extends BaseTimeEntity {
@@ -31,11 +30,18 @@ public class File extends BaseTimeEntity {
     private Long id;
 
     @Column(nullable = false)
-    private Long experienceId;
+    private Long userId;
 
     @Column(nullable = false)
+    private Long experienceId;
+
+    @Column(nullable = false, unique = true)
     private String imageIdentifier;
 
     @Column(nullable = false)
     private int sequence;
+
+    public boolean isOwner(Long userId) {
+        return this.userId.equals(userId);
+    }
 }
