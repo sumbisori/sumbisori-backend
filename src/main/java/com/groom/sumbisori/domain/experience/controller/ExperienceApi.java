@@ -17,14 +17,16 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @Tag(name = "experiences", description = "체험 API")
 public interface ExperienceApi {
-    @Operation(summary = "체험 조회")
-    ResponseEntity<PageResponse<ExperienceResponse>> getExperienceByUserId(@LoginUser Long userId, Pageable pageable);
+    @Operation(summary = "체험 조회", description = "sort -  최신순 고정")
+    ResponseEntity<PageResponse<ExperienceResponse>> getExperienceByUserId(@LoginUser Long userId,
+                                                                           @ParameterObject Pageable pageable);
 
     @Operation(summary = "체험 상세 조회")
     @ApiResponseExplanations(
