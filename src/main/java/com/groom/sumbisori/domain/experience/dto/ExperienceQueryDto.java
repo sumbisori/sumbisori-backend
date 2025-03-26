@@ -9,5 +9,6 @@ public record ExperienceQueryDto(
         LocalDate experienceDate,
         CompanionType companionType,
         Weather weather,
+        String placeName,
         String imageIdentifier
 ) {}

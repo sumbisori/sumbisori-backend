@@ -31,10 +31,12 @@ public class ExperienceQueryRepository {
                         experience.experienceDate,
                         experience.companionType,
                         experience.weather,
+                        place.name,
                         file.imageIdentifier)
                 )
                 .from(experience)
                 .where(experience.userId.eq(userId))
+                .join(place).on(place.eq(experience.place))
                 .leftJoin(file).on(file.experienceId.eq(experience.id).and(file.sequence.eq(REPRESENTATIVE_SEQUENCE)))
                 .orderBy(experience.experienceDate.desc())
                 .offset(pageable.getOffset())
