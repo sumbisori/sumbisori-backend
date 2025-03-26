@@ -9,6 +9,7 @@ public record ExperienceResponse(
         LocalDate experienceDate,
         String companion,
         String weather,
+        String placeName,
         String imageUrl
 ) {
     public static ExperienceResponse from(ExperienceQueryDto dto) {
@@ -17,6 +18,7 @@ public record ExperienceResponse(
                 dto.experienceDate(),
                 dto.companionType().getLabel(),
                 dto.weather().getLabel(),
+                dto.placeName(),
                 FileUrlConvertService.convert(dto.imageIdentifier())
         );
     }
