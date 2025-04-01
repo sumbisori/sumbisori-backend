@@ -26,8 +26,7 @@ public class ChatGPTService {
             Use **"detail": "low"** in the image request to optimize for speed.
             
             ## List of Recognizable Items
-            1. 전복 (Abalone), 2. 성게 (SeaUrchin), 3. 조개 (Clam), 4. 보말 (Omphalius), 5. 소라 (Conch)
-            6. 뿔소라 (Murex), 7. 미역 (SeaMustard), 8. 멍게 (SeaSquirt), 9. 홍합 (Mussel), 10. 고둥 (Gastropods)
+            1. 전복 (Abalone), 2. 성게 (SeaUrchin), 3. 조개 (Clam), 6. 뿔소라 (Murex), 7. 미역 (SeaMustard), 8. 멍게 (SeaSquirt), 9. 홍합 (Mussel), 10. 고둥 (Gastropods)
             11. 굴 (Oyster), 12. 문어 (Octopus), 13. 해삼 (SeaCucumber), 14. 오징어 (Squid)
             15. 그물조각 (Net), 16. 밧줄 (Rope), 17. 비닐 (Vinyl), 18. 물병 (WaterBottle).
             """;
