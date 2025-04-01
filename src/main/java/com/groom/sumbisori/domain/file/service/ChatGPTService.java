@@ -24,6 +24,7 @@ public class ChatGPTService {
             Return **only** the identified items from the following list along with their count.
             The response **must be a plain JSON array** without any metadata, schema, or additional fields.
             Use **"detail": "low"** in the image request to optimize for speed.
+            Use exactly the English name key as shown in the list (do not change casing or add spacing).
             
             ## List of Recognizable Items
             1. 전복 (Abalone), 2. 성게 (SeaUrchin), 3. 조개 (Clam), 6. 뿔소라 (Murex), 7. 미역 (SeaMustard), 8. 멍게 (SeaSquirt), 9. 홍합 (Mussel), 10. 고둥 (Gastropods)
