@@ -63,4 +63,8 @@ public class Experience extends BaseTimeEntity {
     @Column(nullable = false)
     private int satisfaction;
 
+    public boolean isMine(Long userId) {
+        return this.userId.equals(userId);
+    }
+
 }

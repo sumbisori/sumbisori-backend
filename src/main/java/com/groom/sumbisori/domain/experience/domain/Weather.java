@@ -8,11 +8,11 @@ import lombok.Getter;
 public enum Weather {
     CLEAR_SKY("맑음"),
     FEW_CLOUDS("구름 조금"),
-    SCATTERED_CLOUDS("흩어진 구름"),
-    BROKEN_CLOUDS("구름 많음"),
+    SCATTERED_CLOUDS("구름 많음"),
+    BROKEN_CLOUDS("흐림"),
     SHOWER_RAIN("소나기"),
     RAIN("비"),
-    THUNDERSTORM("뇌우"),
+    THUNDERSTORM("천둥번개"),
     SNOW("눈"),
     MIST("안개");
 

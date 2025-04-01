@@ -1,6 +1,6 @@
 package com.groom.sumbisori.domain.collection.service;
 
-import com.groom.sumbisori.domain.collection.dto.response.MySeafoodCollection;
+import com.groom.sumbisori.domain.collection.dto.response.SeafoodCollectionInfo;
 import com.groom.sumbisori.domain.collection.dto.response.MySeafoodCollectionInfo;
 import com.groom.sumbisori.domain.collection.dto.response.MySeafoodCollectionStatus;
 import com.groom.sumbisori.domain.collection.repository.CollectionQueryRepository;
@@ -24,7 +24,7 @@ public class CollectionLookupService {
     /**
      * 나의 해산물 컬렉션 조회
      */
-    public List<MySeafoodCollection> getMySeafoodCollection(Long userId) {
+    public List<SeafoodCollectionInfo> getMySeafoodCollection(Long userId) {
         if (userId == null) { // 로그인 안한 경우
             return List.of();
         }
