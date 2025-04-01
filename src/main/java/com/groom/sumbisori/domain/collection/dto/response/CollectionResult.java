@@ -5,8 +5,7 @@ import java.util.List;
 
 public record CollectionResult(String imageUrl,
                                List<SeafoodCollectionInfo> seafoodCollectionInfos) {
-    public CollectionResult(String imageUrl, List<SeafoodCollectionInfo> seafoodCollectionInfos) {
-        this.imageUrl = FileUrlConvertService.convert(imageUrl);
-        this.seafoodCollectionInfos = seafoodCollectionInfos;
+    public CollectionResult {
+        imageUrl = FileUrlConvertService.convert(imageUrl);
     }
 }
