@@ -47,7 +47,7 @@ public class ExperienceController implements ExperienceApi {
     @GetMapping("/{experienceId}/collections")
     public ResponseEntity<ExperienceCollectionResponse> getExperienceCollection(@LoginUser Long userId,
                                                                                 @PathVariable Long experienceId) {
-        return ResponseEntity.ok(collectionExperienceLookupService.lookupByExperienceId(1L, experienceId));
+        return ResponseEntity.ok(collectionExperienceLookupService.lookupByExperienceId(userId, experienceId));
     }
 
 
