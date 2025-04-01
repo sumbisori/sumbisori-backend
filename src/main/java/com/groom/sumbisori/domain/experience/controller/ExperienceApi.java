@@ -5,6 +5,7 @@ import com.groom.sumbisori.common.dto.PageResponse;
 import com.groom.sumbisori.common.error.GlobalErrorCode;
 import com.groom.sumbisori.common.springdoc.ApiExceptionExplanation;
 import com.groom.sumbisori.common.springdoc.ApiResponseExplanations;
+import com.groom.sumbisori.domain.collection.dto.response.ExperienceCollectionResponse;
 import com.groom.sumbisori.domain.collectionitem.error.CollectionItemErrorcode;
 import com.groom.sumbisori.domain.experience.dto.request.ExperienceRequest;
 import com.groom.sumbisori.domain.experience.dto.response.ExperienceDetailResponse;
@@ -36,6 +37,16 @@ public interface ExperienceApi {
     )
     ResponseEntity<ExperienceDetailResponse> getExperienceDetail(@LoginUser Long userId,
                                                                  @PathVariable Long experienceId);
+
+    @Operation(summary = "특정 체험의 채집 조회")
+    @ApiResponseExplanations(
+            errors = {
+                    @ApiExceptionExplanation(value = ExperienceErrorcode.class, constant = ExperienceErrorcode.Const.EXPERIENCE_NOT_FOUND, name = "체험을 찾을 수 없습니다."),
+                    @ApiExceptionExplanation(value = ExperienceErrorcode.class, constant = ExperienceErrorcode.Const.EXPERIENCE_PERMISSION_DENIED, name = "체험에 대한 권한이 없습니다.")
+            }
+    )
+    ResponseEntity<ExperienceCollectionResponse> getExperienceCollection(@LoginUser Long userId,
+                                                                         @PathVariable Long experienceId);
 
     @Operation(
             summary = "체험 등록",
