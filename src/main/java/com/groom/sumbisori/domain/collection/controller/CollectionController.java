@@ -1,7 +1,7 @@
 package com.groom.sumbisori.domain.collection.controller;
 
 import com.groom.sumbisori.common.config.LoginUser;
-import com.groom.sumbisori.domain.collection.dto.response.MySeafoodCollection;
+import com.groom.sumbisori.domain.collection.dto.response.SeafoodCollectionInfo;
 import com.groom.sumbisori.domain.collection.dto.response.MySeafoodCollectionStatus;
 import com.groom.sumbisori.domain.collection.service.CollectionLookupService;
 import java.util.List;
@@ -21,7 +21,7 @@ public class CollectionController implements CollectionApi {
      * 나의 수집 해산물 조회
      */
     @GetMapping
-    public ResponseEntity<List<MySeafoodCollection>> getMySeafoodCollection(@LoginUser Long userId) {
+    public ResponseEntity<List<SeafoodCollectionInfo>> getMySeafoodCollection(@LoginUser Long userId) {
         return ResponseEntity.ok(collectionLookupService.getMySeafoodCollection(userId));
     }
 

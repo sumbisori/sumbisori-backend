@@ -1,10 +1,14 @@
 package com.groom.sumbisori.domain.collection.repository;
 
-import com.groom.sumbisori.domain.collection.dto.response.MySeafoodCollection;
-import com.groom.sumbisori.domain.collection.dto.response.MySeafoodCollectionInfo;
 import static com.groom.sumbisori.domain.collection.entity.QSeafoodCollection.seafoodCollection;
 import static com.groom.sumbisori.domain.collectionitem.entity.QCollectionItem.collectionItem;
 import static com.groom.sumbisori.domain.seafood.entity.QSeafood.seafood;
+import static com.querydsl.core.group.GroupBy.groupBy;
+import static com.querydsl.core.group.GroupBy.list;
+
+import com.groom.sumbisori.domain.collection.dto.response.CollectionResult;
+import com.groom.sumbisori.domain.collection.dto.response.SeafoodCollectionInfo;
+import com.groom.sumbisori.domain.collection.dto.response.MySeafoodCollectionInfo;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
@@ -19,9 +23,9 @@ public class CollectionQueryRepository {
     /**
      * 사용자가 수집한 해산물 목록 조회
      */
-    public List<MySeafoodCollection> findTotalQuantityBySeafoodForUser(Long userId) {
+    public List<SeafoodCollectionInfo> findTotalQuantityBySeafoodForUser(Long userId) {
         return queryFactory
-                .select(Projections.constructor(MySeafoodCollection.class,
+                .select(Projections.constructor(SeafoodCollectionInfo.class,
                         seafood.id,
                         seafood.koreanName,
                         seafood.englishName,
@@ -51,6 +55,51 @@ public class CollectionQueryRepository {
                 .where(seafoodCollection.userId.eq(userId))
                 .groupBy(seafood.id)
                 .fetch();
+    }
+
+    /**
+     * 특정 체험에 대한 전체 해산물 채취 현황 조회
+     */
+    public List<SeafoodCollectionInfo> findStatisticsByExperienceId(Long experienceId) {
+        return queryFactory
+                .select(Projections.constructor(SeafoodCollectionInfo.class,
+                        seafood.id,
+                        seafood.koreanName,
+                        seafood.englishName,
+                        collectionItem.quantity.sum().coalesce(0).intValue()
+                ))
+                .from(seafoodCollection)
+                .join(collectionItem).on(collectionItem.seafoodCollectionId.eq(seafoodCollection.id))
+                .join(collectionItem.seafood, seafood)
+                .where(seafoodCollection.experienceId.eq(experienceId))
+                .groupBy(seafood.id)
+                .orderBy(seafood.id.asc())
+                .fetch();
+    }
+
+    public List<CollectionResult> findCollectedByExperienceId(Long experienceId) {
+        return queryFactory
+                .from(seafoodCollection)
+                .where(seafoodCollection.experienceId.eq(experienceId))
+                .join(collectionItem).on(collectionItem.seafoodCollectionId.eq(seafoodCollection.id))
+                .join(seafood).on(collectionItem.seafood.eq(seafood))
+                .transform(
+                        groupBy(seafoodCollection.id).list(
+                                Projections.constructor(
+                                        CollectionResult.class,
+                                        seafoodCollection.imageIdentifier,
+                                        list(
+                                                Projections.constructor(
+                                                        SeafoodCollectionInfo.class,
+                                                        seafood.id,
+                                                        seafood.koreanName,
+                                                        seafood.englishName,
+                                                        collectionItem.quantity
+                                                )
+                                        )
+                                )
+                        )
+                );
     }
 
     public int sumQuantityByUserId(Long userId) {

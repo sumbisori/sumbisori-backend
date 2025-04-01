@@ -2,7 +2,7 @@ package com.groom.sumbisori.domain.collection.service;
 
 import com.groom.sumbisori.domain.collection.dto.response.CollectionResult;
 import com.groom.sumbisori.domain.collection.dto.response.ExperienceCollectionResponse;
-import com.groom.sumbisori.domain.collection.dto.response.SeafoodCollection;
+import com.groom.sumbisori.domain.collection.dto.response.SeafoodCollectionInfo;
 import com.groom.sumbisori.domain.collection.repository.CollectionQueryRepository;
 import com.groom.sumbisori.domain.experience.domain.Experience;
 import com.groom.sumbisori.domain.experience.error.ExperienceErrorcode;
@@ -31,12 +31,12 @@ public class CollectionExperienceLookupService {
         }
 
         // 체험 채집 통계 조회
-        List<SeafoodCollection> seafoodCollections = collectionQueryRepository.findStatisticsByExperienceId(
+        List<SeafoodCollectionInfo> seafoodCollectionInfos = collectionQueryRepository.findStatisticsByExperienceId(
                 experienceId);
 
         // 체험에 대한 해산물 채집 현황 조회
         List<CollectionResult> collectionResult = collectionQueryRepository.findCollectedByExperienceId(experienceId);
 
-        return ExperienceCollectionResponse.of(seafoodCollections, collectionResult);
+        return ExperienceCollectionResponse.of(seafoodCollectionInfos, collectionResult);
     }
 }
