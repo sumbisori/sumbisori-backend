@@ -38,8 +38,5 @@ public class SeafoodCollection extends BaseTimeEntity {
     private Long userId;
 
     @Column(nullable = false)
-    private String imageIdentifier;
-
-    @Column(nullable = false)
     private LocalDate collectedAt;
 }

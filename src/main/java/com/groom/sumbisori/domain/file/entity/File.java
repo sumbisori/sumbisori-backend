@@ -3,6 +3,8 @@ package com.groom.sumbisori.domain.file.entity;
 import com.groom.sumbisori.domain.base.entity.BaseTimeEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,8 +23,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Table(name = "file",
         indexes = {
-                @Index(name = "idx_file_experience_sequence", columnList = "experience_id, sequence, imageIdentifier")
-        })
+                @Index(name = "idx_file_ref",
+                        columnList = "ref_id, ref_type, sequence, image_identifier")
+        }
+)
 public class File extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,8 +36,12 @@ public class File extends BaseTimeEntity {
     @Column(nullable = false)
     private Long userId;
 
-    @Column(nullable = false)
-    private Long experienceId;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "ref_type", nullable = false, length = 50)
+    private RefType refType;
+
+    @Column(name = "ref_id", nullable = false)
+    private Long refId;
 
     @Column(nullable = false, unique = true)
     private String imageIdentifier;
