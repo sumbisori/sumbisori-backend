@@ -6,6 +6,7 @@ import static com.groom.sumbisori.domain.place.entity.QPlace.place;
 
 import com.groom.sumbisori.domain.experience.dto.ExperienceDetailQueryDto;
 import com.groom.sumbisori.domain.experience.dto.ExperienceQueryDto;
+import com.groom.sumbisori.domain.file.entity.RefType;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -37,7 +38,9 @@ public class ExperienceQueryRepository {
                 .from(experience)
                 .where(experience.userId.eq(userId))
                 .join(place).on(place.eq(experience.place))
-                .leftJoin(file).on(file.experienceId.eq(experience.id).and(file.sequence.eq(REPRESENTATIVE_SEQUENCE)))
+                .leftJoin(file).on(file.refId.eq(experience.id)
+                        .and(file.refType.eq(RefType.EXPERIENCE))
+                        .and(file.sequence.eq(REPRESENTATIVE_SEQUENCE)))
                 .orderBy(experience.experienceDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -79,7 +82,7 @@ public class ExperienceQueryRepository {
         return queryFactory
                 .select(file.imageIdentifier)
                 .from(file)
-                .where(file.experienceId.eq(experienceId))
+                .where(file.refId.eq(experienceId).and(file.refType.eq(RefType.EXPERIENCE)))
                 .orderBy(file.sequence.asc())
                 .fetch();
     }

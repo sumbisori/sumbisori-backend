@@ -3,10 +3,10 @@ package com.groom.sumbisori.domain.experience.service;
 import com.groom.sumbisori.domain.collection.service.CollectionCreateService;
 import com.groom.sumbisori.domain.experience.domain.Experience;
 import com.groom.sumbisori.domain.experience.dto.request.ExperienceRequest;
-import com.groom.sumbisori.domain.experience.dto.response.ExperienceResponse;
 import com.groom.sumbisori.domain.experience.error.ExperienceErrorcode;
 import com.groom.sumbisori.domain.experience.error.ExperienceException;
 import com.groom.sumbisori.domain.experience.repository.ExperienceRepository;
+import com.groom.sumbisori.domain.file.entity.RefType;
 import com.groom.sumbisori.domain.file.service.FileImageCreateService;
 import com.groom.sumbisori.domain.place.entity.Place;
 import com.groom.sumbisori.domain.place.error.PlaceErrorcode;
@@ -42,7 +42,8 @@ public class ExperienceCreateService {
         Long experienceId = experience.getId();
 
         // 3. 체험 이미지 생성
-        fileImageCreateService.create(experienceRequest.files(), userId, experienceId);
+        fileImageCreateService.uploadMultipleImages(experienceRequest.files(), userId, RefType.EXPERIENCE,
+                experienceId);
 
         // 4. 수집 생성
         collectionCreateService.create(userId, experienceRequest.collections(),
