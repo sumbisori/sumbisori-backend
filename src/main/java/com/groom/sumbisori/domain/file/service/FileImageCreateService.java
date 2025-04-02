@@ -2,6 +2,7 @@ package com.groom.sumbisori.domain.file.service;
 
 import com.groom.sumbisori.domain.file.dto.request.FileRequest;
 import com.groom.sumbisori.domain.file.entity.File;
+import com.groom.sumbisori.domain.file.entity.RefType;
 import com.groom.sumbisori.domain.file.error.FileErrorcode;
 import com.groom.sumbisori.domain.file.error.FileException;
 import com.groom.sumbisori.domain.file.repository.FileRepository;
@@ -19,21 +20,48 @@ public class FileImageCreateService {
     private final FileRepository fileRepository;
     private final FileCopyService fileCopyService;
 
+    /**
+     * 다중 이미지 업로드 (sequence 필요)
+     */
     @Transactional
-    public void create(List<FileRequest> files, Long userId, Long experienceId) {
+    public void uploadMultipleImages(List<FileRequest> files, Long userId, RefType refType, Long refId) {
         validateSequence(files);
-        List<File> fileEntities = files.stream().map(f -> {
-            String imageIdentifier = f.imageIdentifier();
-            fileCopyService.copy(imageIdentifier);
-            return File.builder()
-                    .imageIdentifier(imageIdentifier)
-                    .userId(userId)
-                    .experienceId(experienceId)
-                    .sequence(f.sequence())
-                    .build();
-        }).toList();
+
+        List<File> fileEntities = files.stream()
+                .map(f -> {
+                    String imageIdentifier = f.imageIdentifier();
+                    fileCopyService.copy(imageIdentifier);
+                    return File.builder()
+                            .imageIdentifier(imageIdentifier)
+                            .userId(userId)
+                            .refType(refType)
+                            .refId(refId)
+                            .sequence(f.sequence())
+                            .build();
+                })
+                .toList();
+
         fileRepository.saveAll(fileEntities);
-        log.info("파일 {}개 저장 완료: experienceId={}", fileEntities.size(), experienceId);
+        log.info("다중 이미지 저장 완료: refType={}, refId={}, count={}", refType, refId, fileEntities.size());
+    }
+
+    /**
+     * 단일 이미지 업로드 (sequence = 0)
+     */
+    @Transactional
+    public void uploadSingleImage(String imageIdentifier, Long userId, RefType refType, Long refId) {
+        fileCopyService.copy(imageIdentifier);
+
+        File file = File.builder()
+                .imageIdentifier(imageIdentifier)
+                .userId(userId)
+                .refType(refType)
+                .refId(refId)
+                .sequence(0)
+                .build();
+
+        fileRepository.save(file);
+        log.info("단일 이미지 저장 완료: refType={}, refId={}, imageIdentifier={}", refType, refId, imageIdentifier);
     }
 
     private void validateSequence(List<FileRequest> files) {
