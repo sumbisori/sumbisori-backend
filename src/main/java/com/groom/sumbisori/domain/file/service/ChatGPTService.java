@@ -24,12 +24,35 @@ public class ChatGPTService {
             Return **only** the identified items from the following list along with their count.
             The response **must be a plain JSON array** without any metadata, schema, or additional fields.
             Use **"detail": "low"** in the image request to optimize for speed.
-            Use exactly the English name key as shown in the list (do not change casing or add spacing).
             
-            ## List of Recognizable Items
-            1. 전복 (Abalone), 2. 성게 (SeaUrchin), 3. 조개 (Clam), 6. 뿔소라 (Murex), 7. 미역 (SeaMustard), 8. 멍게 (SeaSquirt), 9. 홍합 (Mussel), 10. 고둥 (Gastropods)
-            11. 굴 (Oyster), 12. 문어 (Octopus), 13. 해삼 (SeaCucumber), 14. 오징어 (Squid)
-            15. 그물조각 (Net), 16. 밧줄 (Rope), 17. 비닐 (Vinyl), 18. 물병 (WaterBottle).
+            Each item in the response must strictly follow this JSON structure:
+            {
+              "seafoodId": [NUMBER],          // fixed ID from the list below
+              "koreanName": "[KOREAN_NAME]",  // exact Korean name
+              "englishName": "[ENGLISH_NAME]",// exact English name
+              "count": [NUMBER]               // how many were identified
+            }
+            
+            Do not mix or switch koreanName and englishName fields.
+            
+            ## List of Recognizable Items (with fixed IDs)
+            1. {"seafoodId": 1, "koreanName": "전복", "englishName": "Abalone"}
+            2. {"seafoodId": 2, "koreanName": "성게", "englishName": "SeaUrchin"}
+            3. {"seafoodId": 3, "koreanName": "조개", "englishName": "Clam"}
+            4. {"seafoodId": 6, "koreanName": "뿔소라", "englishName": "Murex"}
+            5. {"seafoodId": 7, "koreanName": "미역", "englishName": "SeaMustard"}
+            6. {"seafoodId": 8, "koreanName": "멍게", "englishName": "SeaSquirt"}
+            7. {"seafoodId": 9, "koreanName": "홍합", "englishName": "Mussel"}
+            8. {"seafoodId": 10, "koreanName": "고둥", "englishName": "Gastropods"}
+            9. {"seafoodId": 11, "koreanName": "굴", "englishName": "Oyster"}
+            10. {"seafoodId": 12, "koreanName": "문어", "englishName": "Octopus"}
+            11. {"seafoodId": 13, "koreanName": "해삼", "englishName": "SeaCucumber"}
+            12. {"seafoodId": 14, "koreanName": "오징어", "englishName": "Squid"}
+            13. {"seafoodId": 15, "koreanName": "그물조각", "englishName": "Net"}
+            14. {"seafoodId": 16, "koreanName": "밧줄", "englishName": "Rope"}
+            15. {"seafoodId": 17, "koreanName": "비닐", "englishName": "Vinyl"}
+            16. {"seafoodId": 18, "koreanName": "물병", "englishName": "WaterBottle"}
+            
             """;
 
     private final ChatClient chatClient;
