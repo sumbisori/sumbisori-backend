@@ -33,6 +33,7 @@ public class UserLookupService {
 
     @Transactional(readOnly = true)
     public UserNickname getMyNickname(Long userId) {
-        return UserNickname.of(userRepository.findNicknameById(userId));
+        return UserNickname.of(userRepository.findNicknameById(userId)
+                .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND)));
     }
 }
