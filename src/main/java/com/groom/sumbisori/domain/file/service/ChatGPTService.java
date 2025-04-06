@@ -25,14 +25,6 @@ public class ChatGPTService {
             The response must be a plain JSON array without any metadata, schema, or additional fields.
             Use "detail": "low" in the image request to optimize for speed.
             
-            Each item in the response must strictly follow this JSON structure:
-            {
-              "seafoodId": 1,
-              "koreanName": "전복",
-              "englishName": "Abalone",
-              "count": 1
-            }
-            
             Do not switch or mix koreanName and englishName fields.
             
             ## List of Recognizable Items (with fixed IDs)
