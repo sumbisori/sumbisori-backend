@@ -41,7 +41,7 @@ public class ExperienceQueryRepository {
                 .leftJoin(file).on(file.refId.eq(experience.id)
                         .and(file.refType.eq(RefType.EXPERIENCE))
                         .and(file.sequence.eq(REPRESENTATIVE_SEQUENCE)))
-                .orderBy(experience.experienceDate.desc(), experience.id.asc())
+                .orderBy(experience.experienceDate.desc(), experience.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
