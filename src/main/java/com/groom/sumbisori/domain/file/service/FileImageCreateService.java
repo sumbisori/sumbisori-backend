@@ -46,7 +46,7 @@ public class FileImageCreateService {
     }
 
     /**
-     * 단일 이미지 업로드 (sequence = 0)
+     * 단일 이미지 업로드 (sequence = 1)
      */
     @Transactional
     public void uploadSingleImage(String imageIdentifier, Long userId, RefType refType, Long refId) {
@@ -57,7 +57,7 @@ public class FileImageCreateService {
                 .userId(userId)
                 .refType(refType)
                 .refId(refId)
-                .sequence(0)
+                .sequence(1)
                 .build();
 
         fileRepository.save(file);
