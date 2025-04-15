@@ -52,6 +52,9 @@ public class User extends BaseTimeEntity {
     @Column
     private LocalDateTime lastLoginAt;
 
+    @Column
+    private Long representativeBadgeId;
+
     public void update(String email, String nickname, String profileImageUrl) {
         this.email = email;
         this.nickname = nickname;
