@@ -14,13 +14,13 @@ import org.springframework.stereotype.Repository;
 public class BadgeQueryRepository {
     private final JPAQueryFactory queryFactory;
 
-    public Set<BadgeType> findAcquiredBadgeTypesByUserId(Long userId) {
-        return queryFactory
-                .select(badge.type)
-                .from(badge)
-                .where(badge.userId.eq(userId))
-                .fetch()
-                .stream()
-                .collect(Collectors.toUnmodifiableSet());
-    }
+//    public Set<BadgeType> findAcquiredBadgeTypesByUserId(Long userId) {
+//        return queryFactory
+//                .select(badge.type)
+//                .from(badge)
+//                .where(badge.userId.eq(userId))
+//                .fetch()
+//                .stream()
+//                .collect(Collectors.toUnmodifiableSet());
+//    }
 }

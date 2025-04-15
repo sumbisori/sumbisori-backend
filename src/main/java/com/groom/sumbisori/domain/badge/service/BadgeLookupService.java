@@ -16,14 +16,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class BadgeLookupService {
     private final BadgeQueryRepository badgeQueryRepository;
 
-    /**
-     * 나의 배지 현황 조회
-     */
-    public List<MyBadgeStatus> getMyBadgeStatuses(final Long userId) {
-        Set<BadgeType> acquiredBadgeTypes = badgeQueryRepository.findAcquiredBadgeTypesByUserId(userId);
-
-        return Arrays.asList(BadgeType.values()).stream()
-                .map(type -> MyBadgeStatus.of(type, acquiredBadgeTypes.contains(type)))
-                .toList();
-    }
+//    /**
+//     * 나의 배지 현황 조회
+//     */
+//    public List<MyBadgeStatus> getMyBadgeStatuses(final Long userId) {
+//        Set<BadgeType> acquiredBadgeTypes = badgeQueryRepository.findAcquiredBadgeTypesByUserId(userId);
+//
+//        return Arrays.asList(BadgeType.values()).stream()
+//                .map(type -> MyBadgeStatus.of(type, acquiredBadgeTypes.contains(type)))
+//                .toList();
+//    }
 }
