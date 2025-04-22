@@ -66,6 +66,10 @@ public class User extends BaseTimeEntity {
         this.lastLoginAt = LocalDateTime.now();
     }
 
+    public void updateBadgeLevel(BadgeLevel badgeLevel) {
+        this.badgeLevel = badgeLevel;
+    }
+
     @Getter
     @AllArgsConstructor
     public enum UserRole {
