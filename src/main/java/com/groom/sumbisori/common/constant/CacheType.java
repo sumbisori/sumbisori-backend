@@ -11,6 +11,7 @@ public enum CacheType {
     PLACE_LOCATIONS("placeLocations", 60 * 60 * 24 * 365, 1), // 1년
     SEAFOODS("seafoods", 60 * 60 * 24 * 365, 1), // 1년
     SEAFOODS_RESPONSE("seafoodResponses", 60 * 60 * 24 * 365, 1), // 1년
+    BADGES("badges", 60 * 60 * 24 * 365, 1),
     YOUTUBES("youtubes", 60 * 60 * 24, 60),           // 24시간
     WAVES("waves", 60 * 180, 20),                      // 3시간
     WEATHERS("weathers", 60 * 90, 20);                // 1시간 30분
