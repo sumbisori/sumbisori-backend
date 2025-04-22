@@ -8,8 +8,8 @@ import org.springframework.http.HttpStatus;
 @Getter
 @AllArgsConstructor
 public enum BadgeErrorcode implements ErrorCode {
-    BADGE_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 뱃지를 찾을 수 없습니다."),
-    BADGE_LEVEL_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 뱃지레벨를 찾을 수 없습니다.");
+    BADGE_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 배지를 찾을 수 없습니다."),
+    BADGE_LEVEL_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 배지 레벨를 찾을 수 없습니다.");
 
     private final HttpStatus httpStatus;
     private final String message;
