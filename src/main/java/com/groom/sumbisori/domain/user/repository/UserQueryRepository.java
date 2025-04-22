@@ -34,7 +34,7 @@ public class UserQueryRepository {
     public Optional<UserProfile> findUserProfile(Long userId) {
         long totalBadgeCount = BadgeCode.values().length;
 
-        JPQLQuery<Long> query = JPAExpressions
+        JPQLQuery<Long> acquiredBadgeCountSubquery = JPAExpressions
                 .select(badgeLevel.badge.id.countDistinct())
                 .from(userBadge)
                 .join(badgeLevel).on(userBadge.badgeLevel.id.eq(badgeLevel.id))
@@ -50,7 +50,8 @@ public class UserQueryRepository {
                         badge.description,
                         badgeLevel.level,
                         Expressions.constant(totalBadgeCount),
-                        query
+                        acquiredBadgeCountSubquery
+
                 ))
                 .from(user)
                 .leftJoin(badgeLevel).on(user.badgeLevelId.eq(badgeLevel.id))
