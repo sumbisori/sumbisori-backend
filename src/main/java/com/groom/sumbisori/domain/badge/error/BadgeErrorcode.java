@@ -13,4 +13,9 @@ public enum BadgeErrorcode implements ErrorCode {
 
     private final HttpStatus httpStatus;
     private final String message;
+
+    public static class Const {
+        public static final String BADGE_NOT_FOUND = "BADGE_NOT_FOUND";
+        public static final String BADGE_LEVEL_NOT_FOUND = "BADGE_LEVEL_NOT_FOUND";
+    }
 }
