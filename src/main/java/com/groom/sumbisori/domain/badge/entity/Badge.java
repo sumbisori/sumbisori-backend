@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Badge extends BaseTimeEntity {
+public class Badge {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "badge_id")
