@@ -88,7 +88,7 @@ springdoc:
     operations-sorter: method
 client:
   cookie:
-    domain: ".sumbisori.site"
+    domain: "sumbisori.site"
   url: "https://www.sumbisori.site"
 
 custom:

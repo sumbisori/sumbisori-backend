@@ -109,16 +109,6 @@ public class CollectionQueryRepository {
                 );
     }
 
-    public int sumQuantityByUserId(Long userId) {
-//        Integer result = queryFactory
-//                .select(seafoodCollection.quantity.sum())
-//                .from(seafoodCollection)
-//                .where(seafoodCollection.userId.eq(userId))
-//                .fetchOne();
-//        return result != null ? result : 0;
-        return 0; //임시
-    }
-
 //    private BooleanBuilder seafoodCollectionUserIdEq(Long userId) {
 //        return nullSafeBuilder(() -> seafoodCollection.userId.eq(userId));
 //    }
