@@ -1,5 +1,14 @@
-ALTER TABLE user_badge
-    DROP FOREIGN KEY FK_USER_BADGE_ON_BADGE;
+DROP TABLE IF EXISTS badge;
+
+CREATE TABLE badge
+(
+    badge_id    BIGINT AUTO_INCREMENT NOT NULL,
+    type        VARCHAR(255)          NOT NULL,
+    name        VARCHAR(255)          NOT NULL,
+    description VARCHAR(255)          NOT NULL,
+    acquisition VARCHAR(255)          NOT NULL,
+    CONSTRAINT pk_badge PRIMARY KEY (badge_id)
+);
 
 CREATE TABLE badge_level
 (
@@ -7,7 +16,7 @@ CREATE TABLE badge_level
     badge_id       BIGINT                NOT NULL,
     level          INT                   NOT NULL,
     count          INT                   NOT NULL,
-    `description`  VARCHAR(255)          NOT NULL,
+    description    VARCHAR(255)          NOT NULL,
     code           VARCHAR(255)          NOT NULL,
     CONSTRAINT pk_badgelevel PRIMARY KEY (badge_level_id)
 );
@@ -20,11 +29,18 @@ CREATE TABLE seafood_badge_mapping
     CONSTRAINT pk_seafoodbadgemapping PRIMARY KEY (mapping_id)
 );
 
-ALTER TABLE user_badge
-    ADD badge_level_id BIGINT NULL;
+CREATE TABLE user_badge
+(
+    user_badge_id  BIGINT AUTO_INCREMENT NOT NULL,
+    created_at     DATETIME              NULL,
+    updated_at     DATETIME              NULL,
+    user_id        BIGINT                NOT NULL,
+    badge_level_id BIGINT                NOT NULL,
+    CONSTRAINT pk_user_badge PRIMARY KEY (user_badge_id)
+);
 
-ALTER TABLE user_badge
-    MODIFY badge_level_id BIGINT NOT NULL;
+ALTER TABLE users
+    ADD badge_level_id BIGINT NULL;
 
 ALTER TABLE user_badge
     ADD CONSTRAINT unique_user_badge UNIQUE (user_id, badge_level_id);
@@ -37,21 +53,6 @@ ALTER TABLE seafood_badge_mapping
 
 ALTER TABLE user_badge
     ADD CONSTRAINT FK_USER_BADGE_ON_BADGE_LEVEL FOREIGN KEY (badge_level_id) REFERENCES badge_level (badge_level_id);
-
-ALTER TABLE user_badge
-    DROP COLUMN badge_id;
-
-ALTER TABLE user_badge
-    DROP COLUMN level;
-
-ALTER TABLE badge
-    DROP KEY uk_badge_user_id_type;
-
-ALTER TABLE badge
-    DROP COLUMN created_at;
-
-ALTER TABLE badge
-    DROP COLUMN updated_at;
 
 ALTER TABLE users
     ADD CONSTRAINT FK_USERS_ON_BADGE_LEVEL FOREIGN KEY (badge_level_id) REFERENCES badge_level (badge_level_id);
