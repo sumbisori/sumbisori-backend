@@ -28,7 +28,7 @@ ALTER TABLE badge
     MODIFY name VARCHAR(255) NOT NULL;
 
 ALTER TABLE users
-    ADD representative_badge_id BIGINT NULL;
+    ADD badge_level_id BIGINT NULL;
 
 CREATE INDEX idx_user_badge_user_id ON user_badge (user_id);
 
