@@ -25,12 +25,11 @@ public class UserBadgeQueryRepository {
                         Projections.constructor(
                                 BadgeIdAndLevel.class,
                                 userBadge.badgeLevel.badge.id,
-                                userBadge.badgeLevel.level
+                                userBadge.badgeLevel.level.max()
                         ))
                 .from(userBadge)
                 .where(userBadge.userId.eq(userId))
-                .groupBy(userBadge.badgeLevel.badge.id, userBadge.badgeLevel.level)
-                .having(userBadge.badgeLevel.level.max().eq(userBadge.badgeLevel.level))
+                .groupBy(userBadge.badgeLevel.badge.id)
                 .fetch();
         return results.stream()
                 .collect(Collectors.toMap(
