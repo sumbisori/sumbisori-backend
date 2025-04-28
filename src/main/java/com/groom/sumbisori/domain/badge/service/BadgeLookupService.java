@@ -8,7 +8,6 @@ import com.groom.sumbisori.domain.badge.error.BadgeException;
 import com.groom.sumbisori.domain.badge.repository.BadgeQueryRepository;
 import com.groom.sumbisori.domain.badge.repository.UserBadgeQueryRepository;
 import com.groom.sumbisori.domain.user.repository.UserQueryRepository;
-import com.groom.sumbisori.domain.user.repository.UserRepository;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class BadgeLookupService {
     private final BadgeCacheService badgeCacheService;
-    private final UserRepository userRepository;
     private final BadgeQueryRepository badgeQueryRepository;
     private final UserBadgeQueryRepository userBadgeQueryRepository;
     private final UserQueryRepository userQueryRepository;
