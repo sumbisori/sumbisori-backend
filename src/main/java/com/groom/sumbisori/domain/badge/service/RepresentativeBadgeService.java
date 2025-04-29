@@ -1,6 +1,5 @@
 package com.groom.sumbisori.domain.badge.service;
 
-import com.groom.sumbisori.domain.badge.entity.UserBadge;
 import com.groom.sumbisori.domain.badge.error.BadgeErrorcode;
 import com.groom.sumbisori.domain.badge.error.BadgeException;
 import com.groom.sumbisori.domain.badge.repository.BadgeRepository;
@@ -26,9 +25,8 @@ public class RepresentativeBadgeService {
         badgeRepository.findById(badgeId)
                 .orElseThrow(() -> new BadgeException(BadgeErrorcode.BADGE_NOT_FOUND));
 
-        UserBadge highestUserBadge = userBadgeQueryRepository.findTopUserBadgeByBadgeId(userId, badgeId)
+        Long badgeLevelId = userBadgeQueryRepository.findTopUserBadgeByBadgeId(userId, badgeId)
                 .orElseThrow(() -> new BadgeException(BadgeErrorcode.BADGE_NOT_OWNED));
-        Long badgeLevelId = highestUserBadge.getBadgeLevel().getId();
 
         userRepository.findById(userId)
                 .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND))

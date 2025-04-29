@@ -1,12 +1,16 @@
 package com.groom.sumbisori.domain.badge.repository;
 
+import static com.groom.sumbisori.domain.badge.entity.QBadge.badge;
+import static com.groom.sumbisori.domain.badge.entity.QBadgeLevel.badgeLevel;
 import static com.groom.sumbisori.domain.badge.entity.QUserBadge.userBadge;
 
 import com.groom.sumbisori.domain.badge.dto.common.BadgeIdAndLevel;
+import com.groom.sumbisori.domain.badge.entity.UserBadge;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -38,4 +42,19 @@ public class UserBadgeQueryRepository {
                 ));
     }
 
+    public Optional<Long> findTopUserBadgeByBadgeId(Long userId, Long badgeId) {
+        return Optional.ofNullable(
+                queryFactory
+                        .select(userBadge.badgeLevel.id)
+                        .from(userBadge)
+                        .join(userBadge.badgeLevel, badgeLevel)
+                        .join(badgeLevel.badge, badge)
+                        .where(
+                                userBadge.userId.eq(userId),
+                                badge.id.eq(badgeId)
+                        )
+                        .orderBy(badgeLevel.level.desc())
+                        .fetchFirst()
+        );
+    }
 }
