@@ -30,9 +30,9 @@ public interface BadgeApi {
     @Operation(summary = "대표 배지 설정")
     @ApiResponseExplanations(
             errors = {
-                    @ApiExceptionExplanation(value = BadgeErrorcode.class, constant = Const.BADGE_LEVEL_NOT_OWNED, name = "해당 배지 레벨을 소유하지 않았습니다."),
-                    @ApiExceptionExplanation(value = BadgeErrorcode.class, constant = Const.BADGE_LEVEL_NOT_FOUND, name = "해당 배지 레벨을 찾을 수 없습니다."),
+                    @ApiExceptionExplanation(value = BadgeErrorcode.class, constant = Const.BADGE_NOT_OWNED, name = "해당 배지를 소유하지 않았습니다."),
+                    @ApiExceptionExplanation(value = BadgeErrorcode.class, constant = Const.BADGE_NOT_FOUND, name = "해당 배지를 찾을 수 없습니다."),
             }
     )
-    ResponseEntity<Void> setRepresentativeBadge(@LoginUser final Long userId, @PathVariable final Long badgeLevelId);
+    ResponseEntity<Void> setRepresentativeBadge(@LoginUser final Long userId, @PathVariable final Long badgeId);
 }
