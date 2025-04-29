@@ -35,9 +35,9 @@ public class BadgeController implements BadgeApi {
     }
 
     @Override
-    @PostMapping("/representative/{badgeLevelId}")
-    public ResponseEntity<Void> setRepresentativeBadge(@LoginUser Long userId, @PathVariable Long badgeLevelId) {
-        representativeBadgeService.change(userId, badgeLevelId);
+    @PostMapping("/{badgeId}/representative")
+    public ResponseEntity<Void> setRepresentativeBadge(@LoginUser Long userId, @PathVariable Long badgeId) {
+        representativeBadgeService.change(userId, badgeId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
