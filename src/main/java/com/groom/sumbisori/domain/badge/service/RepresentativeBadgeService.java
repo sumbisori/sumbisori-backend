@@ -1,9 +1,10 @@
 package com.groom.sumbisori.domain.badge.service;
 
+import com.groom.sumbisori.domain.badge.entity.UserBadge;
 import com.groom.sumbisori.domain.badge.error.BadgeErrorcode;
 import com.groom.sumbisori.domain.badge.error.BadgeException;
-import com.groom.sumbisori.domain.badge.repository.BadgeLevelRepository;
-import com.groom.sumbisori.domain.badge.repository.UserBadgeRepository;
+import com.groom.sumbisori.domain.badge.repository.BadgeRepository;
+import com.groom.sumbisori.domain.badge.repository.UserBadgeQueryRepository;
 import com.groom.sumbisori.domain.user.error.UserErrorCode;
 import com.groom.sumbisori.domain.user.error.exception.UserException;
 import com.groom.sumbisori.domain.user.repository.UserRepository;
@@ -17,18 +18,17 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Slf4j
 public class RepresentativeBadgeService {
-    private final BadgeLevelRepository badgeLevelRepository;
-    private final UserBadgeRepository userBadgeRepository;
     private final UserRepository userRepository;
+    private final BadgeRepository badgeRepository;
+    private final UserBadgeQueryRepository userBadgeQueryRepository;
 
-    public void change(final Long userId, final Long badgeLevelId) {
-        badgeLevelRepository.findById(badgeLevelId)
-                .orElseThrow(() -> new BadgeException(BadgeErrorcode.BADGE_LEVEL_NOT_FOUND));
+    public void change(final Long userId, final Long badgeId) {
+        badgeRepository.findById(badgeId)
+                .orElseThrow(() -> new BadgeException(BadgeErrorcode.BADGE_NOT_FOUND));
 
-        // 1. 해당 배지레벨을 획득하지 않았을 경우
-        if (!userBadgeRepository.existsByUserIdAndBadgeLevelId(userId, badgeLevelId)) {
-            throw new BadgeException(BadgeErrorcode.BADGE_LEVEL_NOT_OWNED);
-        }
+        UserBadge highestUserBadge = userBadgeQueryRepository.findTopUserBadgeByBadgeId(userId, badgeId)
+                .orElseThrow(() -> new BadgeException(BadgeErrorcode.BADGE_NOT_OWNED));
+        Long badgeLevelId = highestUserBadge.getBadgeLevel().getId();
 
         userRepository.findById(userId)
                 .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND))
