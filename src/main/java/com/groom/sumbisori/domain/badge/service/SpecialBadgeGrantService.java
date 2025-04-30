@@ -5,7 +5,9 @@ import com.groom.sumbisori.domain.badge.entity.UserBadge;
 import com.groom.sumbisori.domain.badge.repository.UserBadgeRepository;
 import com.groom.sumbisori.domain.collection.repository.CollectionQueryRepository;
 import jakarta.transaction.Transactional;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +23,8 @@ public class SpecialBadgeGrantService {
             return false;
         }
 
-        List<Long> collectedSeafoodIds = collectionQueryRepository.findDistinctCollectedSeafoodIds(userId);
+        Set<Long> collectedSeafoodIds = new HashSet<>(collectionQueryRepository.findDistinctCollectedSeafoodIds(userId));
+
         if (!collectedSeafoodIds.containsAll(requiredIds)) {
             return false;
         }
