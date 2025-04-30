@@ -62,6 +62,12 @@ public class CollectionBadgeService {
                 grantedBadgeLevels.add(badgeLevel);
             }
         }
+        if (!grantedBadgeLevels.isEmpty()) {
+            grantedBadgeLevels.forEach(level ->
+                    log.info("✅ 배지 발급 완료 - 사용자 ID: {}, 배지 ID: {}, 배지 이름: {}",
+                            userId, level.getId(), level.getBadge().getName())
+            );
+        }
         // 추후 발급된 배지에 대해 알림 이벤트
         // 발급된 배지에 대한 알림 이벤트를 발송하는 로직을 추가할 수 있습니다.
         // 예: badgeNotificationService.sendBadgeNotification(userId, grantedBadgeLevels);
