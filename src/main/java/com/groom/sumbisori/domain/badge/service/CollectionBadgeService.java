@@ -1,10 +1,14 @@
 package com.groom.sumbisori.domain.badge.service;
 
-import com.groom.sumbisori.domain.badge.dto.event.SignUpEvent;
-import com.groom.sumbisori.domain.badge.entity.BadgeCode;
+import com.groom.sumbisori.domain.badge.entity.Badge;
+import com.groom.sumbisori.domain.badge.entity.BadgeLevel;
+import com.groom.sumbisori.domain.badge.entity.SeafoodBadgeMapping;
+import com.groom.sumbisori.domain.badge.repository.SeafoodMappingQueryRepository;
 import com.groom.sumbisori.domain.collection.dto.event.CollectionEvent;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -18,21 +22,53 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @Slf4j
 @Transactional
 public class CollectionBadgeService {
+    private final SeafoodMappingQueryRepository seafoodMappingQueryRepository;
+    private final RankedBadgeGrantService rankedService;
+    private final SpecialBadgeGrantService specialService;
+
     @Async
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void awardCollectionBadge(CollectionEvent event) {
         log.info("해산물 배지 조건 확인 시작 - 사용자 ID: {}, 해산물 ID 목록: {}", event.userId(), event.seafoodIds());
-//
-//        // 해산물 리스트를 통해 포함된 해산물 배지 레벨 조회
-//
-//        // 미리사용자의 해당하는 해산물 채집 갯수를 조회해두기
-//        Map<Long, Integer> userSeafoodCounts = getUserSeafoodCounts(event.userId(), event.seafoodIds());
-//
-//        // 미리사용자가 갖고있는 배지 레벨 조회 해두기
-//        Set<BadgeCode> existingBadges = getUserExistingBadges(event.userId());
-//
-//        // 반복을 하면서 획득하지 못한 레벨 조건에 맞는지 찾기
+        List<BadgeLevel> grantedBadgeLevels = new ArrayList<>();
+        Map<BadgeLevel, List<Long>> specialMapping = new HashMap<>();
+        Long userId = event.userId();
 
+        List<SeafoodBadgeMapping> mappings = seafoodMappingQueryRepository.findBySeafoodIds(event.seafoodIds());
+        for (SeafoodBadgeMapping mapping : mappings) {
+            BadgeLevel badgeLevel = mapping.getBadgeLevel();
+            Badge badge = badgeLevel.getBadge();
 
+            switch (badge.getType()) {
+                case RANKED -> {
+                    if (rankedService.process(userId, mapping)) {
+                        grantedBadgeLevels.add(badgeLevel);
+                    }
+                }
+                case SPECIAL -> {
+                    specialMapping
+                            .computeIfAbsent(badgeLevel, k -> new ArrayList<>())
+                            .add(mapping.getSeafoodId());
+                }
+                default -> {
+                    log.warn("지원하지 않는 뱃지 타입: (badgeId={})", badge.getId());
+                }
+            }
+        }
+        grantSpecialBadges(specialMapping, userId, grantedBadgeLevels);
+        grantedBadgeLevels.forEach(level ->
+                log.info("✅ 배지 발급 완료 - 사용자 ID: {}, 배지 레벨 ID: {}", userId, level.getId())
+        );
+        // 추후 발급된 배지에 대해 알림 이벤트
+        // 발급된 배지에 대한 알림 이벤트를 발송하는 로직을 추가할 수 있습니다.
+        // 예: badgeNotificationService.sendBadgeNotification(userId, grantedBadgeLevels);
+    }
+
+    private void grantSpecialBadges(Map<BadgeLevel, List<Long>> specialMapping, Long userId,
+                                    List<BadgeLevel> grantedBadgeLevels) {
+        specialMapping.entrySet().stream()
+                .filter(e -> specialService.process(userId, e.getKey(), e.getValue()))
+                .map(Map.Entry::getKey)
+                .forEach(grantedBadgeLevels::add);
     }
 }

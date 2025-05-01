@@ -43,4 +43,8 @@ public class BadgeLevel {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private BadgeCode code;
+
+    public boolean isSatisfiedBy(int collectedQuantity) {
+        return this.count <= collectedQuantity;
+    }
 }

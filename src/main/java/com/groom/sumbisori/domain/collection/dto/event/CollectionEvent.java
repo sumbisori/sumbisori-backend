@@ -1,9 +1,9 @@
 package com.groom.sumbisori.domain.collection.dto.event;
 
-import java.util.List;
+import java.util.Set;
 
 public record CollectionEvent(
         Long userId,
-        List<Long> seafoodIds
+        Set<Long> seafoodIds
 ) {
 }
