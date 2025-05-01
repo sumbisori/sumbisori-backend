@@ -55,21 +55,20 @@ public class CollectionBadgeService {
                 }
             }
         }
-        for (Map.Entry<BadgeLevel, List<Long>> entry : specialMapping.entrySet()) {
-            BadgeLevel badgeLevel = entry.getKey();
-            List<Long> requiredIds = entry.getValue();
-            if (specialService.process(userId, badgeLevel, requiredIds)) {
-                grantedBadgeLevels.add(badgeLevel);
-            }
-        }
-        if (!grantedBadgeLevels.isEmpty()) {
-            grantedBadgeLevels.forEach(level ->
-                    log.info("✅ 배지 발급 완료 - 사용자 ID: {}, 배지 ID: {}, 배지 이름: {}",
-                            userId, level.getId(), level.getBadge().getName())
-            );
-        }
+        grantSpecialBadges(specialMapping, userId, grantedBadgeLevels);
+        grantedBadgeLevels.forEach(level ->
+                log.info("✅ 배지 발급 완료 - 사용자 ID: {}, 배지 레벨 ID: {}", userId, level.getId())
+        );
         // 추후 발급된 배지에 대해 알림 이벤트
         // 발급된 배지에 대한 알림 이벤트를 발송하는 로직을 추가할 수 있습니다.
         // 예: badgeNotificationService.sendBadgeNotification(userId, grantedBadgeLevels);
+    }
+
+    private void grantSpecialBadges(Map<BadgeLevel, List<Long>> specialMapping, Long userId,
+                                    List<BadgeLevel> grantedBadgeLevels) {
+        specialMapping.entrySet().stream()
+                .filter(e -> specialService.process(userId, e.getKey(), e.getValue()))
+                .map(Map.Entry::getKey)
+                .forEach(grantedBadgeLevels::add);
     }
 }
