@@ -23,19 +23,37 @@ public class RankedBadgeGrantService {
         if (alreadyHas(userId, badgeLevel)) {
             return false;
         }
-        int total = collectionQueryRepository.countTotalQuantityByUserIdAndSeafoodId(userId, seafoodId);
-        if (!badgeLevel.isSatisfiedBy(total)) {
+        if (!isBadgeCriteriaMet(userId, seafoodId, badgeLevel)) {
             return false;
         }
+        grantBadgeToUser(userId, badgeLevel);
+        return true;
+    }
+
+    /**
+     * 이미 보유하고 있는 배지인지 확인
+     */
+    private boolean alreadyHas(Long userId, BadgeLevel badgeLevel) {
+        return userBadgeRepository.existsByUserIdAndBadgeLevelId(userId, badgeLevel.getId());
+    }
+
+    /**
+     * 배지 조건 수량을 만족하는지 확인
+     */
+    private boolean isBadgeCriteriaMet(Long userId, Long seafoodId, BadgeLevel badgeLevel) {
+        int totalSeafoodCount = collectionQueryRepository.countTotalQuantityByUserIdAndSeafoodId(userId, seafoodId);
+        return badgeLevel.isSatisfiedBy(totalSeafoodCount);
+    }
+
+    /**
+     * 배지 부여
+     */
+    private void grantBadgeToUser(Long userId, BadgeLevel badgeLevel) {
         UserBadge userBadge = UserBadge.builder()
                 .userId(userId)
                 .badgeLevel(badgeLevel)
                 .build();
         userBadgeRepository.save(userBadge);
-        return true;
     }
 
-    private boolean alreadyHas(Long userId, BadgeLevel badgeLevel) {
-        return userBadgeRepository.existsByUserIdAndBadgeLevelId(userId, badgeLevel.getId());
-    }
 }

@@ -45,6 +45,6 @@ public class BadgeLevel {
     private BadgeCode code;
 
     public boolean isSatisfiedBy(int collectedQuantity) {
-        return collectedQuantity >= this.count;
+        return this.count <= collectedQuantity;
     }
 }
