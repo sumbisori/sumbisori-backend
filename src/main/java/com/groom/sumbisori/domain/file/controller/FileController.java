@@ -8,7 +8,9 @@ import com.groom.sumbisori.domain.file.dto.request.PreSignedUrlRequest;
 import com.groom.sumbisori.domain.file.service.FileLookupService;
 import com.groom.sumbisori.domain.file.service.ImageAnalyzeService;
 import com.groom.sumbisori.domain.file.service.S3PreSignedUrlService;
+import com.groom.sumbisori.domain.file.service.S3UploadService;
 import jakarta.validation.Valid;
+import java.io.InputStream;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -20,7 +22,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/files")
@@ -29,6 +33,7 @@ public class FileController implements FileApi {
     private final S3PreSignedUrlService s3PreSignedUrlService;
     private final ImageAnalyzeService imageAnalyzeService;
     private final FileLookupService fileLookupService;
+    private final S3UploadService s3UploadService;
 
     @GetMapping("/{imageIdentifier}")
     public ResponseEntity<byte[]> getFileImage(@LoginUser Long userId, @PathVariable String imageIdentifier) {
@@ -50,5 +55,17 @@ public class FileController implements FileApi {
     @GetMapping("/analyze")
     public ResponseEntity<List<SeafoodRecognitionResponse>> imageAnalyze(@RequestParam String imageIdentifier) {
         return ResponseEntity.ok(imageAnalyzeService.analyze(imageIdentifier));
+    }
+
+    @PostMapping("/multipart-file")
+    public String uploadMultipartFile(@RequestPart("file") MultipartFile file) {
+        try (InputStream inputStream = file.getInputStream()) {
+            String fileName = file.getOriginalFilename();
+            long contentLength = file.getSize();
+            s3UploadService.uploadFileToS3(inputStream, fileName, contentLength);
+            return "업로드 성공";
+        } catch (Exception e) {
+            return "업로드 실패: " + e.getMessage();
+        }
     }
 }
