@@ -221,7 +221,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         log.error(LOG_FORMAT,
                 e.getClass(),
                 errorCode.getHttpStatus().value(),
-                errorCode.getMessage());
+                errorCode.getMessage(),
+                e);
     }
 
 //    /**
