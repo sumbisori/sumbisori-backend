@@ -13,6 +13,7 @@ import jakarta.validation.Valid;
 import java.io.InputStream;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/files")
 @RequiredArgsConstructor
+@Slf4j
 public class FileController implements FileApi {
     private final S3PreSignedUrlService s3PreSignedUrlService;
     private final ImageAnalyzeService imageAnalyzeService;
@@ -65,6 +67,7 @@ public class FileController implements FileApi {
             s3UploadService.uploadFileToS3(inputStream, fileName, contentLength);
             return "업로드 성공";
         } catch (Exception e) {
+            log.error(e.getMessage(), e);
             return "업로드 실패: " + e.getMessage();
         }
     }
