@@ -1,6 +1,5 @@
 package com.groom.sumbisori.domain.file.service;
 
-import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -20,23 +19,13 @@ public class S3UploadService {
     private String bucketName;
 
     public void uploadFileToS3(InputStream inputStream, String fileName, long contentLength) {
-        // 1. mark/reset 지원을 위한 BufferedInputStream 사용
-        BufferedInputStream buffered = new BufferedInputStream(inputStream);
-
-        // 2. 충분한 크기로 mark 설정 (예: contentLength 만큼)
-        int markLimit = contentLength > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) contentLength;
-        buffered.mark(markLimit);
-
-        // 3. S3 업로드
         PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                 .bucket(bucketName)
                 .key(DIRECTORY_PATH + UUID.randomUUID() + fileName)
                 .contentLength(contentLength)
                 .contentType(getContentType(fileName))
                 .build();
-
-        // 4. 캐시 없이 업로드
-        s3Client.putObject(putObjectRequest, RequestBody.fromInputStream(buffered, contentLength));
+        s3Client.putObject(putObjectRequest, RequestBody.fromInputStream(inputStream, contentLength));
     }
 
     private String getContentType(String fileName) {
