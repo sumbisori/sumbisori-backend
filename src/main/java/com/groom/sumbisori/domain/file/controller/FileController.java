@@ -78,7 +78,7 @@ public class FileController implements FileApi {
         try (InputStream inputStream = request.getInputStream()) {
             String fileName = request.getHeader("file-name");
             long contentLength = request.getContentLengthLong();
-            s3UploadService.uploadFileToS3(inputStream, fileName, contentLength);
+//            s3UploadService.uploadFileToS3(inputStream, fileName, contentLength);
             return "업로드 성공";
         } catch (Exception e) {
             log.error(e.getMessage(), e);
