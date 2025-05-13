@@ -65,7 +65,7 @@ public class FileController implements FileApi {
         try (InputStream inputStream = file.getInputStream()) {
             String fileName = file.getOriginalFilename();
             long contentLength = file.getSize();
-            s3UploadService.uploadFileToS3(inputStream, fileName, contentLength);
+//            s3UploadService.uploadFileToS3(inputStream, fileName, contentLength);
             return "업로드 성공";
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -76,6 +76,7 @@ public class FileController implements FileApi {
     @PostMapping("/stream")
     public String uploadStream(HttpServletRequest request) {
         try (InputStream inputStream = request.getInputStream()) {
+            log.info("Content-Type: {}", request.getContentType());
             String fileName = request.getHeader("file-name");
             long contentLength = request.getContentLengthLong();
 //            s3UploadService.uploadFileToS3(inputStream, fileName, contentLength);
