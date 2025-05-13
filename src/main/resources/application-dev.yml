@@ -1,6 +1,4 @@
 server:
-  tomcat:
-    basedir: /opt/tomcat-temp
   url: https://api.dev.sumbisori.site
   forward-headers-strategy: native
   port: 8080
