@@ -5,7 +5,8 @@ server:
 spring:
   servlet:
     multipart:
-      enabled: false
+      max-file-size: 10000MB
+      max-request-size: 10000MB
   config:
     activate:
       on-profile: dev
