@@ -31,7 +31,7 @@ public class AlarmController implements AlarmApi {
     @Override
     @PostMapping("/{alarmId}")
     public ResponseEntity<Void> readAlarm(@LoginUser Long userId, @PathVariable Long alarmId) {
-        alarmReadService.read(1L, alarmId);
+        alarmReadService.read(userId, alarmId);
         return ResponseEntity.noContent().build();
     }
 
