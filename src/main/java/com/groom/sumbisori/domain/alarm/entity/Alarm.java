@@ -4,6 +4,8 @@ import com.groom.sumbisori.domain.alarm.dto.common.AlarmContent;
 import com.groom.sumbisori.domain.base.entity.BaseTimeEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -29,30 +31,31 @@ public class Alarm extends BaseTimeEntity {
     @Column(name = "alarm_id")
     private Long id;
 
-    @Column(name = "user_id")
+    @Column(name = "user_id", nullable = false)
     private Long userId;
 
-    @Column
-    private AlarmType alarmType;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private AlarmType type;
 
-    @Column
+    @Column(nullable = false)
     private String content;
 
     @Column
     private String link;
 
-    @Column
+    @Column(nullable = false)
     @Builder.Default
-    private boolean isRead = false;
+    private Boolean isRead = false;
 
-    @Column
+    @Column(nullable = false)
     @Builder.Default
-    private boolean isDeleted = false;
+    private Boolean isDeleted = false;
 
     public static Alarm create(Long userId, AlarmType type, AlarmContent content) {
         return Alarm.builder()
                 .userId(userId)
-                .alarmType(type)
+                .type(type)
                 .content(content.message())
                 .link(content.link())
                 .build();
