@@ -28,7 +28,7 @@ public class AlarmQueryRepository {
                         )
                 )
                 .from(alarm)
-                .where(alarm.userId.eq(userId))
+                .where(alarm.userId.eq(userId).and(alarm.isDeleted.isFalse()))
                 .orderBy(alarm.createdAt.desc())
                 .fetch();
     }
