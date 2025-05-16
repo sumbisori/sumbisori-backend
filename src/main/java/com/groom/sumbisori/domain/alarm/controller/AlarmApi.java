@@ -1,6 +1,9 @@
 package com.groom.sumbisori.domain.alarm.controller;
 
+import com.groom.sumbisori.common.springdoc.ApiExceptionExplanation;
+import com.groom.sumbisori.common.springdoc.ApiResponseExplanations;
 import com.groom.sumbisori.domain.alarm.dto.response.AlarmResponse;
+import com.groom.sumbisori.domain.alarm.error.AlarmErrorCode;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +21,12 @@ public interface AlarmApi {
      * 알림 읽음 API
      */
     @Operation(summary = "알림 읽음 처리")
+    @ApiResponseExplanations(
+            errors = {
+                    @ApiExceptionExplanation(value = AlarmErrorCode.class, constant = AlarmErrorCode.Const.ALARM_NOT_FOUND, name = "해당 알람을 찾을 수 없습니다."),
+                    @ApiExceptionExplanation(value = AlarmErrorCode.class, constant = AlarmErrorCode.Const.ALARM_NOT_OWNED, name = "사용자가 해당 알람을 소유하지 않았습니다.")
+            }
+    )
     ResponseEntity<Void> readAlarm(Long userId, Long alarmId);
 
     /**
