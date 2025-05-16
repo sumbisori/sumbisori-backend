@@ -1,6 +1,5 @@
 package com.groom.sumbisori.domain.badge.entity;
 
-import com.groom.sumbisori.domain.base.entity.BaseTimeEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
