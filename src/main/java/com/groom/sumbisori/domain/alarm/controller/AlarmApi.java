@@ -6,10 +6,12 @@ import com.groom.sumbisori.common.springdoc.ApiResponseExplanations;
 import com.groom.sumbisori.domain.alarm.dto.response.AlarmResponse;
 import com.groom.sumbisori.domain.alarm.error.AlarmErrorCode;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 
+@Tag(name = "alarms", description = "알림 API")
 public interface AlarmApi {
     /**
      * 알림 조회 API
