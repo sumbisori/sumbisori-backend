@@ -2,6 +2,7 @@ package com.groom.sumbisori.domain.alarm.controller;
 
 import com.groom.sumbisori.common.config.LoginUser;
 import com.groom.sumbisori.domain.alarm.dto.response.AlarmResponse;
+import com.groom.sumbisori.domain.alarm.service.AlarmDeleteService;
 import com.groom.sumbisori.domain.alarm.service.AlarmLookupService;
 import com.groom.sumbisori.domain.alarm.service.AlarmReadService;
 import java.util.List;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AlarmController implements AlarmApi {
     private final AlarmLookupService alarmLookupService;
     private final AlarmReadService alarmReadService;
+    private final AlarmDeleteService alarmDeleteService;
 
     @Override
     @GetMapping
@@ -37,7 +39,8 @@ public class AlarmController implements AlarmApi {
 
     @Override
     @DeleteMapping("/{alarmId}")
-    public ResponseEntity<Void> deleteAlarm(Long userId, @PathVariable Long alarmId) {
-        return null;
+    public ResponseEntity<Void> deleteAlarm(@LoginUser Long userId, @PathVariable Long alarmId) {
+        alarmDeleteService.delete(userId, alarmId);
+        return ResponseEntity.noContent().build();
     }
 }

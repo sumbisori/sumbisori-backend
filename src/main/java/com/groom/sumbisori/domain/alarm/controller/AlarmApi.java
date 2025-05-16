@@ -33,5 +33,11 @@ public interface AlarmApi {
      * 알림 삭제 API
      */
     @Operation(summary = "알림 삭제")
+    @ApiResponseExplanations(
+            errors = {
+                    @ApiExceptionExplanation(value = AlarmErrorCode.class, constant = AlarmErrorCode.Const.ALARM_NOT_FOUND, name = "해당 알람을 찾을 수 없습니다."),
+                    @ApiExceptionExplanation(value = AlarmErrorCode.class, constant = AlarmErrorCode.Const.ALARM_NOT_OWNED, name = "사용자가 해당 알람을 소유하지 않았습니다.")
+            }
+    )
     ResponseEntity<Void> deleteAlarm(Long userId, Long alarmId);
 }
