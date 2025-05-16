@@ -16,6 +16,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @Getter
@@ -25,6 +26,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "alarm", indexes = {
         @Index(name = "idx_alarm_user_created", columnList = "user_id, is_deleted, created_at")
 })
+@DynamicUpdate
 public class Alarm extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,5 +61,13 @@ public class Alarm extends BaseTimeEntity {
                 .content(content.message())
                 .link(content.link())
                 .build();
+    }
+
+    public boolean isOwner(Long userId) {
+        return this.userId.equals(userId);
+    }
+
+    public void read() {
+        this.isRead = true;
     }
 }
