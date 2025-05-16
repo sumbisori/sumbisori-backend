@@ -1,11 +1,11 @@
 package com.groom.sumbisori.domain.alarm.controller;
 
 import com.groom.sumbisori.common.config.LoginUser;
+import com.groom.sumbisori.common.dto.PageResponse;
 import com.groom.sumbisori.domain.alarm.dto.response.AlarmResponse;
 import com.groom.sumbisori.domain.alarm.service.AlarmDeleteService;
 import com.groom.sumbisori.domain.alarm.service.AlarmLookupService;
 import com.groom.sumbisori.domain.alarm.service.AlarmReadService;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +26,8 @@ public class AlarmController implements AlarmApi {
 
     @Override
     @GetMapping
-    public ResponseEntity<List<AlarmResponse>> getAlarms(@LoginUser Long userId, Pageable pageable) {
-        return ResponseEntity.ok(alarmLookupService.lookup(userId));
+    public ResponseEntity<PageResponse<AlarmResponse>> getAlarms(@LoginUser Long userId, Pageable pageable) {
+        return ResponseEntity.ok(alarmLookupService.lookup(userId, pageable));
     }
 
     @Override
