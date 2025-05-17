@@ -6,9 +6,9 @@ import com.groom.sumbisori.domain.alarm.entity.Alarm;
 import com.groom.sumbisori.domain.alarm.entity.AlarmType;
 import com.groom.sumbisori.domain.alarm.registry.AlarmContentBuilderRegistry;
 import com.groom.sumbisori.domain.alarm.repository.AlarmRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
