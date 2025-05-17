@@ -22,6 +22,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 public class FirstLoginBadgeService {
     private final UserBadgeUpdateService userBadgeUpdateService;
     private final BadgeCreateService badgeCreateService;
+    private final BadgeGrantValidator badgeGrantValidator;
     private final BadgeLevelQueryRepository badgeLevelQueryRepository;
 
     /**
@@ -32,6 +33,9 @@ public class FirstLoginBadgeService {
     public void awardFirstJoinBadge(SignUpEvent event) {
         BadgeLevel badgeLevel = badgeLevelQueryRepository.findByCodeAndLevelFetchBadge(BadgeCode.FIRST_JOIN, 1)
                 .orElseThrow(() -> new BadgeException(BadgeErrorcode.BADGE_NOT_FOUND));
+        if (!badgeGrantValidator.isGrantable(event.userId(), badgeLevel)) {
+            return;
+        }
         badgeCreateService.create(event.userId(), badgeLevel);
         userBadgeUpdateService.updateUserBadgeLevel(event.userId(), badgeLevel.getId());
         log.info("첫 로그인 뱃지 부여 - 사용자 ID: {}", event.userId());
