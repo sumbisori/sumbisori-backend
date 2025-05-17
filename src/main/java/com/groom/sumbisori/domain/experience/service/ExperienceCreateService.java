@@ -48,7 +48,7 @@ public class ExperienceCreateService {
         fileImageCreateService.uploadMultipleImages(experienceRequest.files(), userId, RefType.EXPERIENCE,
                 experienceId);
 
-        // 4. 수집 생성
+        // 4. 채취 생성
         collectionCreateService.create(userId, experienceRequest.collections(),
                 experienceRequest.experienceDate(), experienceId);
 
