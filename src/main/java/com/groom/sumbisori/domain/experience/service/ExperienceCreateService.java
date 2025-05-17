@@ -2,6 +2,7 @@ package com.groom.sumbisori.domain.experience.service;
 
 import com.groom.sumbisori.domain.collection.service.CollectionCreateService;
 import com.groom.sumbisori.domain.experience.domain.Experience;
+import com.groom.sumbisori.domain.experience.dto.event.ExperienceCreateEvent;
 import com.groom.sumbisori.domain.experience.dto.request.ExperienceRequest;
 import com.groom.sumbisori.domain.experience.error.ExperienceErrorcode;
 import com.groom.sumbisori.domain.experience.error.ExperienceException;
@@ -16,6 +17,7 @@ import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,6 +30,7 @@ public class ExperienceCreateService {
     private final ExperienceRepository experienceRepository;
     private final FileImageCreateService fileImageCreateService;
     private final CollectionCreateService collectionCreateService;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
     public void create(Long userId, ExperienceRequest experienceRequest) {
@@ -48,6 +51,9 @@ public class ExperienceCreateService {
         // 4. 수집 생성
         collectionCreateService.create(userId, experienceRequest.collections(),
                 experienceRequest.experienceDate(), experienceId);
+
+        // 5. 알림 발행
+        eventPublisher.publishEvent(ExperienceCreateEvent.of(userId, experienceId));
     }
 
     private void validate(ExperienceRequest experienceRequest) {
