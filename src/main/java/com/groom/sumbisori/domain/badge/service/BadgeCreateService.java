@@ -17,10 +17,7 @@ public class BadgeCreateService {
     private final ApplicationEventPublisher eventPublisher;
 
     public void create(Long userId, BadgeLevel badgeLevel) {
-        boolean alreadyHas = userBadgeRepository.existsByUserIdAndBadgeLevelId(userId, badgeLevel.getId());
-        if (!alreadyHas) {
-            userBadgeRepository.save(UserBadge.create(userId, badgeLevel));
-            eventPublisher.publishEvent(BadgeIssuedEvent.of(userId, badgeLevel.getBadge(), badgeLevel));
-        }
+        userBadgeRepository.save(UserBadge.create(userId, badgeLevel));
+        eventPublisher.publishEvent(BadgeIssuedEvent.of(userId, badgeLevel.getBadge(), badgeLevel));
     }
 }
