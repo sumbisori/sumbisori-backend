@@ -61,8 +61,7 @@ public class CollectionBadgeService {
         grantSpecialBadges(specialMapping, userId, grantedBadgeLevels);
         grantedBadgeLevels.forEach(level -> {
             log.info("✅ 배지 발급 완료 - 사용자 ID: {}, 배지 레벨 ID: {}", userId, level.getId());
-            eventPublisher.publishEvent(BadgeIssuedEvent.of(userId, level.getBadge(), level)
-            );
+            eventPublisher.publishEvent(BadgeIssuedEvent.of(userId, level.getBadge(), level));
         });
     }
 
