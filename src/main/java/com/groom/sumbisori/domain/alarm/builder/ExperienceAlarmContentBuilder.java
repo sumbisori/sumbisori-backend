@@ -7,6 +7,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ExperienceAlarmContentBuilder implements AlarmContentBuilder<ExperienceAlarmContext> {
+    private final static String MESSAGE_TEMPLATE = "일지 작성이 완료되었습니다.";
+    private final static String LINK_TEMPLATE = "/journals/%s";
+
     @Override
     public AlarmType getType() {
         return AlarmType.EXPERIENCE_COMPLETED;
@@ -14,6 +17,8 @@ public class ExperienceAlarmContentBuilder implements AlarmContentBuilder<Experi
 
     @Override
     public AlarmContent build(ExperienceAlarmContext context) {
-        return null;
+        String message = MESSAGE_TEMPLATE;
+        String link = String.format(LINK_TEMPLATE, context.experienceId());
+        return AlarmContent.of(message, link);
     }
 }

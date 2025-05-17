@@ -30,8 +30,7 @@ public class CollectionBadgeService {
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void awardCollectionBadge(CollectionEvent event) {
         log.info("해산물 배지 조건 확인 시작 - 사용자 ID: {}, 해산물 ID 목록: {}", event.userId(), event.seafoodIds());
-        List<BadgeLevel> grantedBadgeLevels = new ArrayList<>();
-        Map<BadgeLevel, List<Long>> specialMapping = new HashMap<>();
+        Map<BadgeLevel, List<Long>> specialMapping = new HashMap<>(); // 특별 배지 매핑 <배지레벨, 필요한 해산물 ID 목록>
         Long userId = event.userId();
 
         List<SeafoodBadgeMapping> mappings = seafoodMappingQueryRepository.findBySeafoodIds(event.seafoodIds());
@@ -40,11 +39,7 @@ public class CollectionBadgeService {
             Badge badge = badgeLevel.getBadge();
 
             switch (badge.getType()) {
-                case RANKED -> {
-                    if (rankedService.process(userId, mapping)) {
-                        grantedBadgeLevels.add(badgeLevel);
-                    }
-                }
+                case RANKED -> rankedService.process(userId, mapping);
                 case SPECIAL -> {
                     specialMapping
                             .computeIfAbsent(badgeLevel, k -> new ArrayList<>())
@@ -55,20 +50,11 @@ public class CollectionBadgeService {
                 }
             }
         }
-        grantSpecialBadges(specialMapping, userId, grantedBadgeLevels);
-        grantedBadgeLevels.forEach(level ->
-                log.info("✅ 배지 발급 완료 - 사용자 ID: {}, 배지 레벨 ID: {}", userId, level.getId())
-        );
-        // 추후 발급된 배지에 대해 알림 이벤트
-        // 발급된 배지에 대한 알림 이벤트를 발송하는 로직을 추가할 수 있습니다.
-        // 예: badgeNotificationService.sendBadgeNotification(userId, grantedBadgeLevels);
+        grantSpecialBadges(specialMapping, userId);
     }
 
-    private void grantSpecialBadges(Map<BadgeLevel, List<Long>> specialMapping, Long userId,
-                                    List<BadgeLevel> grantedBadgeLevels) {
+    private void grantSpecialBadges(Map<BadgeLevel, List<Long>> specialMapping, Long userId) {
         specialMapping.entrySet().stream()
-                .filter(e -> specialService.process(userId, e.getKey(), e.getValue()))
-                .map(Map.Entry::getKey)
-                .forEach(grantedBadgeLevels::add);
+                .forEach(e -> specialService.process(userId, e.getKey(), e.getValue()));
     }
 }

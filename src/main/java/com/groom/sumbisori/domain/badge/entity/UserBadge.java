@@ -37,4 +37,11 @@ public class UserBadge extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "badge_level_id", nullable = false)
     private BadgeLevel badgeLevel;
+
+    public static UserBadge create(Long userId, BadgeLevel badgeLevel) {
+        return UserBadge.builder()
+                .userId(userId)
+                .badgeLevel(badgeLevel)
+                .build();
+    }
 }
