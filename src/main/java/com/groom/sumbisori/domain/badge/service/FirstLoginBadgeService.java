@@ -38,6 +38,5 @@ public class FirstLoginBadgeService {
         }
         badgeCreateService.create(event.userId(), badgeLevel);
         userBadgeUpdateService.updateUserBadgeLevel(event.userId(), badgeLevel.getId());
-        log.info("첫 로그인 뱃지 부여 - 사용자 ID: {}", event.userId());
     }
 }
