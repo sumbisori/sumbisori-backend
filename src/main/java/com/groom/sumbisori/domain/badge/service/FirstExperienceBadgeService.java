@@ -14,8 +14,9 @@ import org.springframework.transaction.event.TransactionalEventListener;
 
 @Component
 @RequiredArgsConstructor
-public class ExperienceEventListener {
+public class FirstExperienceBadgeService {
     private final BadgeCreateService badgeCreateService;
+    private final BadgeGrantValidator badgeGrantValidator;
     private final BadgeLevelQueryRepository badgeLevelQueryRepository;
 
     /**
@@ -27,6 +28,8 @@ public class ExperienceEventListener {
         BadgeLevel badgeLevel = badgeLevelQueryRepository.findByCodeAndLevelFetchBadge(BadgeCode.FIRST_EXPERIENCE_WRITE,
                         1)
                 .orElseThrow(() -> new BadgeException(BadgeErrorcode.BADGE_NOT_FOUND));
-        badgeCreateService.create(event.userId(), badgeLevel);
+        if (badgeGrantValidator.isGrantable(event.userId(), badgeLevel)) {
+            badgeCreateService.create(event.userId(), badgeLevel);
+        }
     }
 }
