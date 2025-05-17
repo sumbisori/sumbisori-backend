@@ -1,5 +1,6 @@
 package com.groom.sumbisori.domain.badge.service;
 
+import com.groom.sumbisori.domain.badge.dto.event.BadgeIssuedEvent;
 import com.groom.sumbisori.domain.badge.entity.Badge;
 import com.groom.sumbisori.domain.badge.entity.BadgeLevel;
 import com.groom.sumbisori.domain.badge.entity.SeafoodBadgeMapping;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +27,7 @@ public class CollectionBadgeService {
     private final SeafoodMappingQueryRepository seafoodMappingQueryRepository;
     private final RankedBadgeGrantService rankedService;
     private final SpecialBadgeGrantService specialService;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Async
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
@@ -56,12 +59,11 @@ public class CollectionBadgeService {
             }
         }
         grantSpecialBadges(specialMapping, userId, grantedBadgeLevels);
-        grantedBadgeLevels.forEach(level ->
-                log.info("✅ 배지 발급 완료 - 사용자 ID: {}, 배지 레벨 ID: {}", userId, level.getId())
-        );
-        // 추후 발급된 배지에 대해 알림 이벤트
-        // 발급된 배지에 대한 알림 이벤트를 발송하는 로직을 추가할 수 있습니다.
-        // 예: badgeNotificationService.sendBadgeNotification(userId, grantedBadgeLevels);
+        grantedBadgeLevels.forEach(level -> {
+            log.info("✅ 배지 발급 완료 - 사용자 ID: {}, 배지 레벨 ID: {}", userId, level.getId());
+            eventPublisher.publishEvent(BadgeIssuedEvent.of(userId, level.getBadge(), level)
+            );
+        });
     }
 
     private void grantSpecialBadges(Map<BadgeLevel, List<Long>> specialMapping, Long userId,
