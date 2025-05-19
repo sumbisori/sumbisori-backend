@@ -7,7 +7,7 @@
 
 - `test-files/` : 업로드 테스트용 샘플 파일 (예: 1MB 파일)
 - `multipart_upload.js` : `multipart/form-data` 방식 업로드 테스트 스크립트
-- `stream_upload.js` : 스트림 기반 업로드 테스트 테스트 스크립트
+- `stream_upload.js` : 스트림 기반 업로드 테스트 스크립트
 - `upload-1mb-100.js` : 1MB 파일 100개를 동시에 업로드하는 테스트 스크립트
 - `README.md` : 이 문서
 
