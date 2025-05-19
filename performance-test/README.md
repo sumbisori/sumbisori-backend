@@ -19,3 +19,7 @@
 
 ```bash
 k6 run upload-1mb-100.js
+```
+
+### 자세한 테스트 배경과 성능 비교 결과는 아래 블로그를 참고하세요:
+👉 [체험일지 이미지 등록 성능 개선 – Presigned URL (1)](https://velog.io/@joonchoi/%EC%B2%B4%ED%97%98-%EC%9D%BC%EC%A7%80-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EB%93%B1%EB%A1%9D-%EC%84%B1%EB%8A%A5-%EA%B0%9C%EC%84%A0)
