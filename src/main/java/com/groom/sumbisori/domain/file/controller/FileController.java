@@ -95,7 +95,7 @@ public class FileController implements FileApi {
             long length = (contentLength != null && contentLength > 0)
                     ? contentLength
                     : inputStream.available();  // fallback
-            s3UploadService.uploadFileToS3(inputStream, fileName, length);
+//            s3UploadService.uploadFileToS3(inputStream, fileName, length);
             return "업로드 성공";
         } catch (Exception e) {
             log.error("업로드 실패", e);
