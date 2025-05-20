@@ -1,4 +1,7 @@
 server:
+  tomcat:
+    max-swallow-size: -1   # 무제한으로 설정
+    max-http-form-post-size: -1  # 폼 크기 제한 해제
   url: https://api.dev.sumbisori.site
   forward-headers-strategy: native
   port: 8080
