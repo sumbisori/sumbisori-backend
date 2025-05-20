@@ -83,16 +83,15 @@ public class FileController implements FileApi {
         }
     }
 
-    @PostMapping(
-            value    = "/stream",
-            consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE
-    )
+    @PostMapping("/stream")
     public String uploadStream(
             @RequestBody InputStream inputStream,
             @RequestHeader("file-name") String fileName,
-            @RequestHeader(value = "Content-Length", required = false) Long contentLength
+            @RequestHeader(value = "Content-Length", required = false) Long contentLength,
+            HttpServletRequest request
     ) {
         try {
+            log.info("요청 Content-Type: {}", request.getContentType());  // 진짜 들어온 값 확인
             long length = (contentLength != null && contentLength > 0)
                     ? contentLength
                     : inputStream.available();  // fallback
