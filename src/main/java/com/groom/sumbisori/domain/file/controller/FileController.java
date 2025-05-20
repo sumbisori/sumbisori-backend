@@ -55,6 +55,15 @@ public class FileController implements FileApi {
         return ResponseEntity.ok().body(s3PreSignedUrlService.create(request));
     }
 
+    @PostMapping("/test/presigned-url")
+    public String createPreSignedUrl(@RequestBody TestPreSignedUrlRequest request) {
+        return s3PreSignedUrlService.generatePresignedUploadUrl(
+                request.fileName(),
+                request.contentType(),
+                request.fileSize()
+        );
+    }
+
     @GetMapping("/analyze")
     public ResponseEntity<List<SeafoodRecognitionResponse>> imageAnalyze(@RequestParam String imageIdentifier) {
         return ResponseEntity.ok(imageAnalyzeService.analyze(imageIdentifier));
@@ -85,5 +94,8 @@ public class FileController implements FileApi {
             log.error(e.getMessage(), e);
             return "업로드 실패: " + e.getMessage();
         }
+    }
+
+    record TestPreSignedUrlRequest(String fileName, String contentType, Long fileSize) {
     }
 }
