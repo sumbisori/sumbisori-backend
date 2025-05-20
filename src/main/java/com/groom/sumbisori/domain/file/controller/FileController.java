@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -82,16 +83,23 @@ public class FileController implements FileApi {
         }
     }
 
-    @PostMapping("/stream")
-    public String uploadStream(HttpServletRequest request) {
-        try (InputStream inputStream = request.getInputStream()) {
-            log.info("Content-Type: {}", request.getContentType());
-            String fileName = request.getHeader("file-name");
-            long contentLength = request.getContentLengthLong();
-            s3UploadService.uploadFileToS3(inputStream, fileName, contentLength);
+    @PostMapping(
+            value    = "/stream",
+            consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE
+    )
+    public String uploadStream(
+            @RequestBody InputStream inputStream,
+            @RequestHeader("file-name") String fileName,
+            @RequestHeader(value = "Content-Length", required = false) Long contentLength
+    ) {
+        try {
+            long length = (contentLength != null && contentLength > 0)
+                    ? contentLength
+                    : inputStream.available();  // fallback
+            s3UploadService.uploadFileToS3(inputStream, fileName, length);
             return "업로드 성공";
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
+            log.error("업로드 실패", e);
             return "업로드 실패: " + e.getMessage();
         }
     }
