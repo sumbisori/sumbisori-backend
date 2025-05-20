@@ -85,17 +85,15 @@ public class FileController implements FileApi {
 
     @PostMapping("/stream")
     public String uploadStream(
-            @RequestBody InputStream inputStream,
+            HttpServletRequest request,
             @RequestHeader("file-name") String fileName,
-            @RequestHeader(value = "Content-Length", required = false) Long contentLength,
-            HttpServletRequest request
+            @RequestHeader(value = "Content-Length", required = false) Long contentLength
     ) {
-        try {
-            log.info("요청 Content-Type: {}", request.getContentType());  // 진짜 들어온 값 확인
+        try (InputStream inputStream = request.getInputStream()) {
+            log.info("요청 Content-Type: {}", request.getContentType());
             long length = (contentLength != null && contentLength > 0)
                     ? contentLength
-                    : inputStream.available();  // fallback
-//            s3UploadService.uploadFileToS3(inputStream, fileName, length);
+                    : inputStream.available();
             return "업로드 성공";
         } catch (Exception e) {
             log.error("업로드 실패", e);
