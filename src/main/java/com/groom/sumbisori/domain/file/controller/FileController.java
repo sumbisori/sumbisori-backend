@@ -8,9 +8,11 @@ import com.groom.sumbisori.domain.file.dto.request.PreSignedUrlRequest;
 import com.groom.sumbisori.domain.file.service.FileLookupService;
 import com.groom.sumbisori.domain.file.service.ImageAnalyzeService;
 import com.groom.sumbisori.domain.file.service.S3PreSignedUrlService;
+import com.groom.sumbisori.domain.file.service.S3UploadService;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/files")
 @RequiredArgsConstructor
+@Slf4j
 public class FileController implements FileApi {
     private final S3PreSignedUrlService s3PreSignedUrlService;
     private final ImageAnalyzeService imageAnalyzeService;
