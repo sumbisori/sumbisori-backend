@@ -25,7 +25,7 @@ public class CollectionQueryRepository {
     private final JPAQueryFactory queryFactory;
 
     /**
-     * 사용자가 수집한 해산물 목록 조회
+     * 사용자가 채취한 해산물 목록 조회
      */
     public List<SeafoodCollectionInfo> findTotalQuantityBySeafoodForUser(Long userId) {
         return queryFactory
@@ -44,7 +44,7 @@ public class CollectionQueryRepository {
     }
 
     /**
-     * 사용자가 수집한 해산물 목록 조회 (수집 날짜 포함)
+     * 사용자가 채취한 해산물 목록 조회 (채취 날짜 포함)
      */
     public List<MySeafoodCollectionInfo> findCollectedSeafoodByUserId(Long userId) {
         return queryFactory
@@ -58,6 +58,19 @@ public class CollectionQueryRepository {
                 .join(collectionItem.seafood, seafood)
                 .where(seafoodCollection.userId.eq(userId))
                 .groupBy(seafood.id)
+                .fetch();
+    }
+
+    /**
+     * 사용자가 채취한 해산물 ID 목록 조회
+     */
+    public List<Long> findDistinctCollectedSeafoodIds(Long userId) {
+        return queryFactory
+                .select(seafood.id).distinct()
+                .from(seafoodCollection)
+                .join(collectionItem).on(collectionItem.seafoodCollectionId.eq(seafoodCollection.id))
+                .join(collectionItem.seafood, seafood)
+                .where(seafoodCollection.userId.eq(userId))
                 .fetch();
     }
 
@@ -109,14 +122,17 @@ public class CollectionQueryRepository {
                 );
     }
 
-    public int sumQuantityByUserId(Long userId) {
-//        Integer result = queryFactory
-//                .select(seafoodCollection.quantity.sum())
-//                .from(seafoodCollection)
-//                .where(seafoodCollection.userId.eq(userId))
-//                .fetchOne();
-//        return result != null ? result : 0;
-        return 0; //임시
+    /**
+     * 특정 해산물을 수집한 총 개수를 계산
+     **/
+    public int countTotalQuantityByUserIdAndSeafoodId(Long userId, Long seafoodId) {
+        return queryFactory
+                .select(collectionItem.quantity.sum().coalesce(0).intValue())
+                .from(seafoodCollection)
+                .join(collectionItem).on(collectionItem.seafoodCollectionId.eq(seafoodCollection.id))
+                .where(seafoodCollection.userId.eq(userId)
+                        .and(collectionItem.seafood.id.eq(seafoodId)))
+                .fetchOne();
     }
 
 //    private BooleanBuilder seafoodCollectionUserIdEq(Long userId) {

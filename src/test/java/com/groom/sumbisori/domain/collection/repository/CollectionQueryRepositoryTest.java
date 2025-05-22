@@ -45,14 +45,12 @@ class CollectionQueryRepositoryTest {
         SeafoodCollection seafoodCollection1 = SeafoodCollection.builder()
                 .userId(1L)
                 .experienceId(1L)
-                .imageIdentifier("image1.jpg")
                 .collectedAt(LocalDate.parse("2023-10-01"))
                 .build();
 
         SeafoodCollection seafoodCollection2 = SeafoodCollection.builder()
                 .userId(1L)
                 .experienceId(2L)
-                .imageIdentifier("image2.jpg")
                 .collectedAt(LocalDate.parse("2023-10-02"))
                 .build();
 

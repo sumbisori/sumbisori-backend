@@ -3,7 +3,9 @@ package com.groom.sumbisori.domain.user.controller;
 import com.groom.sumbisori.common.config.LoginUser;
 import com.groom.sumbisori.common.util.CookieUtil;
 import com.groom.sumbisori.domain.token.entity.TokenType;
+import com.groom.sumbisori.domain.user.dto.response.UserNickname;
 import com.groom.sumbisori.domain.user.dto.response.UserProfile;
+import com.groom.sumbisori.domain.user.service.UserLookupService;
 import com.groom.sumbisori.domain.user.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/users")
 @Slf4j
 public class UserController implements UserApi {
+    private final UserLookupService userLookupService;
     private final UserService userService;
     private final CookieUtil cookieUtil;
 
@@ -30,7 +33,13 @@ public class UserController implements UserApi {
     @Override
     @GetMapping
     public ResponseEntity<UserProfile> getMyInfo(@LoginUser Long userId) {
-        return ResponseEntity.ok(userService.getMyInfo(userId));
+        return ResponseEntity.ok(userLookupService.getMyInfo(userId));
+    }
+
+    @Override
+    @GetMapping("/nickname")
+    public ResponseEntity<UserNickname> getMyNickname(@LoginUser Long userId) {
+        return ResponseEntity.ok(userLookupService.getMyNickname(userId));
     }
 
     @Override

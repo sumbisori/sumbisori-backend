@@ -52,11 +52,18 @@ public class User extends BaseTimeEntity {
     @Column
     private LocalDateTime lastLoginAt;
 
+    @Column
+    private Long badgeLevelId;
+
     public void update(String email, String nickname, String profileImageUrl) {
         this.email = email;
         this.nickname = nickname;
         this.profileImageUrl = profileImageUrl;
         this.lastLoginAt = LocalDateTime.now();
+    }
+
+    public void updateRepBadgeLevel(Long badgeLevelId) {
+        this.badgeLevelId = badgeLevelId;
     }
 
     @Getter
