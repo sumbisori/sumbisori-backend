@@ -9,9 +9,7 @@ import com.groom.sumbisori.domain.file.service.FileLookupService;
 import com.groom.sumbisori.domain.file.service.ImageAnalyzeService;
 import com.groom.sumbisori.domain.file.service.S3PreSignedUrlService;
 import com.groom.sumbisori.domain.file.service.S3UploadService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import java.io.InputStream;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,12 +20,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/files")
@@ -37,7 +32,6 @@ public class FileController implements FileApi {
     private final S3PreSignedUrlService s3PreSignedUrlService;
     private final ImageAnalyzeService imageAnalyzeService;
     private final FileLookupService fileLookupService;
-    private final S3UploadService s3UploadService;
 
     @GetMapping("/{imageIdentifier}")
     public ResponseEntity<byte[]> getFileImage(@LoginUser Long userId, @PathVariable String imageIdentifier) {
@@ -56,51 +50,8 @@ public class FileController implements FileApi {
         return ResponseEntity.ok().body(s3PreSignedUrlService.create(request));
     }
 
-    @PostMapping("/test/presigned-url")
-    public String createPreSignedUrl(@RequestBody TestPreSignedUrlRequest request) {
-        return s3PreSignedUrlService.generatePresignedUploadUrl(
-                request.fileName(),
-                request.contentType(),
-                request.fileSize()
-        );
-    }
-
     @GetMapping("/analyze")
     public ResponseEntity<List<SeafoodRecognitionResponse>> imageAnalyze(@RequestParam String imageIdentifier) {
         return ResponseEntity.ok(imageAnalyzeService.analyze(imageIdentifier));
-    }
-
-    @PostMapping("/multipart-file")
-    public String uploadMultipartFile(@RequestPart("file") MultipartFile file) {
-        try (InputStream inputStream = file.getInputStream()) {
-            String fileName = file.getOriginalFilename();
-            long contentLength = file.getSize();
-            s3UploadService.uploadFileToS3(inputStream, fileName, contentLength);
-            return "업로드 성공";
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return "업로드 실패: " + e.getMessage();
-        }
-    }
-
-    @PostMapping("/stream")
-    public String uploadStream(
-            HttpServletRequest request,
-            @RequestHeader("file-name") String fileName,
-            @RequestHeader(value = "Content-Length", required = false) Long contentLength
-    ) {
-        try (InputStream inputStream = request.getInputStream()) {
-            log.info("요청 Content-Type: {}", request.getContentType());
-            long length = (contentLength != null && contentLength > 0)
-                    ? contentLength
-                    : inputStream.available();
-            return "업로드 성공";
-        } catch (Exception e) {
-            log.error("업로드 실패", e);
-            return "업로드 실패: " + e.getMessage();
-        }
-    }
-
-    record TestPreSignedUrlRequest(String fileName, String contentType, Long fileSize) {
     }
 }
