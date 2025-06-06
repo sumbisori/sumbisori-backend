@@ -6,10 +6,10 @@ COPY ${JAR_FILE} sumbisori.jar
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", \
-  "-javaagent:/pinpoint-agent/pinpoint-bootstrap-2.5.3.jar", \
-  "-Dpinpoint.agentId=${PINPOINT_AGENT_ID}", \
-  "-Dpinpoint.applicationName=${PINPOINT_APP_NAME}", \
-  "-Dspring.profiles.active=${SPRING_PROFILES_ACTIVE}", \
-  "-Duser.timezone=Asia/Seoul", \
-  "-jar", "/sumbisori.jar"]
+ENTRYPOINT exec java \
+  -javaagent:/pinpoint-agent/pinpoint-bootstrap-2.5.3.jar \
+  -Dpinpoint.agentId=${PINPOINT_AGENT_ID} \
+  -Dpinpoint.applicationName=${PINPOINT_APP_NAME} \
+  -Dspring.profiles.active=${SPRING_PROFILES_ACTIVE} \
+  -Duser.timezone=Asia/Seoul \
+  -jar /sumbisori.jar
