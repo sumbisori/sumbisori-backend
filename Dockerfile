@@ -3,7 +3,6 @@ FROM openjdk:17-jdk-alpine3.14
 ARG JAR_FILE=build/libs/*.jar
 
 COPY ${JAR_FILE} sumbisori.jar
-COPY pinpoint-agent /pinpoint-agent
 
 EXPOSE 8080
 
