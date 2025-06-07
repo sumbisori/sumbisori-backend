@@ -54,8 +54,5 @@ jobs:
             docker run -d --log-driver=syslog --name backend -p 8080:8080 \
             --network my-network \
             -e SPRING_PROFILES_ACTIVE=prod \
-            -e PINPOINT_AGENT_ID=prod-backend \
-            -e PINPOINT_APP_NAME=sumbisori-prod \
-            -v /home/ubuntu/pinpoint-agent-2.5.3:/pinpoint-agent \
             ${{ env.IMAGE_NAME }}
             docker image prune -a -f
