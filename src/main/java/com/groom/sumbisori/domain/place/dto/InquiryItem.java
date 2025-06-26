@@ -7,11 +7,11 @@ public record InquiryItem(
         String content,
         String iconUrl
 ) {
-    public static InquiryItem from(PlaceDescription placeDescription) {
+    public static InquiryItem from(PlaceDescription placeDescription, String cloudfrontDomain) {
         return new InquiryItem(
                 placeDescription.getTitle(),
                 placeDescription.getContent(),
-                placeDescription.getIcon().getUrl()
+                cloudfrontDomain + placeDescription.getIcon().getUrl()
         );
     }
 }

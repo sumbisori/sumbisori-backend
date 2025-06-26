@@ -6,10 +6,10 @@ public record FacilityItem(
         String title,
         String iconUrl
 ) {
-    public static FacilityItem from(PlaceDescription placeDescription) {
+    public static FacilityItem from(PlaceDescription placeDescription, String cloudfrontDomain) {
         return new FacilityItem(
                 placeDescription.getTitle(),
-                placeDescription.getIcon().getUrl()
+                cloudfrontDomain + placeDescription.getIcon().getUrl()
         );
     }
 }
