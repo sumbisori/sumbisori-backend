@@ -8,12 +8,12 @@ public record OperationInfoItem(
         String description,
         String iconUrl
 ) {
-    public static OperationInfoItem from(PlaceDescription placeDescription) {
+    public static OperationInfoItem from(PlaceDescription placeDescription, String cloudfrontDomain) {
         return new OperationInfoItem(
                 placeDescription.getTitle(),
                 placeDescription.getContent(),
                 placeDescription.getDescription(),
-                placeDescription.getIcon().getUrl()
+                cloudfrontDomain + placeDescription.getIcon().getUrl()
         );
     }
 }
