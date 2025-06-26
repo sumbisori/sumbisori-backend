@@ -26,7 +26,7 @@ public class PlaceService {
     @Cacheable(cacheNames = "places")
     public List<SimplePlaceResponse> getAllPlaces() {
         return placeQueryRepository.findAll().stream()
-                .map(place -> SimplePlaceResponse.from(place, cloudfrontConfig.getDomain())) // 도메인 전달
+                .map(place -> SimplePlaceResponse.from(place, cloudfrontConfig.getDomain()))
                 .toList();
     }
 
@@ -34,7 +34,7 @@ public class PlaceService {
     public PlaceResponse getPlaceById(Long placeId) {
         Place place = placeQueryRepository.findById(placeId)
                 .orElseThrow(() -> new PlaceException(PlaceErrorcode.PLACE_NOT_FOUND));
-        return PlaceResponse.from(place, cloudfrontConfig.getDomain()); // 도메인 전달
+        return PlaceResponse.from(place, cloudfrontConfig.getDomain());
     }
 
     @Cacheable(cacheNames = "placeLocations")
