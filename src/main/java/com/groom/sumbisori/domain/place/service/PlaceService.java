@@ -1,5 +1,6 @@
 package com.groom.sumbisori.domain.place.service;
 
+import com.groom.sumbisori.common.config.CloudfrontConfig;
 import com.groom.sumbisori.domain.place.dto.PlaceLocationResponse;
 import com.groom.sumbisori.domain.place.dto.PlaceResponse;
 import com.groom.sumbisori.domain.place.dto.SimplePlaceResponse;
@@ -20,11 +21,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class PlaceService {
     private final PlaceRepository placeRepository;
     private final PlaceQueryRepository placeQueryRepository;
+    private final CloudfrontConfig cloudfrontConfig;
 
     @Cacheable(cacheNames = "places")
     public List<SimplePlaceResponse> getAllPlaces() {
         return placeQueryRepository.findAll().stream()
-                .map(place -> SimplePlaceResponse.from(place))
+                .map(place -> SimplePlaceResponse.from(place, cloudfrontConfig.getDomain())) // 도메인 전달
                 .toList();
     }
 
@@ -32,7 +34,7 @@ public class PlaceService {
     public PlaceResponse getPlaceById(Long placeId) {
         Place place = placeQueryRepository.findById(placeId)
                 .orElseThrow(() -> new PlaceException(PlaceErrorcode.PLACE_NOT_FOUND));
-        return PlaceResponse.from(place);
+        return PlaceResponse.from(place, cloudfrontConfig.getDomain()); // 도메인 전달
     }
 
     @Cacheable(cacheNames = "placeLocations")

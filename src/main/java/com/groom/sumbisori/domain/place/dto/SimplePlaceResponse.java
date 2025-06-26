@@ -5,12 +5,12 @@ import com.groom.sumbisori.domain.place.entity.Place;
 public record SimplePlaceResponse(Long placeId, String name, String city, String imageUrl) {
     private static final int CITY_INDEX = 1;
 
-    public static SimplePlaceResponse from(Place place) {
+    public static SimplePlaceResponse from(Place place, String cloudfrontDomain) {
         return new SimplePlaceResponse(
                 place.getId(),
                 place.getName(),
                 getCityFromAddress(place.getAddress()),
-                place.getImageUrl()
+                cloudfrontDomain + place.getImageUrl()
         );
     }
 

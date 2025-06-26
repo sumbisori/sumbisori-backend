@@ -6,7 +6,7 @@ public record PlaceResponse(Long placeId, String name, String address,
                             int minPrice, int maxPrice, PlaceDescriptionResponse details, String imageUrl,
                             double latitude, double longitude, String phoneNumber,
                             String link, String reservationLink) {
-    public static PlaceResponse from(Place place) {
+    public static PlaceResponse from(Place place, String cloudfrontDomain) {
         return new PlaceResponse(
                 place.getId(),
                 place.getName(),
@@ -14,7 +14,7 @@ public record PlaceResponse(Long placeId, String name, String address,
                 place.getMinPrice(),
                 place.getMaxPrice(),
                 PlaceDescriptionResponse.from(place.getDescriptions()),
-                place.getImageUrl(),
+                cloudfrontDomain + place.getImageUrl(),
                 place.getLatitude(),
                 place.getLongitude(),
                 place.getPhoneNumber(),
