@@ -104,6 +104,10 @@ api:
     weather: ${WEATHER_API_KEY}
 
 management:
+  metrics:
+    binders:
+      processor:
+        enabled: false
   endpoints:
     web:
       exposure:
